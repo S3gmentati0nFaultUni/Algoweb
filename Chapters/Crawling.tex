@@ -156,3 +156,27 @@ A ogni segnale $s \in$ \set{S} associamo ora uno hash $h(s)$. Il SimHash del tes
 \end{equation*}
 Due documenti che hanno lo stesso SimHash sono molto simili, e la somiglianza diventa sempre meno significativa se si permettono distanze di Hamming superiori. Si noti che è banale \textit{pesare} i segnali in modo che alcuni siano più importanti di altri.\\
 Trovare elementi a breve distanza di Hamming è un problema interessante una cui soluzione pratica per distanze piccole è descritta è \cite{google}.\\
+\subsection{Gestione della politeness}
+Un altro dei problemi pratici che rende l'attività di crawling diversa da una semplice visita è la gestione della \textit{politeness}: non si dovrebbe eccedere nella quantità di tempo dedicato allo scaricamento da un singolo sito (pena, in genere, email furiose o taglio del traffico dal vostro IP).\\
+Ci sono due modi fondamentali di operare questa limitazione:
+\begin{itemize}
+    \item Limitare il tempo tra una richiesta e l'altra.
+    \item Limitare il rapporto tra il tempo di scaricamento e quello di non scaricamento.
+\end{itemize}
+Nel primo caso, dato un intervallo di tempo $t$, diciamo, quattro secondi, siamo costretti ad aspettare $t$ tra la fine di una richiesta e l'inizio della successiva per lo stesso sito. Nel secondo caso, data una frazione $p$ e un tempo di scaricamento massimo $s$ (diciamo, di un secondo) dobbiamo fare in modo che la proporzione tra il tempo di scaricamento e quello di non-scaricamento sia $p$. SI noti che questa condizione contempla anche una misurazione effettiva del tempo di scaricamento, dato che risorse particolarmente lente potrebbero richiedere un tempo maggiore di $s$.\\
+La seconda soluzione è più interessante, perchè permette di sfruttare una caratteristica della versione 1.1 del protocollo HTTP: è possibile cioè effettuare richieste multiple attraverso la stessa connessione TCP, evitando la (lenta) apertura e chiusura di una connessione per ogni risorsa scaricata. Le attività di scaricamento terminano non appena si supera la soglia $s$, con tempo di scaricamento effettivo $s'$, e a questo punto si aspetta per tempo $s'/p$, in maniera da forzare la gentilezza.
+Per implementare questo tipo di politica, però è necessario alterare l'ordine di visita, dato che visitando gli URL nell'ordine in cui escono dal crivello si potrebbe incorrere in attese a vuoto consistenti.
+\subsection{La coda degli host}
+Un altro problema finora lasciato in parte è il ruolo della concorrenza. Certamente vorremo scaricare contemporaneamente da più siti: per farlo, possiamo istanziare molti flussi (sotto forma di migliaia di \textit{visiting thread}) di esecuzione che si occupano di scaricare i dati, e saranno quindi sempre occupati in attività di I/O. Le pagine scaricate possono essere poi analizzate da un gruppo di flussi più ridotto (i \textit{parsing thread}). Si noti che, al di là delle questioni di politeness, non possiamo permetterci che due flussi accedano allo stesso sito.\\
+Questi problemi vengono risolti riorganizzando gli URL che escono dal crivello. Consideriamo una \textit{coda con priorità} contenente i siti noti al crawler. A ogni sito assegnamo come priorità il primo istante di tempo in cui sarà possibile scaricare dal sito senza violare la politeness. Si tratta di una coda di min-priorità, dunque in cima alla coda c'è il minimo.\\
+Per ogni sito manteniamo una coda (FIFO nel caso della visita in ampiezza). Quando degli URL vengono emessi dal crivello, vengono accodati alla coda del sito cui appartengono.\\
+Ogni flusso del crawler procede iterativamente nel seguente modo:
+\begin{enumerate}
+    \item Estrae il sito in cima alla coda (eventualmente aspettando il tempo necessario a far sì che questo sia scaricabile).
+    \item Procede a scaricare una o più risorse.
+    \item Riaccoda il sito aggiustando il timestamp di "readiness" secondo la politica di gestione della politeness.
+\end{enumerate}
+Se c'è un URL disponibile allo scaricamento, il sito deve essere già stato reso pronto per lo scaricamento prima del tempo corrente. Quindi o è in cima alla coda, o in cima alla coda c'è un sito che era pronto per lo scaricamento ancora prima. Il punto è che la cima della coda è sempre scaricabile.\\
+Questo meccanismo rende automatica l'esclusività del download tra flussi: gli elementi della coda agiscono come \textit{token}, quando un elemento è in cima alla coda, il thread ha in possesso un token per scaricare da quel sito fino allo scadere del tempo.\\
+Il costo della coda è logaritmico e l'aggiunta e la rimozione sono operazioni relativamente costose (al più polilogaritmiche) ma possono diventare problematiche in momenti di concorrenza intensa.\\
+Infine, nel caso sia necessaria una politica di gentilezza da applicare agli indirizzi IP possiamo organizzare gli IP in una lista come quella descritta sopra. Rimanendo lungo il solco tracciato dalla metafora del token: quando un thread trova in cima alla lista un IP e un URL significa che il thread è in possesso del token per scaricare i dati associati a quell'URL per quello specifico indirizzo IP per una quantità limitata di tempo.
