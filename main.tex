@@ -1,6 +1,20 @@
 \documentclass{article}
 
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
 \newcommand{\set}[1]{\ensuremath{#1}}
+\newcommand{\caProd}[2]{\set{#1_0 \times #1_1 \times \dots \times #1_#2}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\bigo}[1]{$\mathcal{O}(#1)$}
+\newcommand{\bigz}[1]{$\Omega(#1)$}
+\newcommand{\bigt}[1]{$\Theta(#1)$}
+\newcommand{\fun}[3]{$#1 : #2 \rightarrow #3$}
+\newcommand{\st}{\hspace{1mm}|\hspace{1mm}}
+\newcommand{\curly}{\mathrel{\leadsto}}
+\newcommand{\flr}[1]{\lfloor #1 \rfloor}
 
 \pagenumbering{arabic}
 
@@ -16,5 +30,6 @@
 
 % Chapters
 \include{Chapters/NozioniDiBase.tex}
+\include{Chapters/Crawling.tex}
 
 \end{document}
