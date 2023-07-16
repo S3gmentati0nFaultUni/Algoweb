@@ -15,8 +15,12 @@
 \newcommand{\st}{\hspace{1mm}|\hspace{1mm}}
 \newcommand{\curly}{\mathrel{\leadsto}}
 \newcommand{\flr}[1]{\lfloor #1 \rfloor}
+\newcommand{\bigb}[1]{\left(#1\right)}
+\newcommand{\bigs}[1]{\left[#1\right]}
+\newcommand{\bigc}[1]{\left\{#1\right\}}
 
 \pagenumbering{arabic}
+
 
 \title{Dispense per il corso di algoritmica per il web}
 \author{Sebastiano Vigna}
@@ -25,11 +29,14 @@
 \begin{document}
 
 \maketitle
-\tableofcontents
 \clearpage
+\tableofcontents
 
 % Chapters
 \include{Chapters/NozioniDiBase.tex}
 \include{Chapters/Crawling.tex}
+
+\bibliography{Bibliography} 
+\bibliographystyle{alpha}
 
 \end{document}
