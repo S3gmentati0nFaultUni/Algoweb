@@ -180,3 +180,20 @@ Se c'è un URL disponibile allo scaricamento, il sito deve essere già stato res
 Questo meccanismo rende automatica l'esclusività del download tra flussi: gli elementi della coda agiscono come \textit{token}, quando un elemento è in cima alla coda, il thread ha in possesso un token per scaricare da quel sito fino allo scadere del tempo.\\
 Il costo della coda è logaritmico e l'aggiunta e la rimozione sono operazioni relativamente costose (al più polilogaritmiche) ma possono diventare problematiche in momenti di concorrenza intensa.\\
 Infine, nel caso sia necessaria una politica di gentilezza da applicare agli indirizzi IP possiamo organizzare gli IP in una lista come quella descritta sopra. Rimanendo lungo il solco tracciato dalla metafora del token: quando un thread trova in cima alla lista un IP e un URL significa che il thread è in possesso del token per scaricare i dati associati a quell'URL per quello specifico indirizzo IP per una quantità limitata di tempo.
+\subsection{Tecniche di programmazione concorrente lock-free}
+Nella gestione delle strutture dati che abbiamo discusso é possibile che l'elevata concorrenza renda le strutture stesse poco efficienti. Se il numero di host é molto grande, per esempio, i flussi di scrittura e lettura potrebbero rimanere fermi per molto tempo ai punti di sincronizzazione o sui semafori che proteggono le zone di mutua esclusione.\\
+É possibile alleviare il conflitto tra i flussi utilizzando delle tecniche di programmazione non bloccante, dette \textit{lock-free}. Una struttura dati lock-free non utilizza semafori: utilizza invece istruzioni hardware che permettono implementazioni efficienti. Quella che useremo é CAS (\textit{compare-and-swap}): dato un indirizzo $p$ e due valori $a$ e $b$, la CAS controlla che il valore memorizzato in $p$ sia $a$ e in questo caso lo sostituisce atomicamente con $b$, restituendo vero se la sostituzione é avvenuta.\\
+Per dare un'idea delle tecniche lock-free, l'algoritmo 1 mostra come aggiungere concorrentemente un nodo a una lista con puntatori: l'implementazione é dovuta a Harris.\\ % INSERIRE LA CITAZIONE %
+La correttezza dell'algoritmo é banale, ma si noti anche che se l'istruzione CAS fallisce, un altro flusso ha eseguito l'inserimento: quindi, per ogni ciclo eseguito da uno dei flussi concorrenti c'é stato \textit{progresso} nell'aggiornamento della struttura. Detto altrimenti: non é possibile dire quante volte uno specifico flusso debba eseguire il ciclo prima di avere successo nell'inserimento, ma a ogni fallimento corrisponde un successo di un altro flusso.
+\begin{algorithm}
+\caption{Algoritmo lock-free per aggiungere un nodo (n) a una lista (dopo p)}
+\begin{algorithmic}
+\Do
+\State $t \gets p.next$
+\State $n.next \gets t$
+\doWhile{!CAS(\&p.next, t, n)}
+\end{algorithmic}
+\end{algorithm}
+L'algoritmo per la cancellazione é piú complesso: l'idea di utilizzare la stessa tecnica non funziona perché é possibile cancellare un nodo mentre sta venendo inserito un successore, cancellando cosí l'effetto dell'inserimento.\\
+Si noti che non é richiesta nessuna sincronizzazione in lettura: la lista non é mai in uno stato incoerente, per cui puó essere scandita tramite lo stesso algoritmo utilizzato per una normale lista collegata. Inoltre, in pratica, per evitare che in condizioni di elevata concorrenza il numero di volte che l'operazione CAS fallisce divenga troppo importante, si puó utilizzare una tecnica di \textit{exponential backoff} che consiste nel mettere in attesa thread che falliscono per un tempo che ha una crescita esponenziale.\\
+Molti linguaggi moderni offrono strutture lock-free pronte per l'uso, come la \texttt{ConcurrentLinkedQueue} di Java, che implementa l'algoritmo di Michael e Scott. % INSERIRE LA CITAZIONE %

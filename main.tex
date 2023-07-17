@@ -3,6 +3,9 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
 
 \newcommand{\set}[1]{\ensuremath{#1}}
 \newcommand{\caProd}[2]{\set{#1_0 \times #1_1 \times \dots \times #1_#2}}
@@ -18,6 +21,7 @@
 \newcommand{\bigb}[1]{\left(#1\right)}
 \newcommand{\bigs}[1]{\left[#1\right]}
 \newcommand{\bigc}[1]{\left\{#1\right\}}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
 
 \pagenumbering{arabic}
 
