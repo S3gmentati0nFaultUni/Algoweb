@@ -2,10 +2,15 @@
 
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
+
+\newtheorem{teo}{Teorema}
+\newtheorem{dimostrazione}{Dimostrazione}
+
 
 \newcommand{\set}[1]{\ensuremath{#1}}
 \newcommand{\caProd}[2]{\set{#1_0 \times #1_1 \times \dots \times #1_#2}}
@@ -19,6 +24,7 @@
 \newcommand{\fa}{\hspace{1mm}\forall \hspace{1mm}}
 \newcommand{\curly}{\mathrel{\leadsto}}
 \newcommand{\flr}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
 \newcommand{\bigb}[1]{\left(#1\right)}
 \newcommand{\bigs}[1]{\left[#1\right]}
 \newcommand{\bigc}[1]{\left\{#1\right\}}
@@ -41,6 +47,7 @@
 \include{Chapters/NozioniDiBase.tex}
 \include{Chapters/Crawling.tex}
 \include{Chapters/Tecniche_di_distribuzione_del_carico}
+\include{Chapters/Codici_istantanei}
 
 \bibliography{Bibliography} 
 \bibliographystyle{alpha}
