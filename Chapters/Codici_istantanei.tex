@@ -77,3 +77,56 @@ Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi 
 \end{equation*}
 Un codice é detto \textit{asintoticamente ottimo} quando a destra il limite superiore é della forma $f(H(p))$ con $\lim_{n \to \infty} f(n) = 1$.\\
 Il codice unario e i codici di Golomb non sono universali, mentre lo sono $\gamma$ e $\delta$ inoltre, quest'ultimo, é anche asintoticamente ottimo.
+\subsection{Codifiche alternative}
+É possibile utilizzare tecniche standard quali la codifica di Huffman o la codifica aritmetica per la codifica di ogni parte di un indice. Ci sono però delle considerazioni ovvie che mostrano come questi metodi, utilizzati direttamente, non siano di fatto implementatibili. La codifica di Huffman richiederebbe un numero di parole di codice esorbitante, e le parole dovrebbero essere calcolate separatamente per ogni termine. La codifica aritmetica richiede alcuni bit di scarico prima di poter essere interrotta, e quindi non si presta ad essere inframezzata da altri dati (come i conteggi e le posizioni). Inoltre, per quanto efficientemente implementata, è estremamente lenta.
+\subsubsection{PFOR-DELTA}
+Un approccio che ha rivoluzionato il modo di memorizzare le liste è quello proposto in % INSERIRE LA CITAZIONE %
+, comunemente chiamato PFOR-DELTA o FOR. L'idea è molto semplice: si sceglie una dimensione di blocco $B$ (di solito 128 o 256), e per ogni blocco consecutivo di $B$ scarti si trova l'intero $b$ tale per cui il 90\% dei valori possono essere rappresentati con $b$ bit.\\
+A questo punto viene scritto un vettore di $B$ interi a $b$ bit, che descrive correttamente il 90\% dei valori, quelli che non possono essere espressi in $b$ bit sono dette \textit{eccezioni} e vengono scritte in un vettore di eccezioni a parte con il minimo numero di bit necessari per descrivere la massima eccezione. Gli scarti vengono memorizzati in ordine in $B$, quando incontriamo un'eccezione insieriamo una sequenza di escape (tipo $b$ 1) che consente di capire che lì è presente un eccezione, è dunque possibile in fase di decodifica rimpiazzare il valore di escape con l'eccezione corrispondente; siccome tutti e due i vettori sono ordinati l'operazione può essere eseguita sequenzialmente.\\
+In fase di decodifica, si copiano i primi $B$ valori a $b$ bit in un vettore di interi. Quest'operazione è molto veloce, in particolare se vengono creati dei cicli srotolati diversi\footnote{Unrolling loops, significa semplicemente scrivere un'istruzione per ogni valore del loop, richiede di scrivere migliaia di righe di codice che però possono essere generate automaticamente.} per ogni possibile valore di $b$. A questo punto si passa attraverso la lista delle eccezioni, che vengono copiate dal secondo vettore nelle posizioni corrette.\\
+Questo approccio fa sì che il processore esegua dei cicli estremamente predicibili, e riesce a decodificare un numero di scarti al secondo significativamente più alto delle tecniche basate su codici. Le performance di compressione sono di solito buone, anche se è difficile dare garanzie teoriche. Lo svantaggio (che può risultare significativo) è che è sempre necessario decodificare $B$ elementi.
+\subsubsection{Sistemi di numerazione asimmetrica (approfondimento)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%                    INSERIRE SISTEMI DI NUMERAZIONE ASIMMETRICA
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Distribuioni intese}
+Ogni codice istantaneo completo per gli interi definisce implicitamente una \textit{distribuzione intesa} sugli interi che assegna a $w$ la probabilità $2^{-|w|}$. Il codice, in effetti, risulta \textit{ottimo} per la distribuzione associata. La scelta di un codice istantaneo può quindi essere ricondotta a considerazioni sulla distribuzione statistica degli interi che si intendo rappresentare.\\
+Al codice unario è associata una distribuzione geometrica.
+\begin{equation*}
+    \frac{1}{2^{x + 1}}
+\end{equation*}
+mentre la distribuzione associata a $\gamma$ è
+\begin{equation*}
+    \frac{1}{2^{2\flr{\log(x + 1)} + 1}} \approx \frac{1}{2(x + 1)^2}
+\end{equation*}
+e quella associata a $\delta$ è
+\begin{equation*}
+    \frac{1}{2^{\flr{\log(\flr{\log(x + 1)}) + 1} + 1 + \flr{\log(x + 1)}}} \approx \frac{1}{2(x + 1)(\log(x + 1) + 1)^2}
+\end{equation*}
+Il codice di Golomb ha, naturalmente, una distribuzione dipendente dal modulo, che però è geometrica:
+\begin{equation*}
+    \frac{1}{2^{\flr{x / k} + \log(k) + [x\mod(k) \geq 2^{\ceil{\log(k)}} - k]}} \approx \frac{1}{k\bigb{\sqrt[k]{2}}^x}
+\end{equation*}
+Infine, sebbene i codici a lunghezza variabile non siano completi, a meno di un fattore di normalizzazione è comunque possibile osservarne la distribuzione intesa:
+\begin{equation*}
+    \frac{1}{2^{\ceil{\log(x) / k}(k + 1)}} \approx \frac{1}{(x + 1)^{1 + 1/k}}
+\end{equation*}
+\subsection{Codici per gli indici}
+Nella scelta dei codici istantanei da utilizzare per la compressione di un indice è fondamentale la conoscenza della distribuzione degli interi da comprimere. In alcuni casi è possibile creare un modello statistico che spiega la distribuzione empirica riscontrata.\\
+Per quanto riguarda frequenze e conteggi, la presenza significativa degli \textit{hapax legomena} rende il codice $\gamma$ quello usato più di frequente.\\
+La questione degli scarti tra puntatori documentali è più complessa. Il modello \textit{Bernoulliano} di distribuzione prevede che un termine con frequenza $f$ compaia in una collezione di $N$ documenti con probabilità $p = f / N$ indipendentemente in ogni documento. L'assunzione di indipendenza ha l'effetto di semplificare enormementela distribuzione degli scarti, che risulta una geometrica di ragione $p$: lo scarto $x > 0$ compare cioè con probabilità $p(1 - p)^{x - 1}$.\\
+Abbiamo già notato come il codice di Golomb abbia distribuzione intesa geometrica: si tratta quindi di trovare il modulo adatto a $p$, un risultato importante di teoria dei codici dice che il codice ottimo per una geometrica di ragione $p$ è un Golomb di modulo
+\begin{equation}
+    k = \ceil{- \frac{\log(2 - p)}{\log(1 - p)}}
+\end{equation}
+Una controindicazione può essere però la \textit{correlazione} tra documenti adiacenti. Per esempio, se i documenti della collezione provengono da un crawl e sono nell'ordine di visita, è molto probabile che documenti vicini contengano termini simili. Questo fatto sposta significativamente da una geometrica la distribuzione degli scarti.\\
+Per quanto riguarda le posizioni, non esistono modelli noti e affidabili degli scarti, si usa pertanto un codice dalle buone prestazioni come il $\delta$. È anche possibile utilizzare Golomb, assumendo un modello Bernoulliano anche per le posizioni, ma per calcolare il modulo è necessario avere la lunghezza del documento, che quindi deve essere disponibile in memoria centrale. Alla fine, in ogni caso, considerazioni come la facilità di implementazione, velocità di decodifica, e altri fattori, possono essere forze determinanti nella scelta delle tecniche di codifica.
+\subsection{Problemi implementativi}
+I codici istantanei comprimono in maniera ottima rispetto alle distribuzioni intese. Riducono quindi la dimensione dell'indice in maniera significativa, cosa particolarmente utile se l'indice verrà caricato in tutto o in parte in memoria centrale. in effetti, esperimenti condotti all'inizio dell'attività di ricerca sugli indici inversi hanno mostrato che un indice compresso è significativamente più veloce di un indice non compresso, dato che l'I/O è ridotto in maniera significativa e il prezzo da pagare nella decodifica è di pochi cicli macchina per intero.\\
+L'implementazione della lettura dei codici istantanei va però effettuata con una certa cura se si vogliono ottenere prestazioni ragionevoli. L'idea più importante è quella di mantenere in un \textit{bit buffer} che contiene una finestra sul file delle liste di affissioni. Le manipolazioni relative alla decodifica dei codici dovrebbero essere confinate al bit buffer nella stragrande maggioranza dei casi. In particolare, un numero significativo di prefisso (per esempio, $2^{16}$) può essere decodificato tramite una tabella che contiene, per ogni prefisso, il numero di bit immediatamente decodificabili e l'intero corrispondente, o l'inticazione che è necessario procedere a una decodifica manuale.
+\subsection{Salti}
+Non è possibile ottenere in tempo costante un elementeo arbitrario di una lista compressa per scarti: è necessario decodificare gli elementi precedenti. In realtà, più problematica è l'impossibilità di saltare rapidamente dal primo elemento della lista maggiore o uguale a un limite inferiore $b$, operazione detta comunemente \textit{salto}. I salti sono fondamentali, come vedremo, per la risoluzione veloce delle interrogazioni congiunte.\\
+La tecnica di base per ovviare a questo inconveniente è quella di memorizzare, insieme alla lista di affissioni, una \textit{tabella di salto} che memorizza, dato un \textit{quanto} $q$, il valore degli elementi di indice $iq, i > 0$, e la loro posizione (espressa in bit) nella lista di affissioni. Quando si vuole effettuare un salto, e più precisamente quando si vuole trovare minimo valore maggiore o uguale a $b$, si cerca nella tabella (per esempio tramite una ricerca dicotomica o una \textit{ricerca esponenziale}) l'elemento di posto $iq \leq b$, e si comincia a decodificare la lista per cercare il minimo maggiorante di $b$. Al più $q$ elementi dovranno essere decodificati, e $q$ deve essere scelto sperimentalmente in modo da, al tempo stesso, non accrescere eccessivamente la dimensione dell'indice e fornire un significativo aumento di prestazioni.\\
+Si noti che una volta che è possibile saltare all'interno della lista dei puntatori ai documenti, è necessario mettere in piedi strutture di accesso per conteggio e posizioni, se presenti e memorizzate separatamente. Se cioè è possibile accedere in modo diretto ai puntatori documentali di indice $iq$, deve essere possibile accedere allo stesso modo alle parti rimanenti dell'indice.
