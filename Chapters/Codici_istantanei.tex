@@ -116,7 +116,10 @@ Infine, sebbene i codici a lunghezza variabile non siano completi, a meno di un 
 \subsection{Struttura di un indice}
 Dai documenti crawlati si costruisce un indice invertito, cioé una relazione che mappa ogni termine nei documenti in cui compare. Partendo dalla lista di termini, costituita da elementi della forma $\langle documento, termine, posizione \rangle$, posso fare ordinamento rispetto alla colonna centrale e a partire da questo costruire l'indice inverso, ovvero l'indice che contiene, per ogni termine, l'insieme dei documenti (e delle posizioni nel documento) in cui il termine compare, in ordine crescente per valore del puntatore documentale.\\
 Una lista di affissione é la lista dei puntatori a documenti associati a un unico termine, spesso, all'informazione essenziale dei puntatori documentali, sono associate una serie di informazioni accessorie quali la frequenza con cui il token compare nei documenti associati e le posizioni occupate.\\
-La struttura di un elemento di una lista di affissione potrebbe essere il seguente: $\langle p, c, \langle p_1, \dots, p_n \rangle \rangle$
+La struttura di un elemento di una lista di affissione potrebbe essere il seguente
+\begin{equation*}
+    \langle p, c, \langle p_1, \dots, p_n \rangle \rangle
+\end{equation*} 
 dove $p$ é il puntatore al documento, $c$ é il conteggio, ovvero il numero di volte in cui $t$ compare in $p$, la $n$-pla ordinata (in ordine crescente) $\langle p_1, \dots, p_n \rangle$ indica le posizioni che il token occupa nel file.\\
 Un indice é quindi composta da una serie di dati, nella prossima sezione esploriamo come queste informazioni possono essere salvate in maniera efficace tramite l'uso dei codici istantanei.
 \subsection{Codici per gli indici}
