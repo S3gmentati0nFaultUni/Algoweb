@@ -1,0 +1,49 @@
+\section{Elias Fano}
+Elias Fano é un meccanismo di codifica e compressione che puó essere utilizzato per memorizzare in maniera efficiente sequenze di interi monotone crescenti.\\
+Se ci addentriamo nel campo che abbiamo considerato fino ad adesso, quello del crawling del web, e consideriamo il processo di inversione di un indice (passaggio da indicizzazione per documento a indicizzazione per token) possiamo andare a memorizzare la lista di puntatori documentali con una lista di scarti (la stessa cosa puó essere fatta, volendo, su posizioni e conteggi). I problemi delle liste per scarti é che senza ulteriori magheggi (tabelle di salto) hanno performance di rango e selezione pessime, il processo puó non essere banale, e richiede un ulteriore sforzo non indifferente.\\
+La codifica di Elias Fano consente di rappresentare sequenze monotone in maniera quasi succinta\footnote{Una struttura dati é quasi-succinta quando lo spazio occupato dalla struttura si avvicina molto al lower bound teorico. Si tratta di un termine impiegato dal professor Vigna nelle dispense di cui non sono riuscito a trovare ulteriore evidenza in rete.}.\\
+Supponiamo di avere la seguente successione monotona non decrescente, di lunghezza $n$, $x_0, \dots, x_{n - 1}$. Supponiamo che il limite superiore della successione sia un valore $u$.\\
+Elias Fano consiste nella memorizzazione dei $\flr{\log(u / n)}$ bit meno significativi di ogni valore in maniera esplicita (avremo un vettore $L$); i bit piú significativi di ogni valore verranno memorizzati come una lista di scarti in unario dove $0^k1$ rappresenta $k$ (avremo quindi anche un vettore $H$). Questa struttura ci consente di memorizzare $n$ valori utilizzando solamente $\log(u / n) + 2$ bit al piú per elemento.\\
+Consideriamo il seguente esempio: Abbiamo la seguente successione di valori
+\begin{equation*}
+    5\hspace{5mm}8\hspace{5mm}8\hspace{5mm}15\hspace{5mm}32
+\end{equation*}
+vogliamo memorizzarla con Elias Fano usando $u = 36$. Siccome $n = 5$ $l = 2$, dunque il vettore contenente i bit meno significativi avrá la seguente struttura
+\begin{equation*}
+    01\hspace{5mm}00\hspace{5mm}00\hspace{5mm}11\hspace{5mm}00
+\end{equation*}
+il vettore di valori in unario sará il seguente
+\begin{equation*}
+    0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}1
+\end{equation*}
+Prendiamo qualche valore per capire come funziona il processo di memorizzazione:
+per il valore 5 (101) prendo gli $l$ bit meno significativi (01), li metto nel vettore $L$, prendo i bit rimanenti (1) e li memorizzo in unario (01) all'interno del vettore $H$.\\
+Per memorizzare 8 (il valore successivo, 1000) prendo gli $l$ bit meno significativi (00), li metto nel vettore $L$, prendo i bit rimanenti (10), calcolo lo scarto rispetto a $H[0]$ (1 - 2 = 1) e lo memorizzo in unario (01) all'interno del vettore $H$, e il ciclo continua fino a quando tutti i valori non sono stati memorizzati.\\
+I vantaggi di Elias Fano sono i seguenti:
+\begin{itemize}
+    \item Utilizzo ottimale dello spazio.
+    \item Per utilizzare questa codifica non é necessario che i valori seguano una particolare distribuzione.
+    \item La lettura sequenziale richiede pochissime operazioni.
+    \item Restrizione del problema di rango e selezione a un array di circa 2n bit contente per metá 0 e per metá 1.
+\end{itemize}
+Visto che abbiamo nominato il problema di rango e selezione, come viene calcolato rango e selezione in Elias Fano?\\
+Per avere il $k$-esimo elemento recuperiamo gli $l$ bit meno significativi usando $L[k - 1]$\footnote{Uso $k - 1$ supponendo che la numerazione parta da 0 e che quindi si voglia ottenere il terzo valore secondo un conteggio ordinale} mentre i bit piú significativi corrispondono al numero di zeri prima del $k$-esimo 1.\\
+Se per esempio volessi recuperare il terzo valore all'interno della sequenza d'esempio che si trova sopra:\\
+I bit meno significativi sono quelli in posizione $L[2] = 00$, i bit piú significativi sono il numero di 0 prima del $k$-esimo 1, quindi $2 = 10$. Il terzo valore é 1000 cioé $8$.\\
+Il processo di rango é un po'meno intuitivo ma comunque in tutto simile a quello di selezione. Volendo trovare il minimo valore $x \geq b$ facciamo quanto segue
+\begin{itemize}
+    \item $b >> l$ per capire quanti bit a 0 devo saltare dentro $H$
+    \item Calcolo la posizione di blocco in cui sono
+    \item Gli upper bits sono la somma di tutti i valori in unario che incontro fino a quando non trovo l'$(b >> l)$-esimo bit a 0.
+    \item Prendo il valore di blocco dentro l'array dei lower bits nella posizione che ho trovato prima.
+\end{itemize}
+Proviamo a chiarire il concetto con un esempio (rimanendo sempre sui valori definiti prima). Il minimo valore maggiore di 11011 (27) é
+\begin{itemize}
+    \item So di dover saltare 110 bit a 0, quindi 6.
+    \item La posizione del blocco in cui sono é 4 (partendo da 0).
+    \item La parte alta del numero é data da 01 + 01 + 1 + 01 + 000001 = 000000001 (8), 1000 in binario.
+    \item I lower bits sono quelli in posizione 4 all'interno di $L$, quindi 00. Il risultato finale é 100000, cioé 32.
+\end{itemize}
+Prendiamo ora il caso in esame, vogliamo memorizzare l'indice inverso, il che significa memorizzare i puntatori documentali ed eventualmente posizioni e conteggi. Per quel che riguarda i puntatori documentali utilizziamo, ovviamente, una lista quasi-succinta implementando una tabella di salto che ci consente di rendere le letture ancora piú veloci facendo un piccolo sacrificio in termini di spazio. Per quel che riguarda le posizioni e i conteggi basta tenere a mente che possiamo tenere in memoria una lista quasi-succinta memorizzando $x_i - i$  per successioni strettamente monotone.\\
+Al posto di memorizzare conteggi e posizioni possiamo memorizzare le loro cumulate ($x_0, x_0 + x_1, x_0 + x_1 + x_2, \dots$), l'idea é che la somma prefissa (cumulata) dei conteggi puó essere usata come indice delle posizioni.\\
+Elias Fano é una tecnica di codifica per indici veloce e compatta, che puó essere battuta per compressione solo da codifiche piú lente come il Golomb, per contro é scalabile e ha un accesso locale molto migliore di altri approcci, rendendolo una tecnica che si puó quasi definire un \textit{go-to}.
