@@ -8,7 +8,8 @@ Cioé $x \preceq y$ se e solo se $x$ é un prefisso di $y$. Ricordiamo che in un
 Un codice é detto \textit{istantaneo} o \textit{privo di prefissi} se ogni coppia di parole distinte del codice é inconfrontabile. L'effetto pratico di questa proprietá é che a fronte di una parola $w$ formata da una concatenazione di parole del codice, non esiste una diversa concatenazione che dá $w$. In particolare, leggendo uno a uno i bit di $w$ é possibile ottenere in maniera istantanea le parole del codice che lo compongono.\\
 Ad esempio, il codice \set{\{0, 1\}} é istantaneo, mentre \set{\{0, 1, 01\}} non lo é. Se prendiamo ad esempio la stringa 001 e la confrontiamo con il primo codice sappiamo che é formata da 0, 0, 1, ma nel secondo caso possiamo scegliere tra 0, 0, 1 e 0, 01.\\
 Un codice si dice \textit{completo} o \textit{non ridondante} se ogni parola $w \in 2^*$ é confrontabile con qualche parola del codice (esiste quindi una parola del codice di cui $w$ é prefisso o una parola del codice che é un prefisso di $w$). Il primo dei due codici summenzionato é completo, mentre il secondo non lo é.\\
-Quando un codice istantaneo é completo, non é possibile aggiungere parole al codice senza perdere la proprietá di istantaneitá; inoltre, qualunque parola \textit{infinita} é decomponibile in maniera unica come una sequenza di parole del codice, qualunque parola \textit{finita} é decomponibile in maniera unica come sequenza di parole del codice piú un prefisso di qualche parola del codice.
+Quando un codice istantaneo é completo, non é possibile aggiungere parole al codice senza perdere la proprietá di istantaneitá; inoltre, qualunque parola \textit{infinita} é decomponibile in maniera unica come una sequenza di parole del codice, qualunque parola \textit{finita} é decomponibile in maniera unica come sequenza di parole del codice piú un prefisso di qualche parola del codice.\\
+Ora enunciamo la disequazione di \textit{Kraft-McMillan}, che dimostreremo successivamente.
 \begin{teo}
     Sia $C \subseteq 2^*$ un codice, se \set{C} é istantaneo, allora
     \begin{equation*}
@@ -20,8 +21,8 @@ Quando un codice istantaneo é completo, non é possibile aggiungere parole al c
     \end{equation*}
     esiste un codice istantaneo formato da parole $w_0, \dots, w_{n - 1}, \dots$ tali che $|w_i| = t_i$
 \end{teo}
-Prima di cominciare la dimostrazione facciamo un preambolo utile a eseguirla in modo veloce.\\
-Un \textit{diadico} é un razionale della forma $kw^{-h}$. A ogni parola $w \in 2^*$. Possiamo associare un sottointervallo semiamperto di $[0\dots1)$ con estremi diadici come segue:
+\noindent Prima di cominciare la dimostrazione facciamo un preambolo utile a eseguirla in modo veloce.\\
+Un \textit{diadico} é un razionale della forma $k2^{-h}$. A ogni parola $w \in 2^*$. Possiamo associare un sottointervallo semiamperto di $[0\dots1)$ con estremi diadici come segue:
 \begin{itemize}
     \item Se $w$ é la parola vuota, l'intervallo é $[0\dots1)$
     \item Se $w$ privata dell'ultimo bit ha $[x \dots y)$ come intervallo associato, se l'ultimo bit é 0 allora l'intervallo di $w$ é $[x \dots (x + y)/2)$, altrimenti l'intervallo di $w$ é $[(x + y)/2 \dots y)$
@@ -71,7 +72,7 @@ In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Caratteristiche matematiche dei codici}
-Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice é \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$)il valore atteso della lunghezza di una parola rispetto a $p$ é minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ció significa che se $l(n)$ é la lunghezza della parola di codice per $n$ e $H(p)$ é l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
+Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice é \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$) il valore atteso della lunghezza di una parola rispetto a $p$ é minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ció significa che se $l(n)$ é la lunghezza della parola di codice per $n$ e $H(p)$ é l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
 \begin{equation*}
     \sum_{x \in \nat}{l(n)p(n)} \leq cH(p) + d
 \end{equation*}
@@ -80,11 +81,60 @@ Il codice unario e i codici di Golomb non sono universali, mentre lo sono $\gamm
 \subsection{Codifiche alternative}
 É possibile utilizzare tecniche standard quali la codifica di Huffman o la codifica aritmetica per la codifica di ogni parte di un indice. Ci sono però delle considerazioni ovvie che mostrano come questi metodi, utilizzati direttamente, non siano di fatto implementatibili. La codifica di Huffman richiederebbe un numero di parole di codice esorbitante, e le parole dovrebbero essere calcolate separatamente per ogni termine. La codifica aritmetica richiede alcuni bit di scarico prima di poter essere interrotta, e quindi non si presta a essere inframezzata da altri dati (come i conteggi e le posizioni). Inoltre, per quanto efficientemente implementata, è estremamente lenta.
 \subsubsection{PFOR-DELTA}
-Un approccio che ha rivoluzionato il modo di memorizzare le liste è quello proposto in % INSERIRE LA CITAZIONE %
-, comunemente chiamato PFOR-DELTA o FOR. L'idea è molto semplice: si sceglie una dimensione di blocco $B$ (di solito 128 o 256), e per ogni blocco consecutivo di $B$ scarti si trova l'intero $b$ tale per cui il 90\% dei valori possono essere rappresentati con $b$ bit.\\
-A questo punto viene scritto un vettore di $B$ interi a $b$ bit, che descrive correttamente il 90\% dei valori, quelli che non possono essere espressi in $b$ bit sono dette \textit{eccezioni} e vengono scritte in un vettore di eccezioni a parte con il minimo numero di bit necessari per descrivere la massima eccezione. Gli scarti vengono memorizzati in ordine in $B$, quando incontriamo un'eccezione inseriamo una sequenza di escape (tipo $b$ 1) che consente di capire che lì è presente un eccezione, è dunque possibile in fase di decodifica rimpiazzare il valore di escape con l'eccezione corrispondente; siccome tutti e due i vettori sono ordinati l'operazione può essere eseguita sequenzialmente.\\
+Un approccio che ha rivoluzionato il modo di memorizzare le liste di affissione, è quello proposto in % INSERIRE LA CITAZIONE %
+, comunemente chiamato PFOR-DELTA o FOR. L'idea è molto semplice: si sceglie una dimensione di blocco $B$ (di solito 128 o 256), e per ogni blocco consecutivo di $B$ scarti si trova l'intero $b$ tale per cui la maggior parte dei valori\footnote{Il professore trattando l'argomento propone di coprire il 90\% dei valori con $b$ bit, assumeremo 90\% come valore di riferimento da qui in avanti. In questo caso peró la filosofia é semplicemente piú valori si coprono con $b$, meglio é (attenzione a non cadere nell'approccio miope di coprire tutti i valori perché é il massimo, soprattutto qualora si fosse costretti a impiegare un numero di bit considerevole.)} possono essere rappresentati con $b$ bit.\\
+A questo punto viene scritto un vettore di $B$ interi a $b$ bit, che descrive correttamente il 90\% dei valori, quelli che non possono essere espressi in $b$ bit sono dette \textit{eccezioni} e vengono scritte in un vettore a parte impiegando, il minimo numero di bit, atti a descrivere il massimo valore nell'array, per ogni elemento. Gli scarti vengono memorizzati in ordine in $B$, quando incontriamo un'eccezione inseriamo una sequenza di escape (tipo un elemento dell'array costituito da soli 1) che consente di capire che lì è presente un eccezione, è dunque possibile in fase di decodifica rimpiazzare il valore di escape con l'eccezione corrispondente; siccome tutti e due i vettori sono ordinati l'operazione può essere eseguita sequenzialmente.\\
 In fase di decodifica, si copiano i primi $B$ valori a $b$ bit in un vettore di interi. Quest'operazione è molto veloce, in particolare se vengono creati dei cicli srotolati diversi\footnote{Unrolling loops, significa semplicemente scrivere un'istruzione per ogni valore del loop, richiede di scrivere migliaia di righe di codice che però possono essere generate automaticamente.} per ogni possibile valore di $b$. A questo punto si passa attraverso la lista delle eccezioni, che vengono copiate dal secondo vettore nelle posizioni corrette.\\
 Questo approccio fa sì che il processore esegua dei cicli estremamente predicibili, e riesce a decodificare un numero di scarti al secondo significativamente più alto delle tecniche basate su codici. Le performance di compressione sono di solito buone, anche se è difficile dare garanzie teoriche. Lo svantaggio (che può risultare significativo) è che è sempre necessario decodificare $B$ elementi.
+\subsubsection{Elias Fano}
+Elias Fano é un meccanismo di codifica e compressione che puó essere utilizzato per memorizzare in maniera efficiente sequenze di interi monotone non decrescenti.\\
+La lista dei puntatori documentali associati a un determinato token in una lista di affissione possono essere memorizzati tramite una lista per scarti (la stessa cosa puó essere fatta, volendo, su posizioni e conteggi). Il problema di una lista per scarti é che senza ulteriori magheggi (tabelle di salto) hanno performance di rango e selezione pessime e la loro implementazione efficiente ed efficace puó non essere banale, oltre a richiedere un ulteriore sforzo non indifferente.\\
+La codifica di Elias Fano consente di rappresentare sequenze monotone in maniera quasi succinta\footnote{Una struttura dati é quasi-succinta quando lo spazio occupato dalla struttura si avvicina molto al lower bound teorico. Si tratta di un termine impiegato dal professor Vigna nelle dispense di cui non sono riuscito a trovare ulteriore evidenza in rete.}.\\
+Supponiamo di avere la seguente successione monotona non decrescente, di lunghezza $n$, $x_0, \dots, x_{n - 1}$. Supponiamo che il limite superiore della successione sia un valore $u$.\\
+Elias Fano consiste nella memorizzazione dei $\flr{\log(u / n)}$ bit meno significativi di ogni valore in maniera esplicita (avremo un vettore $L$); i bit piú significativi di ogni valore verranno memorizzati come una lista di scarti in unario dove $0^k1$ rappresenta $k$ (avremo quindi anche un vettore $H$). Questa struttura ci consente di memorizzare $n$ valori utilizzando solamente $\log(u / n) + 2$ bit al piú per elemento.\\
+Consideriamo il seguente esempio: Abbiamo la seguente successione di valori
+\begin{equation*}
+    5\hspace{5mm}8\hspace{5mm}8\hspace{5mm}15\hspace{5mm}32
+\end{equation*}
+vogliamo memorizzarla con Elias Fano usando $u = 36$. Siccome $n = 5$ $l = 2$, dunque il vettore contenente i bit meno significativi avrá la seguente struttura
+\begin{equation*}
+    01\hspace{5mm}00\hspace{5mm}00\hspace{5mm}11\hspace{5mm}00
+\end{equation*}
+il vettore di valori in unario sará il seguente
+\begin{equation*}
+    0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}1
+\end{equation*}
+Prendiamo qualche valore per capire come funziona il processo di memorizzazione:
+per il valore 5 (101) prendo gli $l$ bit meno significativi (01), li metto nel vettore $L$, prendo i bit rimanenti (1) e li memorizzo in unario (01) all'interno del vettore $H$.\\
+Per memorizzare 8 (il valore successivo, 1000) prendo gli $l$ bit meno significativi (00), li metto nel vettore $L$, prendo i bit rimanenti (10), calcolo lo scarto rispetto a $H[0]$ (1 - 2 = 1) e lo memorizzo in unario (01) all'interno del vettore $H$, e il ciclo continua fino a quando tutti i valori non sono stati memorizzati.\\
+I vantaggi di Elias Fano sono i seguenti:
+\begin{itemize}
+    \item Utilizzo ottimale dello spazio.
+    \item Per utilizzare questa codifica non é necessario che i valori seguano una particolare distribuzione.
+    \item La lettura sequenziale richiede pochissime operazioni.
+    \item Restrizione del problema di rango e selezione a un array di circa 2n bit contente per metá 0 e per metá 1.
+\end{itemize}
+Visto che abbiamo nominato il problema di rango e selezione, come viene calcolato rango e selezione in Elias Fano?\\
+Per avere il $k$-esimo elemento recuperiamo gli $l$ bit meno significativi usando $L[k - 1]$\footnote{Uso $k - 1$ supponendo che la numerazione parta da 0 e che quindi si voglia ottenere il terzo valore secondo un conteggio ordinale} mentre i bit piú significativi corrispondono al numero di zeri prima del $k$-esimo 1.\\
+Se per esempio volessi recuperare il terzo valore all'interno della sequenza d'esempio che si trova sopra:\\
+I bit meno significativi sono quelli in posizione $L[2] = 00$, i bit piú significativi sono il numero di 0 prima del $k$-esimo 1, quindi $2 = 10$. Il terzo valore é 1000 cioé $8$.\\
+Il processo di rango é un po'meno intuitivo ma comunque in tutto simile a quello di selezione. Volendo trovare il minimo valore $x \geq b$ facciamo quanto segue
+\begin{itemize}
+    \item $b >> l$ per capire quanti bit a 0 devo saltare dentro $H$
+    \item Calcolo la posizione di blocco in cui sono
+    \item Gli upper bits sono la somma di tutti i valori in unario che incontro fino a quando non trovo l'$(b >> l)$-esimo bit a 0.
+    \item Prendo il valore di blocco dentro l'array dei lower bits nella posizione che ho trovato prima.
+\end{itemize}
+Proviamo a chiarire il concetto con un esempio (rimanendo sempre sui valori definiti prima). Il minimo valore maggiore di 11011 (27) é
+\begin{itemize}
+    \item So di dover saltare 110 bit a 0, quindi 6.
+    \item La posizione del blocco in cui sono é 4 (partendo da 0).
+    \item La parte alta del numero é data da 01 + 01 + 1 + 01 + 000001 = 000000001 (8), 1000 in binario.
+    \item I lower bits sono quelli in posizione 4 all'interno di $L$, quindi 00. Il risultato finale é 100000, cioé 32.
+\end{itemize}
+Prendiamo ora il caso in esame, vogliamo memorizzare l'indice inverso, il che significa memorizzare i puntatori documentali ed eventualmente posizioni e conteggi. Per quel che riguarda i puntatori documentali utilizziamo, ovviamente, una lista quasi-succinta implementando una tabella di salto che ci consente di rendere le letture ancora piú veloci facendo un piccolo sacrificio in termini di spazio. Per quel che riguarda le posizioni e i conteggi basta tenere a mente che possiamo tenere in memoria una lista quasi-succinta memorizzando $x_i - i$  per successioni strettamente monotone.\\
+Al posto di memorizzare conteggi e posizioni possiamo memorizzare le loro cumulate ($x_0, x_0 + x_1, x_0 + x_1 + x_2, \dots$), l'idea é che la somma prefissa (cumulata) dei conteggi puó essere usata come indice delle posizioni.\\
+Elias Fano é una tecnica di codifica per indici veloce e compatta, che puó essere battuta per compressione solo da codifiche piú lente come il Golomb, per contro é scalabile e ha un accesso locale molto migliore di altri approcci, rendendolo una tecnica che si puó quasi definire un \textit{go-to}.
 \subsubsection{Sistemi di numerazione asimmetrica (approfondimento)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -114,7 +164,7 @@ Infine, sebbene i codici a lunghezza variabile non siano completi, a meno di un 
     \frac{1}{2^{\ceil{\log(x) / k}(k + 1)}} \approx \frac{1}{(x + 1)^{1 + 1/k}}
 \end{equation*}
 \subsection{Struttura di un indice}
-Dai documenti crawlati si costruisce un indice invertito, cioé una relazione che mappa ogni termine nei documenti in cui compare. Partendo dalla lista di termini, costituita da elementi della forma $\langle documento, termine, posizione \rangle$, posso fare ordinamento rispetto alla colonna centrale e a partire da questo costruire l'indice inverso, ovvero l'indice che contiene, per ogni termine, l'insieme dei documenti (e delle posizioni nel documento) in cui il termine compare, in ordine crescente per valore del puntatore documentale.\\
+Dai documenti crawlati si costruisce un indice inverso, cioé una relazione che mappa ogni termine nei documenti in cui compare. Partendo dalla lista di termini, costituita da elementi della forma $\langle documento, termine, posizione \rangle$, posso fare ordinamento rispetto alla colonna centrale e a partire da questo costruire l'indice inverso, ovvero l'indice che contiene, per ogni termine, l'insieme dei documenti (e delle posizioni nel documento) in cui il termine compare, in ordine crescente per valore del puntatore documentale.\\
 Una lista di affissione é la lista dei puntatori a documenti associati a un unico termine, spesso, all'informazione essenziale dei puntatori documentali, sono associate una serie di informazioni accessorie quali la frequenza con cui il token compare nei documenti associati e le posizioni occupate.\\
 La struttura di un elemento di una lista di affissione potrebbe essere il seguente
 \begin{equation*}
@@ -132,12 +182,12 @@ Abbiamo già notato come il codice di Golomb abbia distribuzione intesa geometri
     k = \ceil{- \frac{\log(2 - p)}{\log(1 - p)}}
 \end{equation}
 Una controindicazione può essere però la \textit{correlazione} tra documenti adiacenti. Per esempio, se i documenti della collezione provengono da un crawl e sono nell'ordine di visita, è molto probabile che documenti vicini contengano termini simili. Questo fatto sposta significativamente da una geometrica la distribuzione degli scarti.\\
-Piú spesso gli scarti tra puntatori documentali all'interno delle liste di affissione vengono memorizzati usando Elias-fano (di parametro dipendente dal termine) o la $\gamma$ di Elias.\\
+Piú spesso gli scarti tra puntatori documentali all'interno delle liste di affissione vengono memorizzati usando Elias-Fano (di parametro dipendente dal termine) o la $\gamma$ di Elias.\\
 Per quanto riguarda le posizioni, non esistono modelli noti e affidabili degli scarti, si usa pertanto un codice dalle buone prestazioni come il $\delta$. È anche possibile utilizzare Golomb, assumendo un modello Bernoulliano anche per le posizioni, ma per calcolare il modulo è necessario avere la lunghezza del documento, che quindi deve essere disponibile in memoria centrale. Alla fine, in ogni caso, considerazioni come la facilità di implementazione, velocità di decodifica, e altri fattori, possono essere forze determinanti nella scelta delle tecniche di codifica.
 \subsection{Problemi implementativi}
 I codici istantanei comprimono in maniera ottima rispetto alle distribuzioni intese. Riducono quindi la dimensione dell'indice in maniera significativa, cosa particolarmente utile se l'indice verrà caricato in tutto o in parte in memoria centrale. In effetti, esperimenti condotti all'inizio dell'attività di ricerca sugli indici inversi hanno mostrato che un indice compresso è significativamente più veloce di un indice non compresso, dato che l'I/O è ridotto in maniera significativa e il prezzo da pagare nella decodifica è di pochi cicli macchina per intero.\\
-L'implementazione della lettura dei codici istantanei va però effettuata con una certa cura se si vogliono ottenere prestazioni ragionevoli. L'idea più importante è quella di mantenere in un \textit{bit buffer} che contiene una finestra sul file delle liste di affissioni. Le manipolazioni relative alla decodifica dei codici dovrebbero essere confinate al bit buffer nella stragrande maggioranza dei casi. In particolare, un numero significativo di prefisso (per esempio, $2^{16}$) può essere decodificato tramite una tabella che contiene, per ogni prefisso, il numero di bit immediatamente decodificabili e l'intero corrispondente, o l'indicazione che è necessario procedere a una decodifica manuale.
+L'implementazione della lettura dei codici istantanei va però effettuata con una certa cura se si vogliono ottenere prestazioni ragionevoli. L'idea più importante è quella di mantenere un \textit{bit buffer} che contiene una finestra sul file delle liste di affissioni. Le manipolazioni relative alla decodifica dei codici dovrebbero essere confinate al bit buffer nella stragrande maggioranza dei casi. In particolare, un numero significativo di prefissi (per esempio, $2^{16}$) può essere decodificato tramite una tabella che contiene, per ogni prefisso, il numero di bit immediatamente decodificabili e l'intero corrispondente, o l'indicazione che è necessario procedere a una decodifica manuale.
 \subsection{Salti}
-Non è possibile ottenere in tempo costante un elemento arbitrario di una lista compressa per scarti: è necessario decodificare gli elementi precedenti. In realtà, più problematica è l'impossibilità di saltare rapidamente dal primo elemento della lista maggiore o uguale a un limite inferiore $b$, operazione detta comunemente \textit{salto}. I salti sono fondamentali, come vedremo, per la risoluzione veloce delle interrogazioni congiunte.\\
+Non è possibile ottenere in tempo costante un elemento arbitrario di una lista compressa per scarti: è necessario decodificare gli elementi precedenti. In realtà, più problematica è l'impossibilità di saltare rapidamente al primo elemento della lista maggiore o uguale a un limite inferiore $b$, operazione detta comunemente \textit{salto}. I salti sono fondamentali, come vedremo, per la risoluzione veloce delle interrogazioni congiunte.\\
 La tecnica di base per ovviare a questo inconveniente è quella di memorizzare, insieme alla lista di affissioni, una \textit{tabella di salto} che memorizza, dato un \textit{quanto} $q$, il valore degli elementi di indice $iq, i > 0$, e la loro posizione (espressa in bit) nella lista di affissioni. Quando si vuole effettuare un salto, e più precisamente quando si vuole trovare minimo valore maggiore o uguale a $b$, si cerca nella tabella (per esempio tramite una ricerca dicotomica o una \textit{ricerca esponenziale}) l'elemento di posto $iq \leq b$, e si comincia a decodificare la lista per cercare il minimo maggiorante di $b$. Al più $q$ elementi dovranno essere decodificati, e $q$ deve essere scelto sperimentalmente in modo da, al tempo stesso, non accrescere eccessivamente la dimensione dell'indice e fornire un significativo aumento di prestazioni.\\
 Si noti che una volta che è possibile saltare all'interno della lista dei puntatori ai documenti, è necessario mettere in piedi strutture di accesso per conteggio e posizioni, se presenti e memorizzate separatamente. Se cioè è possibile accedere in modo diretto ai puntatori documentali di indice $iq$, deve essere possibile accedere allo stesso modo alle parti rimanenti dell'indice.

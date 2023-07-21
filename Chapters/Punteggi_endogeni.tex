@@ -4,19 +4,19 @@ Il criterio piú banale per assegnare un punteggio a un documento é quello di \
 \begin{equation*}
     r(d) = \sum_{t \in Q}{c_{t, d}}
 \end{equation*}
-Il conteggio é un metodo molto primitivo: innanzitutto si presta molto facilmente a manipolazione. Inoltre non tiene conto del fatto che alcuni terini occorrono con grande frequenza non perché rilevanti, ma perché altamente frequenti all'interno di ogni documento. Per esempio, nell'interrogazione "Romeo e Giulietta" il metodo di conteggio valuterá in maniera estremamente positiva documenti contenenti un gran numero di "e", ignorando il fatto che potrebbero essere semplicemente documenti molto lunghi riguardanti tutt'altro.\\
+Il conteggio é un metodo molto primitivo: innanzitutto si presta molto facilmente a manipolazione. Inoltre non tiene conto del fatto che alcuni termini occorrono con grande frequenza non perché rilevanti, ma perché altamente frequenti all'interno di ogni documento. Per esempio, nell'interrogazione "Romeo e Giulietta" il metodo di conteggio valuterá in maniera estremamente positiva documenti contenenti un gran numero di "e", ignorando il fatto che potrebbero essere semplicemente documenti molto lunghi riguardanti tutt'altro.\\
 Per ovviare a questi inconvenienti sono stati sviluppati degli \textit{schemi di pesatura} che aggiustano il punteggio assegnato a ogni termine in ogni documento in modo da ovviare agli inconvenienti del conteggio.\\
 Il primo e piú classico metodo é TF/IDF (\textit{term frequency / inverse term frequency}) % INSERIRE LA CITAZIONE %
 . Esso normalizza il conteggio dividendolo per il massimo conteggio all'interno del documento o per la lunghezza del documento stesso, e inoltre lo attenua moltiplicandolo per l'inverso della frequenza del termine, o, piú frequentemente, per il logaritmo del numero di documenti diviso per la frequenza (cioé per il logaritmo dell'inverso della frequenza in senso probabilistico). Se $l$ é la lunghezza de documento e $f$ é la frequenza di $t$ nella collezione documentale, in formule
 \begin{equation*}
-    r(d) = \frac{c_{t, d}}{l}\log(\frac{N}{f})
+    r(d) = \frac{c_{t, d}}{l}\log\bigb{\frac{N}{f}}
 \end{equation*}
 Come accennato, al posto di $l$ é possibile utilizzare il massimo conteggio di un termine che compare in $d$. Sono possibili molte altre varianti (come applicare un logaritmo a $c_{t, d}$).\\
-Tornando all'esempio precedente, il termine "e"comparirá in quasi tutti i documenti, e verrá quindi pressoché ignorato dallo schema TF/IDF, dato che $N / f \approx 1$. La normalizzazione sulla lunghezza del documento, per contro, cerca di tenere conto del fatto chein documenti lunghe é naturale che un termine compaia piú volte. Si noti che, comunque, il termine di conteggio compare in maniera lineare, ed é quindi facilmente soggetto a manipolazione.\\
+Tornando all'esempio precedente, il termine "e"comparirá in quasi tutti i documenti, e verrá quindi pressoché ignorato dallo schema TF/IDF, dato che $N / f \approx 1$. La normalizzazione sulla lunghezza del documento, per contro, cerca di tenere conto del fatto che in documenti lunghi é naturale che un termine compaia piú volte. Si noti che, comunque, il termine di conteggio compare in maniera lineare, ed é quindi facilmente soggetto a manipolazione.\\
 Lo studio degli schemi di pesatura é parte arte, parte scienza e parte magia. Numerosi schemi sono stati inventati in maniera puramente euristica, e si sono dimostrati efficaci alla prova dei fatti. Uno degli schemi piú celebri é BM25 (stando agli autori, il 25-esimo tentativo), uno schema di pesatura basato sul \textit{modello probabilistico}. BM25 pesa un termine come segue
 \begin{equation*}
     \frac{(1 + k_1)c_{t, d}}{k_1((1 - b) + bl / L) + c_{t, d}}\log\bigb{\frac{N - f + 0.5}{f + 0.5}}
 \end{equation*}
 dove $b$ e $k_1$ sono dei parametri liberi che devono essere tarati sulla collezione documentale, e $l$ é la lunghezza media di un documento nella collezione. La parte dentro al logaritmo é una versione del punteggio IDF. Si noti che la formula non é piú lineare in $c$. In effetti, la formula cresce monotonicamente in $c$, ma ha limite asintotico $k_1 + 1$ (quindi un numero eccessivo di ripetizioni del termine non influisce piú di tanto).\\
 Si noti che se $k_1 = 0$ la forma si riduce alla parte IDF, mentre per $k_1$ molto grande la formula é approssimativamente lineare in $c$ (nelle applicazioni reali $k_1$ é in genere tra 1 e 3).\\
-Il termine $b$ serve a controllare l'influenza della lunghezza dle documento rispetto alla lunghezza media.
+Il termine $b$ serve a controllare l'influenza della lunghezza del documento rispetto alla lunghezza media.
