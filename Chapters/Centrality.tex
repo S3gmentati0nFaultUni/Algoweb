@@ -38,7 +38,7 @@ La \textit{betweenness} è stata introdotta da Anthonisse % INSERIRE LA CITAZION
 per gli archi, ed è stata poi ripresa da Freeman per i nodi % INSERIRE LA CITAZIONE %
 . L'idea è quella di misurare la probabilità che un cammino brave a caso passi attraverso un determinato nodo: sia $\sigma_{xy}$ il numero di cammini brevi che vanno da $x$ a $y$ e $\sigma_{xy}(z)$ il numero di cammini brevi che vanno da $x$ a $y$ e passano per $z$, definiamo la \textit{betweenness} di $x$ come
 \begin{equation*}
-    \sum_{x, y \neq z, \sigma_{xy} \neq 0}{\frac{\sigma_{xy}(x)}{\sigma_{xy}}}
+    \sum_{x, y \neq z, \sigma_{xy} \neq 0}{\frac{\sigma_{xy}(z)}{\sigma_{xy}}}
 \end{equation*}
 L'intuizione che sta dietro la betweenness, è che se una grande parte dei cammini minimi passa da $z$, allora $z$ deve essere un punto di articolazione importante all'interno del grafo.
 \subsection{Misure di centralità spettrale}
