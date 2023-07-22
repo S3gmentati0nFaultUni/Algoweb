@@ -7,6 +7,13 @@
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
+\usepackage{hyperref}
+\hypersetup{colorlinks, 
+           citecolor=black,
+           filecolor=black,
+           linkcolor=black,
+           urlcolor=black,
+           bookmarksopen=true}
 
 \newtheorem{teo}{Teorema}
 \newtheorem{dimostrazione}{Dimostrazione}
@@ -32,6 +39,7 @@
 \algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
 
 \pagenumbering{arabic}
+\hfuzz = .6pt % avoid black boxes
 
 
 \title{Dispense per il corso di algoritmica per il web}
@@ -45,8 +53,8 @@
 \tableofcontents
 
 % Chapters
-\include{Chapters/NozioniDiBase.tex}
-\include{Chapters/Crawling.tex}
+\include{Chapters/NozioniDiBase}
+\include{Chapters/Crawling}
 \include{Chapters/Tecniche_di_distribuzione_del_carico}
 \include{Chapters/Codici_istantanei}
 \include{Chapters/Gestione_della_lista_dei_termini}
@@ -54,8 +62,8 @@
 \include{Chapters/Centrality}
 \include{Chapters/Information_retrieval}
 \include{Chapters/Punteggi_endogeni}
-
 \bibliography{Bibliography} 
 \bibliographystyle{alpha}
+\include{Chapters/License}
 
 \end{document}

@@ -1,28 +1,5 @@
-% This is set up to run with pdflatex.
-%---------The file header---------------------------------------------
-\documentclass[a4paper,12pt]{book}
-
-\usepackage[english]{babel} %language selection
-\selectlanguage{english}
-
-\pagenumbering{arabic}
-
-\usepackage{hyperref}
-\hypersetup{colorlinks, 
-           citecolor=black,
-           filecolor=black,
-           linkcolor=black,
-           urlcolor=black,
-           bookmarksopen=true,
-           pdftex}
-
-\hfuzz = .6pt % avoid black boxes
-           
-\begin{document}
-%---------------------------------------------------------------------
-\chapter*{\rlap{GNU Free Documentation License}}
-\phantomsection  % so hyperref creates bookmarks
-\addcontentsline{toc}{chapter}{GNU Free Documentation License}
+\section*{\rlap{GNU Free Documentation License}}
+\addcontentsline{toc}{section}{GNU Free Documentation License}
 %\label{label_fdl}
 
  \begin{center}
@@ -44,7 +21,7 @@
 
 
 \begin{center}
-{\bf\large Preamble}
+{\bf Preamble}
 \end{center}
 
 The purpose of this License is to make a manual, textbook, or other
@@ -70,9 +47,9 @@ principally for works whose purpose is instruction or reference.
 
 
 \begin{center}
-{\Large\bf 1. APPLICABILITY AND DEFINITIONS\par}
+{\bf 1. APPLICABILITY AND DEFINITIONS\par}
 \phantomsection
-\addcontentsline{toc}{section}{1. APPLICABILITY AND DEFINITIONS}
+\addcontentsline{toc}{subsection}{1. APPLICABILITY AND DEFINITIONS}
 \end{center}
 
 This License applies to any manual or other work, in any medium, that
@@ -165,9 +142,9 @@ no effect on the meaning of this License.
 
 
 \begin{center}
-{\Large\bf 2. VERBATIM COPYING\par}
+{\bf 2. VERBATIM COPYING\par}
 \phantomsection
-\addcontentsline{toc}{section}{2. VERBATIM COPYING}
+\addcontentsline{toc}{subsection}{2. VERBATIM COPYING}
 \end{center}
 
 You may copy and distribute the Document in any medium, either
@@ -185,9 +162,9 @@ you may publicly display copies.
 
 
 \begin{center}
-{\Large\bf 3. COPYING IN QUANTITY\par}
+{\bf 3. COPYING IN QUANTITY\par}
 \phantomsection
-\addcontentsline{toc}{section}{3. COPYING IN QUANTITY}
+\addcontentsline{toc}{subsection}{3. COPYING IN QUANTITY}
 \end{center}
 
 
@@ -228,9 +205,9 @@ them a chance to provide you with an updated version of the Document.
 
 
 \begin{center}
-{\Large\bf 4. MODIFICATIONS\par}
+{\bf 4. MODIFICATIONS\par}
 \phantomsection
-\addcontentsline{toc}{section}{4. MODIFICATIONS}
+\addcontentsline{toc}{subsection}{4. MODIFICATIONS}
 \end{center}
 
 You may copy and distribute a Modified Version of the Document under
@@ -348,9 +325,9 @@ imply endorsement of any Modified Version.
 
 
 \begin{center}
-{\Large\bf 5. COMBINING DOCUMENTS\par}
+{\bf 5. COMBINING DOCUMENTS\par}
 \phantomsection
-\addcontentsline{toc}{section}{5. COMBINING DOCUMENTS}
+\addcontentsline{toc}{subsection}{5. COMBINING DOCUMENTS}
 \end{center}
 
 
@@ -377,9 +354,9 @@ and any sections Entitled ``Dedications''.  You must delete all sections
 Entitled ``Endorsements''.
 
 \begin{center}
-{\Large\bf 6. COLLECTIONS OF DOCUMENTS\par}
+{\bf 6. COLLECTIONS OF DOCUMENTS\par}
 \phantomsection
-\addcontentsline{toc}{section}{6. COLLECTIONS OF DOCUMENTS}
+\addcontentsline{toc}{subsection}{6. COLLECTIONS OF DOCUMENTS}
 \end{center}
 
 You may make a collection consisting of the Document and other documents
@@ -395,9 +372,9 @@ other respects regarding verbatim copying of that document.
 
 
 \begin{center}
-{\Large\bf 7. AGGREGATION WITH INDEPENDENT WORKS\par}
+{\bf 7. AGGREGATION WITH INDEPENDENT WORKS\par}
 \phantomsection
-\addcontentsline{toc}{section}{7. AGGREGATION WITH INDEPENDENT WORKS}
+\addcontentsline{toc}{subsection}{7. AGGREGATION WITH INDEPENDENT WORKS}
 \end{center}
 
 
@@ -420,9 +397,9 @@ aggregate.
 
 
 \begin{center}
-{\Large\bf 8. TRANSLATION\par}
+{\bf 8. TRANSLATION\par}
 \phantomsection
-\addcontentsline{toc}{section}{8. TRANSLATION}
+\addcontentsline{toc}{subsection}{8. TRANSLATION}
 \end{center}
 
 
@@ -446,9 +423,9 @@ title.
 
 
 \begin{center}
-{\Large\bf 9. TERMINATION\par}
+{\bf 9. TERMINATION\par}
 \phantomsection
-\addcontentsline{toc}{section}{9. TERMINATION}
+\addcontentsline{toc}{subsection}{9. TERMINATION}
 \end{center}
 
 
@@ -479,9 +456,9 @@ not give you any rights to use it.
 
 
 \begin{center}
-{\Large\bf 10. FUTURE REVISIONS OF THIS LICENSE\par}
+{\bf 10. FUTURE REVISIONS OF THIS LICENSE\par}
 \phantomsection
-\addcontentsline{toc}{section}{10. FUTURE REVISIONS OF THIS LICENSE}
+\addcontentsline{toc}{subsection}{10. FUTURE REVISIONS OF THIS LICENSE}
 \end{center}
 
 
@@ -506,9 +483,9 @@ Document.
 
 
 \begin{center}
-{\Large\bf 11. RELICENSING\par}
+{\bf 11. RELICENSING\par}
 \phantomsection
-\addcontentsline{toc}{section}{11. RELICENSING}
+\addcontentsline{toc}{subsection}{11. RELICENSING}
 \end{center}
 
 
@@ -541,9 +518,9 @@ provided the MMC is eligible for relicensing.
 
 
 \begin{center}
-{\Large\bf ADDENDUM: How to use this License for your documents\par}
+{\bf ADDENDUM: How to use this License for your documents\par}
 \phantomsection
-\addcontentsline{toc}{section}{ADDENDUM: How to use this License for your documents}
+\addcontentsline{toc}{subsection}{ADDENDUM: How to use this License for your documents}
 \end{center}
 
 To use this License in a document you have written, include a copy of
@@ -580,6 +557,3 @@ If your document contains nontrivial examples of program code, we
 recommend releasing these examples in parallel under your choice of
 free software license, such as the GNU General Public License,
 to permit their use in free software.
-
-%---------------------------------------------------------------------
-\end{document}
