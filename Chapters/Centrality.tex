@@ -5,7 +5,7 @@ Più in generale, se si considerano \textit{grafi pesati}, in cui un peso è ass
 \subsection{Misure di centralità geometriche}
 Chiamiamo \textit{geometriche} quelle misure che vedono la centralità come dipendente dalla distanza di un nodo o un arco dagli altri elementi del grafo. Più precisamente, una centralità geometrica dipende unicamente da quanti nodi esistono a ogni distanza. Queste sono alcune delle misure più antiche definite in letteratura.
 \subsubsection{Indegree}
-L'indegree è il numero di archi che entrano in un determinato nodo, è denotato come $d^{(x)}$ e può essere considerata una misura di centralità geometrica. Si tratta semplicemente del numero di nodi a distanza 1\footnote{La maggioranza delle misure di centralità proposte in letteratura sono state descritte solo per grafi non direzionati e connessi. Siccome lo studio del grafo del web e delle reti sociali elettronicamente mediate ha posto il problema di estendere i concetti di centralità a reti che sono direzionate, e possibilmente non fortemente connesse, nel resto di questo articolo considereremo le misure dipendenti dal numero di archi entranti di un nodo (e. g. percorsi entranti, autovettori dominanti sinistri, distanze da tutti i nodi verso un nodo specifico). Se necessario, queste misure possono essere chiamate "positive", in opposizione alle misure "negative" ottenute considerando percorsi uscenti, o (equivalentemente trasponendo il grafo)}. L'indegree è probabilmente una delle più vecchie misure di centralità, in quanto è equivalente alla maggioranza dei votanti alle elezioni ($x \rightarrow y$ se $x$ ha votato per $y$), il vincitore delle elezioni è quello che ha preso più voti, quindi quello che ha l'indegree più alto.\\
+L'indegree è il numero di archi che entrano in un determinato nodo, è denotato come $d_+^{(x)}$ e può essere considerata una misura di centralità geometrica. Si tratta semplicemente del numero di nodi a distanza 1\footnote{La maggioranza delle misure di centralità proposte in letteratura sono state descritte solo per grafi non direzionati e connessi. Siccome lo studio del grafo del web e delle reti sociali elettronicamente mediate ha posto il problema di estendere i concetti di centralità a reti che sono direzionate, e possibilmente non fortemente connesse, nel resto di questo articolo considereremo le misure dipendenti dal numero di archi entranti di un nodo (e. g. percorsi entranti, autovettori dominanti sinistri, distanze da tutti i nodi verso un nodo specifico). Se necessario, queste misure possono essere chiamate "positive", in opposizione alle misure "negative" ottenute considerando percorsi uscenti, o (equivalentemente trasponendo il grafo)}. L'indegree è probabilmente una delle più vecchie misure di centralità, in quanto è equivalente alla maggioranza dei votanti alle elezioni ($x \rightarrow y$ se $x$ ha votato per $y$), il vincitore delle elezioni è quello che ha preso più voti, quindi quello che ha l'indegree più alto.\\
 L'indegree ha una serie di problematiche evidenti (e.g. è facile da aggirare), ma è un buon punto di partenza, e in alcuni casi ha raggiunto risultati migliori di tecniche più sofisticate (si veda, ad esempio % INSERIRE CITAZIONE %
 ).
 \subsubsection{Closeness}
@@ -17,7 +17,7 @@ Bavelas ha introdotto il concetto di closeness alla fine degli anni quaranta in 
 L'intuizione che sta dietro al concetto di closeness è che nodi più centrali dovranno avere distanze più piccole da tutti gli altri nodi, avendo pertanto un denominatore più piccolo e quindi una centralità più grande. È importante notare che, affinchè la notazione abbia senso, il grafo deve essere fortemente connesso. In mancanza di questa condizione, alcuni dei denominatori andranno a infinito, risultando in una definizione di closeness nulla per tutti quei nodi che non possono raggiungere tutti i nodi del grafo.\\
 Non era probabilmente nelle intenzioni di Bavelas di applicare la misura ai grafi direzionati, e ancora meno di applicarla a grafi con distanze infinite, ma spesso la closeness viene patchata rimuovendo i nodi che non possono essere raggiunti nel modo seguente
 \begin{equation*}
-    \frac{1}{\sum_{d(y, x) < \infty}}{d(y, x)}
+    \frac{1}{\sum_{d(y, x) < \infty}d(y, x)}
 \end{equation*}
 e assumendo che i nodi con un insieme di nodi raggiungibili banale abbiano centralità 0 per definizione: questa è, in realtà, la definizione che useremo nel resto dell'articolo. Questi aggiustamenti, apparentemente innocui, inducono una forte polarizzazione nella rete verso quei nodi che hanno un insieme di nodi raggiungibili di piccole dimensioni. Nel 2016 un gruppo di scienziati a Facebook ha calcolato l'inverso della closeness per tutti gli utenti\footnote{% INSERIRE IL LINK % 
 }
@@ -57,13 +57,18 @@ che se uno considera il processo iterato proposto da Gelbfuhs, il risultato non 
 \end{equation}
 dunque \textbf{r} sarebbe dovuto essere un autovettore destro, la cui direzione e verso sono fissati durante la procedura, mentre il modulo viene moltiplicato per una costante. Questa è stata la prima apparizione del \textit{ranking spettrale} - che usa gli autovettori di una qualche matrice, solitamente derivata da un grafo, per calcolare una misura di centralità.
 \subsubsection{L'autovettore dominante sinistro}
-Un \textit{autovalore dominante} è un autovalore di modulo massimo. Un autovettore associato all'autovalore dominante è noto come \textit{autovettore dominante}. Nella maggior parte dei casi pratici di ranking spettrale l'autovalore di modulo massimo è unico\footnote{Questo significa che la soluzione del polinomi caratteristico ha molteplicità 1}. La prima ovvia misura spettrale è l'autovettore dominante sinistro della matrice di adiacenza associata al grafo. L'idea realizza l'intuizione di Landau: assumiamo $\textbf{e}_i$ sia una base di autovettori per la matrice $M$ con autovalori $\lambda_i$ tali che $|\lambda_0| > |\lambda_1| > \dots$. Se consideriamo un vettore \textbf{x} e lo vediamo come combinazione lineare dei vettori dell'autobase
+Un \textit{autovalore dominante} è un autovalore di modulo massimo. Un autovettore associato all'autovalore dominante è noto come \textit{autovettore dominante}. Nella maggior parte dei casi pratici di ranking spettrale l'autovalore di modulo massimo è unico\footnote{Questo significa che la soluzione del polinomi caratteristico ha molteplicità 1}.\\
+Il teorema di Perron Frobenius ci dá qualche garanzia a riguardo.
+\begin{teo}
+    Se $A$ é una matrice irriducibile\footnote{Una matrice é irriducibile quando il grafo associato é fortemente connesso} esiste un unico autovalore di modulo massimo, detto autovalore di Perron Frobenius, o dominante, a cui é associato un autovettore positivo. Se la matrice é stocastica (ha quindi somma di ogni riga pari a 1 $\implies$ é associata a un grafo i cui pesi sono normalizzati) l'autovalore dominante ha modulo 1.  
+\end{teo}
+La prima ovvia misura spettrale è l'autovettore dominante sinistro della matrice di adiacenza associata al grafo. L'idea realizza l'intuizione di Landau: assumiamo $\textbf{e}_i$ sia una base di autovettori per la matrice $M$ con autovalori $\lambda_i$ tali che $|\lambda_0| > |\lambda_1| > \dots$. Se consideriamo un vettore \textbf{x} e lo vediamo come combinazione lineare dei vettori dell'autobase
 \begin{equation*}
     \textbf{x} = \sum_i{\alpha_i\textbf{e}_i}
 \end{equation*}
 possiamo scrivere $M^k\textbf{x}^T$ come segue
 \begin{equation*}
-    M^k\textbf{x}^T = M^k\sum_i{\alpha_i\textbf{e}_i} = \sum_i{\alpha_i \lambda_i^k \textbf{e}_i}
+    M^k\textbf{x}^T = M^k\sum_i{\alpha_i\textbf{e}_i^T} = \sum_i{\alpha_i \lambda_i^k \textbf{e}_i}
 \end{equation*}
 posso portare la potenza $k$-esima della matrice dentro la sommatoria perchè è indipendente dalla variabile di somma, inoltre:
 \begin{equation*}
@@ -71,12 +76,16 @@ posso portare la potenza $k$-esima della matrice dentro la sommatoria perchè è
 \end{equation*}
 continuando
 \begin{equation*}
-    \sum_i{\alpha_i \lambda_i^k \textbf{e}_i} = \lambda_0^k\bigb{\alpha_0\textbf{e}_0 + \sum_{i > 0}{\alpha_i(\frac{\lambda_i}{\lambda_0})^k\textbf{e}_i}}
+    \sum_i{\alpha_i \lambda_i^k \textbf{e}_i} = \lambda_0^k\bigb{\alpha_0\textbf{e}_0 + \sum_{i > 0}{\alpha_i\bigb{\frac{\lambda_i}{\lambda_0}}^k\textbf{e}_i}}
 \end{equation*}
-È chiaro che per $k \to \infty$ tutti i termini $\frac{\lambda_i}{\lambda_0}$ tenderanno a 0, fintanto che $\alpha_0 \neq 0$ il risultato dell'iterazione tenderà verso l'autovettore dominante $\textbf{e}_0$.\\
+È chiaro che per $k \to \infty$ tutti i termini $\frac{\lambda_i}{\lambda_0}$ tenderanno a 0, fintanto che $\alpha_0 \neq 0$ il risultato dell'iterazione tenderà verso l'autovettore dominante $\textbf{e}_0$:
+\begin{equation*}
+    \frac{M^k\textbf{x}^T}{\norm{M^k\textbf{x}^T}} \to \textbf{e}_0
+\end{equation*}
 Abbiamo dunque provato che il \textit{metodo della potenza} per calcolare l'autovettore dominante funziona sotto le ipotesi fatte in precedenza.\\
 Gli autovettori dominanti non si comportano come ci aspetteremmo quando il grafo in questione non è fortemente connesso. In base all'autovalore dominante della componente fortemente connessa, l'autovettore dominante potrebbe o potrebbe non essere diverso da zero per componenti terminali (un discorso più completo può essere trovato in % INSERIRE LA CITAZIONE %
-). Un esempio recente di applicazione di centralità basata su autovettori dominanti può essere trovato in % INSERIRE LA CITAZIONE %
+).
+Un esempio recente di applicazione di centralità basata su autovettori dominanti può essere trovato in % INSERIRE LA CITAZIONE %
 .
 \subsubsection{Indice di Seeley}
 Un altro passo fondamentale verso il ranking spettrale fu fatto mezzo secolo dopo da John R. Seeley % INSERIRE LA CITAZIONE %
@@ -84,9 +93,13 @@ Un altro passo fondamentale verso il ranking spettrale fu fatto mezzo secolo dop
 \begin{equation*}
     \textbf{r} = \textbf{r}M
 \end{equation*}
-Ovviamente, ciò non è sempre possibile. A ogni modo, Seeley, considera una matrice non negativa senza matrici nulle e normalizza le righe così che abbiamo norma $l_1$ unitaria (e.g. dividi ogni entry per la somma sulla riga cui appartiene); le sue righe hanno sempre entry diverse da 0, quindi è sempre possibile, e l'equazione indicata sopra ha soluzione, questo perchè $M\textbf{1}^T = \textbf{1}^T$. Dunque 1 è autovalore di $M$, e il suo / i suoi autvettore(i) sinistro(i) fornisce(ono) soluzioni per l'equazione. L'unicità è una questione più complicata che Seeley non discute e che può essere facilmente analizzata impiegando la teoria di Perron-Frobenius, che mostra anche che 1 è il raggio spettrale, quindi \textbf{r} è  un autovettore dominante, e vi sono soluzioni positive\footnote{In realtà, Seeley espone l'intera questione in termini di equazioni lineari. Il calcolo matriciale viene impiegato solamente per risolvere un sistema lineare tramite la regola di Cramer}.\\
+Ovviamente, ciò non è sempre possibile. A ogni modo, Seeley, considera una matrice non negativa senza entry nulle e normalizza le righe così che abbiamo norma $l_1$ unitaria (e.g. dividi ogni entry per la somma sulla riga cui appartiene); le sue righe hanno sempre entry diverse da 0, quindi è sempre possibile, e l'equazione indicata sopra ha soluzione, questo perchè $M\textbf{1}^T = \textbf{1}^T$. Dunque 1 è autovalore di $M$, e il suo autovettore(i) sinistro fornisce soluzioni per l'equazione. L'unicità è una questione più complicata che Seeley non discute e che può essere facilmente analizzata impiegando la teoria di Perron-Frobenius, che mostra anche che 1 è il raggio spettrale, quindi \textbf{r} è  un autovettore dominante, e vi sono soluzioni positive\footnote{In realtà, Seeley espone l'intera questione in termini di equazioni lineari. Il calcolo matriciale viene impiegato solamente per risolvere un sistema lineare tramite la regola di Cramer}.\\
+L'indice di Seeley puó essere espresso tramite la seguente equazione
+\begin{equation}
+    s(x) = \sum_y{\frac{s(y)}{d_+(y)}}
+\end{equation}
 È interessante notare che le motivazioni dei due lavori citati (Landau e Seeley) sono profondamente diverse: il primo era interessato al limite di un processo iterato per migliorare un punteggio, e definisce il limite ricorsivamente; Seeley vuole definire direttamente un punteggio ricorsivo.\\
-La matrice risultante dal processo di normalizzazione $l_1$ è stocastica, quindi il punteggio può essere interpretato come uno stato terminale di una catena di Markov. In particolare, se il grafo sottostante è simmetrico allora l'indice di Seeley collassa al degree (normalizzato) a causa del noto carattere della distribuzione stazionaria nel caso di una camminata casuale all'interno di un grafo simmetrico.\\
+La matrice risultante dal processo di $l_1$-normalizzazione è stocastica, quindi il punteggio può essere interpretato come uno stato terminale di una catena di Markov. In particolare, se il grafo sottostante è simmetrico allora l'indice di Seeley collassa al degree (normalizzato) a causa del noto carattere della distribuzione stazionaria nel caso di una camminata casuale all'interno di un grafo simmetrico. Ripetendo il processo fino a stabilitá otteniamo l'autovettore sinistro della matrice del grafo normalizzata.
 Anche l'indice di Seeley non gestisce molto bene la mancanza di connettività forte: gli unici nodi con un punteggio non zero sono quelli che appartengono a componenti terminali che non sono formate da un singolo nodo di outdegree 0.
 \subsubsection{Indice di Katz}
 Katz ha introdotto il suo celebre indice % INSERIRE LA CITAZIONE % 
@@ -94,7 +107,7 @@ usando la somma su tutti i percorsi entranti in un nodo, ma pesando ciascun camm
 \begin{equation}
     \textbf{k} = \textbf{1} \sum_{i = 0}^{\infty}{\beta^i A^i}
 \end{equation}
-grazie alle interazioni tra le potenze della matrice di adiacenza e del numero di cammini che collegano due nodi. Perchè la somma sia positiva è necessario che il fattore di attenuazione $\beta_i$ sia di valore minore di $1 / \lambda_0$, dove $\lambda_0$ è autovalore dominante di $A$.\\
+grazie alle interazioni tra le potenze della matrice di adiacenza e il numero di cammini che collegano due nodi. Perchè la somma sia positiva è necessario che il fattore di attenuazione $\beta_i$ sia di valore minore di $1 / \lambda_0$, dove $\lambda_0$ è autovalore dominante di $A$.\\
 Katz notò immediatamente che l'indice poteva essere espresso usando operatori classici dell'algebra lineare:
 \begin{equation}
     \textbf{k} = \textbf{1}(1 - \beta A)^{-1}
@@ -105,11 +118,13 @@ una semplice generalizzazione (consigliata da Hubbell in % INSERIRE LA CITAZIONE
 PageRank é una delle centralitá spettarli oggi in uso piú discusse, essenzialmente sembrerebbe essere usata all'interno dell'algoritmo di ranking di Google\footnote{Il lettore dovrebbe essere a conoscenza, a ogni modo, del fatto che la letteratura riguardante l'efficacia di PageRank nel campo dell'information retrieval é alquanto povera, ed é composta essenzialmente di risultati negativi quali % INSERIRE LA CITAZIONE %
 e
 % INSERIRE LA CITAZIONE % 
-}. Per definizione PageRank é l'unico vettore \textbf{p} soddisfacente
+}.\\
+Di fatto quando lavoriamo con PageRank é come se avessimo a disposizione una moneta truccata ($p_T > p_C$) e continuiamo ripetutamente a fare dei lanci, se esce testa, continuiamo la visita corrente, altrimenti ricominciamo da un'altra parte (eseguendo un teletrasporto). La cosa interessante é che se il processo di visita si blocca in una componente connessa basta attendere alcuni try e prima o poi il processo aleatorio é in grado di tirarsene fuori da solo. Questo concetto dovrebbe far drizzare le antenne a coloro che hanno seguito corsi riguardanti processi aleatori ripetuti (e.g. Catene di Markov) o su algoritmi euristici (e.g. algoritmo di Simulated Annealing che cerca di sfuggire da un minimo locale)
+Per definizione PageRank é l'unico vettore \textbf{p} (autovettore dominante) soddisfacente
 \begin{equation}
     \textbf{p} = \alpha\textbf{p}\overline{A} + (1 - \alpha)\textbf{v}
 \end{equation}
-Dove $\overline{A}$ é ancora la matrice di adiacenza del grafo $l_1$-normalizzata, $\alpha \in [0\dots1)$ é un \textit{damping factor}, come quello visto per l'indice di Katz, \textbf{v} é un vettore di preferenza (che deve essere una distribuzione). Questa definizione appare nel paper di Brin e Page su Google % INSERIRE LA CITAZIONE %
+Dove $\overline{A}$ é ancora la matrice di adiacenza del grafo $l_1$-normalizzata, $\alpha \in [0\dots1)$ é un \textit{damping factor}, e rappresenta la probabilitá di teletrasportarsi in una pagina qualsiasi come quello visto per l'indice di Katz, \textbf{v} é un vettore di preferenza, che deve essere una distribuzione, e rappresenta le pagine disponibili per eseguire il teletrasporto (puó essere regolato in base alle esigenze). Questa definizione appare nel paper di Brin e Page su Google % INSERIRE LA CITAZIONE %
 ; gli autori affermano che il punteggio ricavato con PageRank é una distribuzione di probabilitá sulle pagine del web, ció significa che ha norma $l_1$ unitaria, ma non é necessariamente vero se $A$ ha righe nulle. Successivi articoli scientifici hanno provato a patchare la matrice $\overline{A}$ per renderla stocastica, il che avrebbe garantito $\norm{\textbf{p}}_1 = 1$. Una soluzione comune é quella di andare a rimpiazzare ogni riga nulla con il vettore di preferenza \textbf{v} stesso, ma altre soluzioni sono state proposte (e.g. aggiungere un ciclo a tutti i nodi che di outdegree 0), portando a diversi punteggi. Questo problema non é certamente accademico, dato che nella maggior parte degli snapshot del web una parte significativa dei nodi avrá sempre outdegree zero (sono noti come \textit{dangling nodes}).\\
 É interessante notare, a ogni modo, che nel preprint scritto in collaborazione con Motwani e Winograd e comunemente citato come definizione di PageRank % INSERIRE LA CITAZIONE %
 . Brin e Page stessi proposero una ricorrenza lineare diversa ma essenzialmente equivalente a quella dell'indice di Hubbell % INSERIRE LA CITAZIONE %
