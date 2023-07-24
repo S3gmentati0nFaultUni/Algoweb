@@ -51,24 +51,24 @@ Per incrementare la precisione del sistema, lo scacchista austriaco Oscar Gelbfu
 La procedura sarebbe stata ripetuta per ottenere i punteggi dei turni successivi.\\
 Edmund Landau % INSERIRE LA CITAZIONE %
 notò nel primo articolo che pubblicò % INSERIRE LA CITAZIONE % 
-che se uno considera il processo iterato proposto da Gelbfuhs, il risultato non è attendibile, in quanto il ranking dipende dal numero di iterazioni $k$. Egli propose dunque di calcolare un vettore di punteggio \textbf{r} che soddisfacesse la seguente equazione
+che se uno considera il processo iterato proposto da Gelbfuhs, il risultato non è attendibile perchè il valore oscilla e quindi la classifica dei giocatori cambia sulla base del numero di iterazioni $k$. Egli propose dunque di calcolare un vettore di punteggio \textbf{r} che soddisfacesse la seguente equazione
 \begin{equation}
     M\textbf{r}^T = \lambda \textbf{r}^T
 \end{equation}
-dunque \textbf{r} sarebbe dovuto essere un autovettore destro, la cui direzione e verso sono fissati durante la procedura, mentre il modulo viene moltiplicato per una costante. Questa è stata la prima apparizione del \textit{ranking spettrale} - che usa gli autovettori di una qualche matrice, solitamente derivata da un grafo, per calcolare una misura di centralità.
+dunque \textbf{r} sarebbe dovuto essere un autovettore destro, la cui direzione e verso sono fissati durante la procedura, mentre il modulo viene moltiplicato per una costante (e quindi è soggetto a dilatazioni). Questa è stata la prima apparizione del \textit{ranking spettrale} - che usa gli autovettori di una qualche matrice, solitamente derivata da un grafo, per calcolare una misura di centralità.
 \subsubsection{L'autovettore dominante sinistro}
 Un \textit{autovalore dominante} è un autovalore di modulo massimo. Un autovettore associato all'autovalore dominante è noto come \textit{autovettore dominante}. Nella maggior parte dei casi pratici di ranking spettrale l'autovalore di modulo massimo è unico\footnote{Questo significa che la soluzione del polinomi caratteristico ha molteplicità 1}.\\
 Il teorema di Perron Frobenius ci dá qualche garanzia a riguardo.
 \begin{teo}
-    Se $A$ é una matrice irriducibile\footnote{Una matrice é irriducibile quando il grafo associato é fortemente connesso} esiste un unico autovalore di modulo massimo, detto autovalore di Perron Frobenius, o dominante, a cui é associato un autovettore positivo. Se la matrice é stocastica (ha quindi somma di ogni riga pari a 1 $\implies$ é associata a un grafo i cui pesi sono normalizzati) l'autovalore dominante ha modulo 1.  
+    Se $A$ é una matrice irriducibile\footnote{Una matrice $M \in \reals^{k \times k}$ si dice irriducibile quando $\fa i, j \in k, \exists n \in \nat \st a_{i, j}^n > 0$}, quindi il grafo associato ad $A$ è fortemente connesso, esiste un unico autovalore di modulo massimo, detto autovalore di Perron Frobenius, o dominante, a cui é associato un autovettore positivo. Se la matrice é stocastica (ha quindi somma di ogni riga pari a 1 $\implies$ é associata a un grafo i cui pesi sono normalizzati) l'autovalore dominante ha modulo 1.  
 \end{teo}
-La prima ovvia misura spettrale è l'autovettore dominante sinistro della matrice di adiacenza associata al grafo. L'idea realizza l'intuizione di Landau: assumiamo $\textbf{e}_i$ sia una base di autovettori per la matrice $M$ con autovalori $\lambda_i$ tali che $|\lambda_0| > |\lambda_1| > \dots$. Se consideriamo un vettore \textbf{x} e lo vediamo come combinazione lineare dei vettori dell'autobase
+\noindent La prima ovvia misura spettrale è l'autovettore dominante sinistro della matrice di adiacenza associata al grafo. L'idea realizza l'intuizione di Landau: assumiamo $\textbf{e}_i$ sia una base di autovettori per la matrice $M$ con autovalori $\lambda_i$ tali che $|\lambda_0| > |\lambda_1| > \dots$. Se consideriamo un vettore \textbf{x} e lo vediamo come combinazione lineare dei vettori dell'autobase
 \begin{equation*}
     \textbf{x} = \sum_i{\alpha_i\textbf{e}_i}
 \end{equation*}
-possiamo scrivere $M^k\textbf{x}^T$ come segue
+possiamo scrivere $x_k = M^k\textbf{x}$ come segue
 \begin{equation*}
-    M^k\textbf{x}^T = M^k\sum_i{\alpha_i\textbf{e}_i^T} = \sum_i{\alpha_i \lambda_i^k \textbf{e}_i}
+    M^k\textbf{x} = M^k\sum_i{\alpha_i\textbf{e}_i} = \sum_i{\alpha_i \lambda_i^k \textbf{e}_i}
 \end{equation*}
 posso portare la potenza $k$-esima della matrice dentro la sommatoria perchè è indipendente dalla variabile di somma, inoltre:
 \begin{equation*}
@@ -80,7 +80,7 @@ continuando
 \end{equation*}
 È chiaro che per $k \to \infty$ tutti i termini $\frac{\lambda_i}{\lambda_0}$ tenderanno a 0, fintanto che $\alpha_0 \neq 0$ il risultato dell'iterazione tenderà verso l'autovettore dominante $\textbf{e}_0$:
 \begin{equation*}
-    \frac{M^k\textbf{x}^T}{\norm{M^k\textbf{x}^T}} \to \textbf{e}_0
+    \frac{M^k\textbf{x}}{\norm{M^k\textbf{x}}} \to \textbf{e}_0
 \end{equation*}
 Abbiamo dunque provato che il \textit{metodo della potenza} per calcolare l'autovettore dominante funziona sotto le ipotesi fatte in precedenza.\\
 Gli autovettori dominanti non si comportano come ci aspetteremmo quando il grafo in questione non è fortemente connesso. In base all'autovalore dominante della componente fortemente connessa, l'autovettore dominante potrebbe o potrebbe non essere diverso da zero per componenti terminali (un discorso più completo può essere trovato in % INSERIRE LA CITAZIONE %
@@ -93,13 +93,13 @@ Un altro passo fondamentale verso il ranking spettrale fu fatto mezzo secolo dop
 \begin{equation*}
     \textbf{r} = \textbf{r}M
 \end{equation*}
-Ovviamente, ciò non è sempre possibile. A ogni modo, Seeley, considera una matrice non negativa senza entry nulle e normalizza le righe così che abbiamo norma $l_1$ unitaria (e.g. dividi ogni entry per la somma sulla riga cui appartiene); le sue righe hanno sempre entry diverse da 0, quindi è sempre possibile, e l'equazione indicata sopra ha soluzione, questo perchè $M\textbf{1}^T = \textbf{1}^T$. Dunque 1 è autovalore di $M$, e il suo autovettore(i) sinistro fornisce soluzioni per l'equazione. L'unicità è una questione più complicata che Seeley non discute e che può essere facilmente analizzata impiegando la teoria di Perron-Frobenius, che mostra anche che 1 è il raggio spettrale, quindi \textbf{r} è  un autovettore dominante, e vi sono soluzioni positive\footnote{In realtà, Seeley espone l'intera questione in termini di equazioni lineari. Il calcolo matriciale viene impiegato solamente per risolvere un sistema lineare tramite la regola di Cramer}.\\
+Ovviamente, ciò non è sempre possibile. A ogni modo, Seeley, considera una matrice non negativa senza entry nulle e normalizza le righe così che abbiamo norma $l_1$ unitaria (e.g. dividi ogni entry per la somma sulla riga cui appartiene); le sue righe hanno sempre entry diverse da 0, quindi è sempre possibile, e l'equazione indicata sopra ha soluzione, questo perchè $M\textbf{1}^T = \textbf{1}^T$. Dunque 1 è autovalore di $M$, e il suo autovettore(i) \textbf{sinistro} fornisce soluzioni per l'equazione. L'unicità è una questione più complicata che Seeley non discute e che può essere facilmente analizzata impiegando la teoria di Perron-Frobenius, che mostra anche che 1 è il raggio spettrale, quindi \textbf{r} è  un autovettore dominante, e vi sono soluzioni positive\footnote{In realtà, Seeley espone l'intera questione in termini di equazioni lineari. Il calcolo matriciale viene impiegato solamente per risolvere un sistema lineare tramite la regola di Cramer}.\\
 L'indice di Seeley puó essere espresso tramite la seguente equazione
 \begin{equation}
     s(x) = \sum_y{\frac{s(y)}{d_+(y)}}
 \end{equation}
 È interessante notare che le motivazioni dei due lavori citati (Landau e Seeley) sono profondamente diverse: il primo era interessato al limite di un processo iterato per migliorare un punteggio, e definisce il limite ricorsivamente; Seeley vuole definire direttamente un punteggio ricorsivo.\\
-La matrice risultante dal processo di $l_1$-normalizzazione è stocastica, quindi il punteggio può essere interpretato come uno stato terminale di una catena di Markov. In particolare, se il grafo sottostante è simmetrico allora l'indice di Seeley collassa al degree (normalizzato) a causa del noto carattere della distribuzione stazionaria nel caso di una camminata casuale all'interno di un grafo simmetrico. Ripetendo il processo fino a stabilitá otteniamo l'autovettore sinistro della matrice del grafo normalizzata.
+La matrice risultante dal processo di $l_1$-normalizzazione è stocastica, quindi il punteggio può essere interpretato come uno stato stabile di una catena di Markov\footnote{Il punteggio può essere interpretato come il tempo che spenderemo in un vertice durante un processo di visita casuale ed equiprobaile in un grafo}. In particolare, se il grafo sottostante è simmetrico allora l'indice di Seeley collassa al degree (normalizzato) a causa del noto carattere della distribuzione stazionaria nel caso di una camminata casuale all'interno di un grafo simmetrico. Ripetendo il processo fino a stabilitá otteniamo l'autovettore sinistro della matrice del grafo normalizzata.
 Anche l'indice di Seeley non gestisce molto bene la mancanza di connettività forte: gli unici nodi con un punteggio non zero sono quelli che appartengono a componenti terminali che non sono formate da un singolo nodo di outdegree 0.
 \subsubsection{Indice di Katz}
 Katz ha introdotto il suo celebre indice % INSERIRE LA CITAZIONE % 
@@ -107,7 +107,7 @@ usando la somma su tutti i percorsi entranti in un nodo, ma pesando ciascun camm
 \begin{equation}
     \textbf{k} = \textbf{1} \sum_{i = 0}^{\infty}{\beta^i A^i}
 \end{equation}
-grazie alle interazioni tra le potenze della matrice di adiacenza e il numero di cammini che collegano due nodi. Perchè la somma sia positiva è necessario che il fattore di attenuazione $\beta_i$ sia di valore minore di $1 / \lambda_0$, dove $\lambda_0$ è autovalore dominante di $A$.\\
+grazie alle interazioni tra le potenze della matrice di adiacenza e il numero di cammini che collegano due nodi. Perchè la somma sia positiva è necessario che il fattore di attenuazione $\beta$ sia di valore minore di $1 / \lambda_0$, dove $\lambda_0$ è autovalore dominante di $A$.\\
 Katz notò immediatamente che l'indice poteva essere espresso usando operatori classici dell'algebra lineare:
 \begin{equation}
     \textbf{k} = \textbf{1}(1 - \beta A)^{-1}
@@ -115,7 +115,7 @@ Katz notò immediatamente che l'indice poteva essere espresso usando operatori c
 una semplice generalizzazione (consigliata da Hubbell in % INSERIRE LA CITAZIONE % 
 ) rimpiazza il vettore \textbf{1} con un vettore di preferenze \textbf{v} affinchè i cammini vengano pesati in maniera differente sulla base del nodo di partenza.
 \subsection{PageRank}
-PageRank é una delle centralitá spettarli oggi in uso piú discusse, essenzialmente sembrerebbe essere usata all'interno dell'algoritmo di ranking di Google\footnote{Il lettore dovrebbe essere a conoscenza, a ogni modo, del fatto che la letteratura riguardante l'efficacia di PageRank nel campo dell'information retrieval é alquanto povera, ed é composta essenzialmente di risultati negativi quali % INSERIRE LA CITAZIONE %
+PageRank é una delle centralitá spettarli oggi in uso piú discusse, sembrerebbe essere usata all'interno dell'algoritmo di ranking di Google\footnote{Il lettore dovrebbe essere a conoscenza, a ogni modo, del fatto che la letteratura riguardante l'efficacia di PageRank nel campo dell'information retrieval é alquanto povera, ed é composta essenzialmente di risultati negativi quali % INSERIRE LA CITAZIONE %
 e
 % INSERIRE LA CITAZIONE % 
 }.\\
@@ -142,6 +142,7 @@ Se $A$ non ha righe nulle, o $\overline{A}$ é stata patchata di modo da essere 
 \begin{equation*}
     \alpha\overline{A} + (1 - \alpha)\textbf{1}^T\textbf{v}
 \end{equation*}
+Nel caso delle catene di Markov possiamo pensare alla situazione nel modo seguente: tutti i cammini che vanno verso $x$ ci danno l'importanza di $x$, più lungho è il cammino che porta da un nodo a $x$, più valore viene dissipato.
 che é analoga all'equazione (11). Del Corso, Gullí e Romani % INSERIRE LA CITAZIONE %
 hanno mostrato che i punteggi risultanti (che hanno sempre norma $l_1$ unitaria) differiscono dal vettore PageRank definito in (12) solo per un fattore di normalizzazione, a patto che le righe nulle della matrice di transizione della catena di Markov siano state rimpiazzate con \textbf{v}. Se $A$ non avesse righe nulle, i punteggi sarebbero, ovviamente, identici in quanto l'equazione (13) puó essere facilmente derivata dalla matrice di transizione di cui sopra.\\
 Entrambe le definizioni sono state utilizzate in letteratura: la ricorrenza lineare mostrata in (12) é particolarmente utile qualora vi sia bisogno di dipendenza lineare da \textbf{v} come in % INSERIRE LA CITAZIONE %
