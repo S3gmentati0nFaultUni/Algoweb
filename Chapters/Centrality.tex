@@ -6,11 +6,9 @@ Più in generale, se si considerano \textit{grafi pesati}, in cui un peso è ass
 Chiamiamo \textit{geometriche} quelle misure che vedono la centralità come dipendente dalla distanza di un nodo o un arco dagli altri elementi del grafo. Più precisamente, una centralità geometrica dipende unicamente da quanti nodi esistono a ogni distanza. Queste sono alcune delle misure più antiche definite in letteratura.
 \subsubsection{Indegree}
 L'indegree è il numero di archi che entrano in un determinato nodo, è denotato come $d_+^{(x)}$ e può essere considerata una misura di centralità geometrica. Si tratta semplicemente del numero di nodi a distanza 1\footnote{La maggioranza delle misure di centralità proposte in letteratura sono state descritte solo per grafi non direzionati e connessi. Siccome lo studio del grafo del web e delle reti sociali elettronicamente mediate ha posto il problema di estendere i concetti di centralità a reti che sono direzionate, e possibilmente non fortemente connesse, nel resto di questo articolo considereremo le misure dipendenti dal numero di archi entranti di un nodo (e. g. percorsi entranti, autovettori dominanti sinistri, distanze da tutti i nodi verso un nodo specifico). Se necessario, queste misure possono essere chiamate "positive", in opposizione alle misure "negative" ottenute considerando percorsi uscenti, o (equivalentemente trasponendo il grafo)}. L'indegree è probabilmente una delle più vecchie misure di centralità, in quanto è equivalente alla maggioranza dei votanti alle elezioni ($x \rightarrow y$ se $x$ ha votato per $y$), il vincitore delle elezioni è quello che ha preso più voti, quindi quello che ha l'indegree più alto.\\
-L'indegree ha una serie di problematiche evidenti (e.g. è facile da aggirare), ma è un buon punto di partenza, e in alcuni casi ha raggiunto risultati migliori di tecniche più sofisticate (si veda, ad esempio % INSERIRE CITAZIONE %
-).
+L'indegree ha una serie di problematiche evidenti (e.g. è facile da aggirare), ma è un buon punto di partenza, e in alcuni casi ha raggiunto risultati migliori di tecniche più sofisticate (si veda, ad esempio \cite{degree}).
 \subsubsection{Closeness}
-Bavelas ha introdotto il concetto di closeness alla fine degli anni quaranta in % INSERIRE CITAZIONE %
-; la closeness di $x$ è definita come segue
+Bavelas ha introdotto il concetto di closeness alla fine degli anni quaranta in \cite{bavelas}; la closeness di $x$ è definita come segue
 \begin{equation}
     \frac{1}{\sum_y{d(y, x)}}
 \end{equation}
@@ -19,11 +17,9 @@ Non era probabilmente nelle intenzioni di Bavelas di applicare la misura ai graf
 \begin{equation*}
     \frac{1}{\sum_{d(y, x) < \infty}d(y, x)}
 \end{equation*}
-e assumendo che i nodi con un insieme di nodi raggiungibili banale abbiano centralità 0 per definizione: questa è, in realtà, la definizione che useremo nel resto dell'articolo. Questi aggiustamenti, apparentemente innocui, inducono una forte polarizzazione nella rete verso quei nodi che hanno un insieme di nodi raggiungibili di piccole dimensioni. Nel 2016 un gruppo di scienziati a Facebook ha calcolato l'inverso della closeness per tutti gli utenti\footnote{% INSERIRE IL LINK % 
-}
+e assumendo che i nodi con un insieme di nodi raggiungibili banale abbiano centralità 0 per definizione: questa è, in realtà, la definizione che useremo nel resto dell'articolo. Questi aggiustamenti, apparentemente innocui, inducono una forte polarizzazione nella rete verso quei nodi che hanno un insieme di nodi raggiungibili di piccole dimensioni. Nel 2016 un gruppo di scienziati a Facebook ha calcolato l'inverso della closeness per tutti gli utenti\footnote{\texttt{\href{https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separation/}{https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separation/}}}
 \subsubsection{Centralità armonica}
-Come abbiamo notato il problema della closeness sta nel fatto che vi sono coppie di nodi non raggiungibili. Prendiamo quindi ispirazione da Marchiori e Latora % INSERIRE LA CITAZIONE %
-: presentatogli il problema di offrire una nozione sensata di "lunghezza media del percorso più breve" per un grafo direzionato generico, hanno proposto di rimpiazzare la media delle distanze con la \textit{media armonica di tutte le distanze}\footnote{Definiamo media armonica per un gruppo di valori $a_0, \dots, a_{n - 1}$ il seguente valore
+Come abbiamo notato il problema della closeness sta nel fatto che vi sono coppie di nodi non raggiungibili. Prendiamo quindi ispirazione da Marchiori e Latora \cite{armonica}: presentatogli il problema di offrire una nozione sensata di "lunghezza media del percorso più breve" per un grafo direzionato generico, hanno proposto di rimpiazzare la media delle distanze con la \textit{media armonica di tutte le distanze}\footnote{Definiamo media armonica per un gruppo di valori $a_0, \dots, a_{n - 1}$ il seguente valore
 \begin{equation*}
     \bigb{\frac{\sum_i^n{a_i^{-1}}}{n}}^{-1}
 \end{equation*}
@@ -34,9 +30,7 @@ In generale, per ogni nozione teorica sui grafi basata sulla media aritmetica o 
 \end{equation}
 la differenza tra quest'ultima equazione e (7) potrebbe apparire minima, però si tratta di un cambiamento radicale. La centralità armonica è fortemente legata alla closeness in reti semplici, ma la prima è in grado di tenere da conto automaticamente anche dei nodi $y$ che non sono in grado di raggiungere $x$. Quindi può essere applicata a grafi che non sono fortemente connessi.
 \subsubsection{Betweenness}
-La \textit{betweenness} è stata introdotta da Anthonisse % INSERIRE LA CITAZIONE %
-per gli archi, ed è stata poi ripresa da Freeman per i nodi % INSERIRE LA CITAZIONE %
-. L'idea è quella di misurare la probabilità che un cammino brave a caso passi attraverso un determinato nodo: sia $\sigma_{xy}$ il numero di cammini brevi che vanno da $x$ a $y$ e $\sigma_{xy}(z)$ il numero di cammini brevi che vanno da $x$ a $y$ e passano per $z$, definiamo la \textit{betweenness} di $x$ come
+La \textit{betweenness} è stata introdotta da Anthonisse \cite{ant} per gli archi, ed è stata poi ripresa da Freeman per i nodi \cite{morgan}. L'idea è quella di misurare la probabilità che un cammino brave a caso passi attraverso un determinato nodo: sia $\sigma_{xy}$ il numero di cammini brevi che vanno da $x$ a $y$ e $\sigma_{xy}(z)$ il numero di cammini brevi che vanno da $x$ a $y$ e passano per $z$, definiamo la \textit{betweenness} di $x$ come
 \begin{equation*}
     \sum_{x, y \neq z, \sigma_{xy} \neq 0}{\frac{\sigma_{xy}(z)}{\sigma_{xy}}}
 \end{equation*}
@@ -49,9 +43,7 @@ Per incrementare la precisione del sistema, lo scacchista austriaco Oscar Gelbfu
     \item L'interezza dei punteggi di coloro con cui avessero vinto.
 \end{itemize}
 La procedura sarebbe stata ripetuta per ottenere i punteggi dei turni successivi.\\
-Edmund Landau % INSERIRE LA CITAZIONE %
-notò nel primo articolo che pubblicò % INSERIRE LA CITAZIONE % 
-che se uno considera il processo iterato proposto da Gelbfuhs, il risultato non è attendibile, in quanto il ranking dipende dal numero di iterazioni $k$. Egli propose dunque di calcolare un vettore di punteggio \textbf{r} che soddisfacesse la seguente equazione
+Edmund Landau \cite{landau} notò nel primo articolo che pubblicò \cite{landaus} che se uno considera il processo iterato proposto da Gelbfuhs, il risultato non è attendibile, in quanto il ranking dipende dal numero di iterazioni $k$. Egli propose dunque di calcolare un vettore di punteggio \textbf{r} che soddisfacesse la seguente equazione
 \begin{equation}
     M\textbf{r}^T = \lambda \textbf{r}^T
 \end{equation}
@@ -83,12 +75,10 @@ continuando
     \frac{M^k\textbf{x}^T}{\norm{M^k\textbf{x}^T}} \to \textbf{e}_0
 \end{equation*}
 Abbiamo dunque provato che il \textit{metodo della potenza} per calcolare l'autovettore dominante funziona sotto le ipotesi fatte in precedenza.\\
-Gli autovettori dominanti non si comportano come ci aspetteremmo quando il grafo in questione non è fortemente connesso. In base all'autovalore dominante della componente fortemente connessa, l'autovettore dominante potrebbe o potrebbe non essere diverso da zero per componenti terminali (un discorso più completo può essere trovato in % INSERIRE LA CITAZIONE %
-).
-Un esempio recente di applicazione di centralità basata su autovettori dominanti può essere trovato in % INSERIRE LA CITAZIONE %
-.
+Gli autovettori dominanti non si comportano come ci aspetteremmo quando il grafo in questione non è fortemente connesso. In base all'autovalore dominante della componente fortemente connessa, l'autovettore dominante potrebbe o potrebbe non essere diverso da zero per componenti terminali (un discorso più completo può essere trovato in \cite{autovalori}).
+Un esempio recente di applicazione di centralità basata su autovettori dominanti può essere trovato in \cite{calcio}.
 \subsubsection{Indice di Seeley}
-Un altro passo fondamentale verso il ranking spettrale fu fatto mezzo secolo dopo da John R. Seeley % INSERIRE LA CITAZIONE %
+Un altro passo fondamentale verso il ranking spettrale fu fatto mezzo secolo dopo da John R. Seeley \cite{seeley}
 , il quale non era al corrente del lavoro fatto da Landau: notò che gli indici basati su somme di righe o colonne non avevano chissà quale significato a causa del fatto che non prendevano in considerazione l'importante fatto che bisogna piacere a chi piace a molti, e così via. In altre parole, un indice di importanza, di centralità o di autorità, dovrebbe essere definito in maniera \textit{ricorsiva}, così che il mio punteggio sia uguale alla somma dei punteggi di tutti quelli che mi sostengono. In notazione matriciale
 \begin{equation*}
     \textbf{r} = \textbf{r}M
@@ -102,8 +92,7 @@ L'indice di Seeley puó essere espresso tramite la seguente equazione
 La matrice risultante dal processo di $l_1$-normalizzazione è stocastica, quindi il punteggio può essere interpretato come uno stato terminale di una catena di Markov. In particolare, se il grafo sottostante è simmetrico allora l'indice di Seeley collassa al degree (normalizzato) a causa del noto carattere della distribuzione stazionaria nel caso di una camminata casuale all'interno di un grafo simmetrico. Ripetendo il processo fino a stabilitá otteniamo l'autovettore sinistro della matrice del grafo normalizzata.
 Anche l'indice di Seeley non gestisce molto bene la mancanza di connettività forte: gli unici nodi con un punteggio non zero sono quelli che appartengono a componenti terminali che non sono formate da un singolo nodo di outdegree 0.
 \subsubsection{Indice di Katz}
-Katz ha introdotto il suo celebre indice % INSERIRE LA CITAZIONE % 
-usando la somma su tutti i percorsi entranti in un nodo, ma pesando ciascun cammino di modo che la somma avesse un valore finito. L'indice di Katz può essere espresso come
+Katz ha introdotto il suo celebre indice \cite{katz} usando la somma su tutti i percorsi entranti in un nodo, ma pesando ciascun cammino di modo che la somma avesse un valore finito. L'indice di Katz può essere espresso come
 \begin{equation}
     \textbf{k} = \textbf{1} \sum_{i = 0}^{\infty}{\beta^i A^i}
 \end{equation}
@@ -112,13 +101,9 @@ Katz notò immediatamente che l'indice poteva essere espresso usando operatori c
 \begin{equation}
     \textbf{k} = \textbf{1}(1 - \beta A)^{-1}
 \end{equation}
-una semplice generalizzazione (consigliata da Hubbell in % INSERIRE LA CITAZIONE % 
-) rimpiazza il vettore \textbf{1} con un vettore di preferenze \textbf{v} affinchè i cammini vengano pesati in maniera differente sulla base del nodo di partenza.
+una semplice generalizzazione (consigliata da Hubbell in \cite{hub}) rimpiazza il vettore \textbf{1} con un vettore di preferenze \textbf{v} affinchè i cammini vengano pesati in maniera differente sulla base del nodo di partenza.
 \subsection{PageRank}
-PageRank é una delle centralitá spettarli oggi in uso piú discusse, essenzialmente sembrerebbe essere usata all'interno dell'algoritmo di ranking di Google\footnote{Il lettore dovrebbe essere a conoscenza, a ogni modo, del fatto che la letteratura riguardante l'efficacia di PageRank nel campo dell'information retrieval é alquanto povera, ed é composta essenzialmente di risultati negativi quali % INSERIRE LA CITAZIONE %
-e
-% INSERIRE LA CITAZIONE % 
-}.\\
+PageRank é una delle centralitá spettarli oggi in uso piú discusse, essenzialmente sembrerebbe essere usata all'interno dell'algoritmo di ranking di Google\footnote{Il lettore dovrebbe essere a conoscenza, a ogni modo, del fatto che la letteratura riguardante l'efficacia di PageRank nel campo dell'information retrieval é alquanto povera, ed é composta essenzialmente di risultati negativi quali \cite{prank} e \cite{prankoind}}.\\
 Di fatto quando lavoriamo con PageRank é come se avessimo a disposizione una moneta truccata ($p_T > p_C$) e continuiamo ripetutamente a fare dei lanci, se esce testa, continuiamo la visita corrente, altrimenti ricominciamo da un'altra parte (eseguendo un teletrasporto). La cosa interessante é che se il processo di visita si blocca in una componente connessa basta attendere alcuni try e prima o poi il processo aleatorio é in grado di tirarsene fuori da solo. Questo concetto dovrebbe far drizzare le antenne a coloro che hanno seguito corsi riguardanti processi aleatori ripetuti (e.g. Catene di Markov) o su algoritmi euristici (e.g. algoritmo di Simulated Annealing che cerca di sfuggire da un minimo locale)
 Per definizione PageRank é l'unico vettore \textbf{p} (autovettore dominante) soddisfacente
 \begin{equation}
