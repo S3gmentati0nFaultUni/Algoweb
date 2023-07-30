@@ -229,11 +229,44 @@ siano inoltre $n$ la dimensione della successione $X$, $l$ il numero dei bit men
     \end{equation}
 \end{proof}
 \subsubsection{Sistemi di numerazione asimmetrica (approfondimento)}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Nel 2013, Duda % INSERIRE LA CITAZIONE %
+ha introdotto un nuovo metodo di codifica di sequenze di simboli che ha rivoluzionato il campo della compressione dati. I \textit{sistemi di numerazione asimmetrica} hanno velocità pari o superiore a un codice di Huffman, ma performance di compressione confrontabili con quelle della codifica aritmetica, quindi davvero ottime (molto vicine al limite teorico di Shannon). Sono alla base di tutti i moderni sistemi di compressione come \texttt{zstd} di Facebook e lo standard JPEG XL.\\
+L'idea alla base dei sistemi di numerazione arimtetica è che per comprimere una sequenza di simboli vorremo (idealmente) utilizzare un intero molto grande. Se una sequenza è codificata da $x$, vorremmo che aggiungere un simbolo $y$ che ha probabilità di comparire $p_y$ portasse a una codifica $x' \approx x / p_s$, perchè in questo modo $\log(x') = \log(x) + \log(1 / p_y)$. Aggiungendo quindi $y$ alla sequenza, spenderemo $\log(1 / p_y)$ bit. Complessivamente il costo del messaggio sarà l'entropia di Shannon.\\
+Possiamo vedere questo concetto nella codifica banale della sorgente più semplice, con 0 e 1 equiprobabili. Se $x$ è la codifica dei simboli visti fino ad ora, $x' = 2x$ oppure $x' = 2x + 1$ a seconda del simbolo che compare. Il risultato è un intero che in base 2 è descritto dalla sequenza di 0 e 1 da codificare.\\
+Se vogliamo decodificare la sequenza rispetto a $x'$, l'ultimo valore codificato è semplicemente $x' \mod 2$, la sequenza rimane $\flr{x'/2}$. Iterando la procedura otteniamo le cifre in ordine \textit{inverso} rispetto alla codifica.\\
+Questa è una caratteristica comune a tutti i sistemi di numerazione asimmetrica: si codifica in una direzione, si decodifica nella direzione opposta, come in una pila. Possiamo decomprimere i valori nell'ordine corretto comprimendo la sequenza al contrario.\\
+È chiaro che il ragionamento è analogo nel caso in cui si abbiano $k$ valori equiprobabili: L'unica differenza è che i valori saranno codificati tramite stringhe di $k$ simboli.\\
+Generalizziamo ora l'idea all'ambito di un numero arbitrario di simboli con distribuzione arbitraria. Definiremo:
+\begin{itemize}
+    \item L'operazione di \textit{push} che riceve in ingresso l'intero rappresentante la sequenza, un nuovo simbolo e restituisce la rappresentazione della sequenza con il simbolo aggiunto.
+    \item L'operazione di \textit{pop} che riceve in ingresso l'intero rappresentante la sequenza e restituisce il valore rappresentante la coda privato dell'ultimo simbolo e l'ultimo simbolo. 
+\end{itemize}
+Sia $\Sigma = [0 \dots k)$ l'insieme dei simboli, per ogni $s \in \Sigma$ sia $p_s$ la sua probabilità. Fissata una precisione $d$, tutte le probabilità verranno espresse, da qui in avanti, come approssimazioni di multipli $1/2^d$.\\
+Dunque per ogni $s$, abbiamo che $p_s = f_s / 2^d$. Definiamo $f_n = 2^d$, più grande è $d$, maggiore sarà la precisione con cui rappresentiamo le probabilità iniziali (quindi migliore sarà la compressione).\\
+Prendiamo ora i primi $2^d$ interi e dividiamoli in $n$ segmenti contigui di lunghezza $f_s$. A simboli più frequenti corrisponderanno segmenti di lunghezza maggiore, definiamo la cumulata degli $f_s$ come segue
+\begin{equation*}
+    \sum_{t < s}f_t \hspace{5mm} \textnormal{per $s$} \in [0 \dots n]
+\end{equation*}
+Notiamo che ogni elemento $x$ di $2^d$ sta in uno dei segmenti, e quindi a ogni simbolo è associato esattamente un simbolo $s$. Più precisamente, esiste un solo $s$ tale per cui $c_s \leq x \leq c_{s + 1}$. Poniamo $sym(x) = s$ e $sym(f_s) = s$, questo ci permette di fare in modo che, prendendo un elemento $x$ di $2^d$ uniformemente a caso, $sym(x) \in \Sigma$ ha esattamente distribuzione $p$.\\
+Procediamo ora a dare la definizione delle operazioni di cui si parlava prima.\\
+\begin{align*}
+    \texttt{push(x, s)} &= (\flr{x / f_s} << d) + c_s + x \mod f_s \\
+    \texttt{pop(x)} &= \langle (x >> d) \cdot f_s + x \mod 2^d - c_s, s \rangle \hspace{4mm} \textnormal{dove $s = sym(x \mod 2^d)$}
+\end{align*}
+È facile notare che le due operazioni sono una l'inversa dell'altra. Inoltre, $\texttt{push(x, s)} \approx (x / f_s) \cdot 2^d = x \cdot (f_s / 2^d) = x / p_s$, come volevamo.\\
+Mettiamo ora alla prova ciò di cui abbiamo parlato con un semplice esempio. Abbiamo tre simboli:
+\begin{itemize}
+    \item 0, che compare con probabilità $9 / 10$ ($\log(1/p_0) \approx 0.152$)
+    \item 1, che compare con probabilità $1 / 30$ ($\log(1/p_1) \approx 4.9$)
+    \item 2, che compare con probabilità $2 / 30$ ($\log(1/p_2) \approx 3.9$)
+\end{itemize}
+L'entropia di Shannon, che viene calcolata come $\sum_{x \in X}p(x) \log(p(x))$ è circa $0.558$. Se utilizziamo $d = 10$ abbiamo le seguenti probabilità:
+\begin{itemize}
+    \item $922 / 1024$ per 0
+    \item $34 / 1024$ per 1
+    \item $68 / 1024$ per 2
+\end{itemize}
 
-%                    INSERIRE SISTEMI DI NUMERAZIONE ASIMMETRICA
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Distribuzioni intese}
 Ogni codice istantaneo completo per gli interi definisce implicitamente una \textit{distribuzione intesa} sugli interi, che assegna a $w$ la probabilità $2^{-|w|}$. Il codice, in effetti, risulta \textit{ottimo} per la distribuzione associata. La scelta di un codice istantaneo può quindi essere ricondotta a considerazioni sulla distribuzione statistica degli interi che si intendo rappresentare.\\
 Al codice unario è associata una distribuzione geometrica.
