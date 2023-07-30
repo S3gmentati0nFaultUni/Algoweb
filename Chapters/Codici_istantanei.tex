@@ -51,12 +51,25 @@ Innanzitutto si noti che un codice istantaneo per gli interi è numerabile. L'as
 La rappresentazione più elementare di un intero $n$ è quella \textit{binaria}, che peró non è istantanea (le prime parole sono 0, 1, 10, 11, 100). È possibile rendere il codice istantaneo facendo un allineamento a $k$ bit. La lunghezza di una parola di codice binario (non allineato) è $\lambda(n) + 1$\footnote{Ricordo che: $\lambda(n) = \flr{\log(n)}$}.\\
 Chiameremo \textit{rappresentazione binaria ridotta} di $n$ la rappresentazione binaria di $n + 1$ alla quale viene rimosso il bit più significativo; anch'essa non è istantanea. La lunghezza della parola di codice per $n$ è $\lambda(n + 1)$. Le prime parole sono $\varepsilon$, 0, 1, 00, 01, 10.\\
 Un ruolo importante nella costruzione dei codici istantanei è svolto dai \textit{codici binari minimali} - codici istantanei e completi per i primi $k$ numeri naturali che utilizzano un numero variabile di bit. Esistono diverse possibilità per le scelte delle parole del codice\footnote{In realtà, un codice binario minimale è semplicemente un codice ottimo per la distribuzione uniforme, il che spiega perchè sono possibili scelte diverse per le parole del codice}, ma in quanto segue diremo che il codice binario minimale di $n$ (nei primi $n$ naturali) è definito come segue: sia $s = \ceil{\log(k)}$; se $n < 2^s -k$, $n$ è codificato dall'$n$-esima parola binaria (in ordine lessicografico) di lunghezza $s - 1$; altrimenti, $n$ è codificato utilizzando la $(n - k + 2^s)$-esima parola binaria di lunghezza $s$.\\
-La lunghezza di una parola di binario minimale è $s + [n < 2^s - k]$
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%                    TABELLA BINARIO MINIMALE
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La lunghezza di una parola di binario minimale è $s + [n < 2^s - k]$\\
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c||c|c|c|c|c|c|c|}
+      \hline
+      \multicolumn{8}{|c|}{k} \\
+      \hline
+       &1 &2 &3 &4 &5 &6  &7 \\
+      \hline
+      0 &$\varepsilon$ &0 &0 &00 &00 &00 &00 \\
+      1 & &1 &10 &01 &01 &01 &010 \\
+      2 & & &11 &10 &10 &100 &011 \\
+      3 & & & &11 &110 &101 &100 \\
+      2 & & & & &111 &110 &101 \\
+      2 & & & & & &111 &110 \\
+      2 & & & & & & &111 \\
+      \hline
+    \end{tabular}
+\end{table}
 \noindent La base di tutti i codici istantanei per gli interi è il codice \textit{unario}. Il codice unario rappresenta il naturale $n$ tramite $n$ uno seguiti da uno 0\footnote{Nelle note originali il professore definisce l'unario all'incontrario e mette in una nota quello che ho definito io, ma è evidente che questa definizione è più importante all'atto pratico per il semplice fatto che fa coincidere ordine lessicografico e l'ordine dei valori rappresentati}. Le prime parole del codice sono 0, 10, 110, \dots. La lunghezza di una parola in unario è banalmente $n + 1$. Il codice è sia istantaneo e completo.\\
 Il codice $\gamma$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione ridotta in unario, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 1, 010, 011, 00100, 00101, \dots. La lunghezza della parola di codice è quindi $2\lambda(n + 1) + 1$ e il codice è sia istantaneo che completo, questo si deve al fatto che l'unario è istantaneo e completo.\\
 Analogamente, il codice $\delta$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione binaria ridotta di $n$ in $\gamma$, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 1, 0100, 0101, 01100, 01101, \dots. La lunghezza della parola di codice per $n$ è quindi $2\lambda(\lambda(n + 1) + 1) + 1 + \lambda(n + 1)$ e il fatto che il codice sia istantaneo e completo deriva dal fatto che il $\gamma$ lo sia.\\
@@ -64,11 +77,31 @@ Si potrebbe provare a continuare in questa direzione, ma come vedremo, senza van
 Il \textit{Codice di Golomb di modulo $k$} \cite{golomb} codifica un numero intero $n$ scrivendo il quoziente della divisione di $n$ per $k$ in unario, seguito dal resto in binario minimale. Le prime parole del codice per $k = 3$ sono 10, 110, 111, 010, \dots. La lunghezza della parola di codice per $n$ è quindi $\flr{n/k} + 1 + \lambda(x\mod(k)) + [x\mod(k) \geq 2^{\ceil{\log(k)}} - k]$ e il fatto che sia istantaneo e completo deriva dal fatto che lo sono sia il codice unario che il codice binario minimale.\\
 Infine conviene ricordare i \textit{codici a blocchi di lunghezza variabile}, come il codice variabile a nibble o a byte. L'idea è che ogni parola è formata da un numero variabile di blocchi di $k$ bit (4 nel caso di nibble e 8 nel caso di byte). Il primo bit non è codificante ed è noto come \textit{bit di continuazione}, se posto a 1 il blocco che stiamo considerando non è quello finale, se posto a 0 abbiamo raggiunto il blocco terminale.\\
 In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato a un multiplo di $k + 1$ bit, diviso in blocchi di $k + 1$ bit ($k$ bit codificanti e un bit di continuazione che non codifica i valori), e rappresentato tramite una sequenza di suddetti blocchi, ciascuno preceduto dal bit di continuazione. La lunghezza della parola di codice è pari a $\ceil{(\log(x) + 1) / k}(k + 1)$. I codici a lunghezza variabile sono ovviamente istantanei ma non completi, questo perchè sequenze di 0 che sono più lunghe di un blocco non sono confrontabili con nessuna delle parole del codice. Uno standard alternativo per questo tipo di codici è quello implementato da UTF-8, che anzichè perdere il primo bit di ogni blocco per i bit di continuazione, sfrutta il primo blocco dell'intera parola per codificare quanti saranno i blocchi costituenti la parola.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%                    TABELLA RIASSUNTIVA
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c||c|c|c|c|}
+      \hline
+      &$\gamma$ &$\delta$ &Golomb ($b$ = 3) &nibble \\
+      \hline
+      0 &1 &1 &10 &1000 \\
+      1 &010 &0100 &110 &1001 \\
+      2 &011 &0101 &111 &1010 \\
+      3 &00100 &01100 &010 &1011 \\
+      4 &00101 &01101 &0110 &1100 \\
+      5 &00110 &01110 &0111 &1101 \\
+      6 &00111 &01111 &0010 &1110 \\
+      7 &0001000 &00100000 & 00110 &1111 \\
+      8 &0001001 &00100001 &00111 &00011000 \\
+      9 &0001010 &00100010 &00010 &00011001 \\
+      10 &0001011 &00100011 &000110 &00011010 \\
+      11 &0001100 &00100100 &000111 &00011011 \\
+      12 &0001101 &00100101 &000010 &00011100 \\
+      13 &0001110 &00100110 &0000110 &00011101 \\
+      14 &0001111 &00100111 &0000111 &00011110 \\
+      15 &000010000 &001010000 &0000010 &00011111 \\
+      \hline
+    \end{tabular}
+\end{table}
 \subsection{Caratteristiche matematiche dei codici}
 Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice è \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$) il valore atteso della lunghezza di una parola rispetto a $p$ è minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ció significa che se $l(n)$ è la lunghezza della parola di codice per $n$ e $H(p)$ è l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
 \begin{equation*}
