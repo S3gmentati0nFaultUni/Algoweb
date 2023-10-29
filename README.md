@@ -12,7 +12,7 @@ Since there is no release yet I take no responsibility for the improper use of t
 
 Anyone using the material contained here should take everything with a grain of salt, if possible, errors should be redacted through a pull request or contacting me directly through issues, I will see that the problem is sorted out!
 
-To compile the code just head in the directory (./Algoweb) and do a run of latexmk like so:
+To get the compiled source code you should just clone this repository to your machine, head in the directory (./Algoweb) and do a run of latexmk like so:
 ```
 $ latexmk main.tex
 ```
