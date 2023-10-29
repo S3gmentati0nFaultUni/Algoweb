@@ -1,4 +1,4 @@
-##Algoweb notes
+<h2>Algoweb notes</h2>
 This repository is collecting all of the knowledge from the Algoritmica per il Web course held in Università degli Studi di Milano by professor Sebastiano Vigna.
 <br>
 The project is still work in progrss and needs some very important tune ups, especially when it comes to checking that the algebra is sound. Since there is no release yet I take no responsibility for the improper use of the corrected materials. I only request that whoever uses the repository follows the guidelines as presented in the license file and does not distribute the materials through means that differ from this repository, forks of this repository or distributions that will eventually be available.
