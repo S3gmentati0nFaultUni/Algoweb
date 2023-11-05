@@ -1,22 +1,28 @@
-<h2>Algoweb notes</h2>
-This repository is collecting all of the knowledge from the Algoritmica per il Web course held in Università degli Studi di Milano by professor Sebastiano Vigna.
+<h2>Nozioni per il corso di Algoritmica per il Web</h2>
+Questa repository raccoglie tutte le informazioni disponibili per il corso di Algoritmica per il Web tenuto dal professor Sebastiano Vigna presso l'università degli Studi di Milano
 
-The project is still work in progrss and needs some very important tune ups, especially when it comes to checking that the algebra is sound. If you have spotted any errors along the way or you want to propose any modifications just look at the next section.
+Questo compendio è pensato per evitare a chi studia per questo esame, il più possibile, di consultare fonti alternative e di avere una fonte principale a cui affidarsi per l'intero processo, dato che le dispense ufficiali hanno parecchi problemi di inconsistenze e non sono complete.
 
-To get the compiled source code you should just clone this repository to your machine, head in the directory (./Algoweb) and do a run of latexmk like so:
+Per avere il file pdf potete scaricare la release <a href="https://github.com/S3gmentati0nFault/Algoweb/releases/tag/First-release">qui</a> oppure potete clonare il codice sulla vostra macchina, andare nella directory `./Algoweb` e lanciare `latexmk` nel modo seguente:
 ```
-$ latexmk main.tex
+$ latexmk -lualatex main.tex
 ```
 
-<h2>Corrections and proposals</h2>
-I am providing the above code in pdf form as a first version of the corrected materials, since the corrections were made by me and, to this day, I am not half sure of some of them, I invite anyone spotting problems to open a pull request, or contact me via the issue system here on github or just via an email to <a href="mailto:alessandro.biagiotti@studenti.unimi.it">alessandro.biagiotti@studenti.unimi.it</a>.
+<h2>Correzioni e revisioni</h2>
+Potete trovare la prima revisione del progetto come release, il progetto non è finito, inoltre le revisioni sono parzialmente ad opera mia e parzialmente ad opera di altri ragazzi che hanno studiato con me (trovate i crediti all'inizio del pdf), ma non sono ufficiali, quindi non sono esenti da errori. Comunque si tratta di una rielaborazione, dove necessario, dei materiali del professore, non sono una riscrittura completa.
 <br>
-Take anything with a grain of salt!
+Alcune importanti correzioni sono necessarie per renderlo migliore. Nel caso in cui doveste trovare errori all'interno del progetto, dai più stupidi (e.g. typo, italiano correggiuto), ai più importanti (e.g. ci sono errori di contenuto), potete forkare il progetto e poi fare una pull request oppure aprire una issue così da poterne discutere insieme. Alternativamente a questi due metodi potete anche scrivere una mail a <a href="mailto:alessandro.biagiotti@studenti.unimi.it">alessandro.biagiotti@studenti.unimi.it</a>.
+<br>
+Prendete tutto cum grano salis!
 
-<h2>Work in progress 👷</h2>
+<h2>Aggiornamenti futuri 👷</h2>
 
-  - [ ] Make some fancy graphs
+  - [ ] Aggiungere alcuni grafi utili
 
-  - [ ] Correct the bibliography
+  - [ ] Correzioni per la bibliografia
 
-  - [ ] Make linear algebra appendix
+  - [ ] Aggiungere un'appendice per l'algebra lineare
+
+Se il corso è tenuto anche in inglese provvederò a fare una traduzione integrale delle dispense (anche se, da quel che so, la versione inglese delle dispense ufficiali è più completa, non so se sia effettivamente migliore).
+
+  - [ ] English version?
