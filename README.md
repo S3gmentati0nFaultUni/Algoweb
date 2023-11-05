@@ -15,6 +15,8 @@ Take anything with a grain of salt!
 
 <h2>Work in progress 👷</h2>
 
+  - [ ] Make some fancy graphs
+
   - [ ] Correct the bibliography
 
   - [ ] Make linear algebra appendix
