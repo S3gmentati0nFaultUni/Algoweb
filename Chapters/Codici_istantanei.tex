@@ -209,7 +209,7 @@ Elias Fano è una tecnica di codifica per indici veloce e compatta, che puó ess
 \subsubsection{Analisi spaziale di Elias Fano}
 Prima di partire con l'analisi spaziale di Elias Fano definiamo una serie di strumenti che potrebbero tornare utili nell'arco della dimostrazione.
 
-Sia $X$ una successione di valori monotona non decrescente del tipo $x_0, \dots, x_{n - 1}$, sia $u$ l'upper bound di questa successione di valori, siano:
+Sia $X=\{x_i\}$ una successione di valori monotona non decrescente, sia $u$ l'upper bound di questa successione di valori, siano:
 \begin{itemize}
     \item $L$ il vettore in cui verranno salvate le parti inferiori dei valori della successione
     \item $H$ il vettore in cui verranno salvate le parti superiori dei valori della successione
@@ -298,10 +298,10 @@ Prendiamo ora i primi $2^d$ interi e dividiamoli in $n$ segmenti contigui di lun
 \end{equation*}
 Notiamo che ogni elemento $x$ di $2^d$ sta in uno dei segmenti, e quindi a ogni simbolo è associato esattamente un simbolo $s$. Più precisamente, esiste un solo $s$ tale per cui $c_s \leq x \leq c_{s + 1}$. Poniamo $sym(x) = s$ e $sym(f_s) = s$, questo ci permette di fare in modo che, prendendo un elemento $x$ di $2^d$ uniformemente a caso, $sym(x) \in \Sigma$ ha esattamente distribuzione $p$.
 
-Procediamo ora a dare la definizione delle operazioni di cui si parlava prima.
+Procediamo ora a dare la definizione delle operazioni di cui si parlava prima:
 \begin{align*}
-    \texttt{push(x, s)} &= (\flr{x / f_s} << d) + c_s + x \mod f_s \\
-    \texttt{pop(x)} &= \langle (x >> d) \cdot f_s + x \mod 2^d - c_s, s \rangle \hspace{4mm} \textnormal{dove $s = sym(x \mod 2^d)$}
+\texttt{push(x, s)} &= (\flr{x / f_s} << d) + c_s + x \mod f_s \\
+\texttt{pop(x)} &= \langle (x >> d) \cdot f_s + x \mod 2^d - c_s, s \rangle \quad \textnormal{dove $s = sym(x \mod 2^d)$}
 \end{align*}
 È facile notare che le due operazioni sono una l'inversa dell'altra. Inoltre, $\texttt{push(x, s)} \approx (x / f_s) \cdot 2^d = x \cdot (f_s / 2^d) = x / p_s$, come volevamo.
 
@@ -323,18 +323,18 @@ Consideriamo la sequenza
 \end{equation*}
 Partiamo ora da $x = 0$, ora
 \begin{align*}
-    \texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \hspace{1.5cm} (1 \textnormal{bit})\\
-    \texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \hspace{1.5cm} (1 \textnormal{bit} / 2)\\
-    \texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0  \hspace{1.5cm} (1 \textnormal{bit} / 3)\\
-    \texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \hspace{1.5cm} (1 \textnormal{bit} / 4)\\
-    \texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \hspace{1.5cm} (1 \textnormal{bit} / 5) \\
-    \texttt{push(0, 1)} &= (\flr{0 / 34} << 10) + 922 + 0 = 922 \hspace{1.5cm} (9 \textnormal{bit} / 6) \\
-    \texttt{push(1024, 0)} &= (\flr{1024 / 922} << 10) + 0 + 0 = 1024 \hspace{1.5cm} (10 \textnormal{bit} / 7) \\
-    \texttt{push(1024, 0)} &= (\flr{922 / 922} << 10) + 0 + 102 = 1126 \hspace{1.5cm} (11 \textnormal{bit} / 8) \\
-    \texttt{push(1126, 0)} &= (\flr{1126 / 922} << 10) + 0 + 204 = 1228 \hspace{1.5cm} (11 \textnormal{bit} / 9) \\
-    \texttt{push(1228, 2)} &= (\flr{1228 / 68} << 10) + 956 + 4 = 19392 \hspace{1.5cm} (15 \textnormal{bit} / 10) \\
-    \texttt{push(19392, 0)} &= (\flr{19392 / 922} << 10) + 0 + 30 = 21534 \hspace{1.5cm} (15 \textnormal{bit} / 11) \\
-    \texttt{push(21534, 0)} &= (\flr{21534 / 922} << 10) + 0 + 328 = 23880 \hspace{1.5cm} (15 \textnormal{bit} / 12)
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit})\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit} / 2)\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0  \qquad (1 \textnormal{bit} / 3)\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit} / 4)\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit} / 5) \\
+\texttt{push(0, 1)} &= (\flr{0 / 34} << 10) + 922 + 0 = 922 \qquad (9 \textnormal{bit} / 6) \\
+\texttt{push(1024, 0)} &= (\flr{1024 / 922} << 10) + 0 + 0 = 1024 \qquad (10 \textnormal{bit} / 7) \\
+\texttt{push(1024, 0)} &= (\flr{922 / 922} << 10) + 0 + 102 = 1126 \qquad (11 \textnormal{bit} / 8) \\
+\texttt{push(1126, 0)} &= (\flr{1126 / 922} << 10) + 0 + 204 = 1228 \qquad (11 \textnormal{bit} / 9) \\
+\texttt{push(1228, 2)} &= (\flr{1228 / 68} << 10) + 956 + 4 = 19392 \qquad (15 \textnormal{bit} / 10) \\
+\texttt{push(19392, 0)} &= (\flr{19392 / 922} << 10) + 0 + 30 = 21534 \qquad (15 \textnormal{bit} / 11) \\
+\texttt{push(21534, 0)} &= (\flr{21534 / 922} << 10) + 0 + 328 = 23880 \qquad (15 \textnormal{bit} / 12)
 \end{align*}
 Nelle implementazioni pratiche viene eseguito un processo di \textit{rinormalizzazione}: quando l'intero calcolato diviene troppo grande da maneggiare, la metà superiore dei suoi bit viene scritta in un buffer di output e si continua a gestire la metà inferiore. Laa stessa operazione, invertita, consente di rileggere. La rinormalizzazione comporta un'ulteriore perdita di compressione, ma permette di operare su interi di dimensione fissata.
 \subsection{Distribuzioni intese}

@@ -251,4 +251,4 @@ L'algoritmo per la cancellazione é piú complesso: l'idea di utilizzare la stes
 
 Si noti che non é richiesta nessuna sincronizzazione in lettura: la lista non é mai in uno stato incoerente, per cui puó essere scandita tramite lo stesso algoritmo utilizzato per una normale lista collegata. Inoltre, in pratica, per evitare che in condizioni di elevata concorrenza il numero di volte che l'operazione CAS fallisce divenga troppo importante, si puó utilizzare una tecnica di \textit{exponential backoff} che consiste nel mettere in attesa thread che falliscono per un tempo che ha una crescita esponenziale.
 
-Molti linguaggi moderni offrono strutture lock-free pronte per l'uso, come la \texttt{ConcurrentLinkedQueue} di Java, che implementa l'algoritmo di Michael e Scott \cite{prisonmike}.
+Molti linguaggi moderni offrono strutture lock-free built-in, come la \texttt{ConcurrentLinkedQueue} di Java, che implementa l'algoritmo di Michael e Scott \cite{prisonmike}.
