@@ -5,7 +5,7 @@ Una funzione di hash per un insieme di chiavi \set{X} $\subseteq$ \set{U}, dove 
 \begin{itemize}
     \item \textit{perfetta} se la funzione è iniettiva\footnote{Ricordo: una funzione è iniettiva se per ogni elemento nel codominio esiste al più un elemento nel dominio, tale che $x R y$. In questo caso significa che la funzione di hash non presenta collisioni.}.
     \item \textit{minimale} se $|X| = m$.
-    \item \textit{preserva l'ordine} se esiste un ordine lineare su \set{X} e si ha $x \leq y \iff f(x) \leq f(y)$.  
+    \item \textit{preserva l'ordine} se esiste un ordine lineare su \set{X} e si ha $x \leq y \iff f(x) \leq f(y)$.
 \end{itemize}
 Il nostro scopo è quello di costruire, per un insieme di stringhe arbitrario, una funzione di hash minimale, perfetta, e che preservi l'ordine. (si noti che di per sè non stiamo chiedendo qual è il risultato di $f$ su $U \smallsetminus X$: questo problema verrà risolto a parte).
 
@@ -28,7 +28,7 @@ Ora, assumendo che $h$ e $g$ siano casuali e indipendenti, il grafo che andiamo 
 Il caso ora descritto non è in realtà ottimo. La teoria degli ipergrafi casuali ci dice che utilizzando 3-ipergrafi (cioè un insieme di sottoinsiemi di ordine 3 dell'insieme dei vertici) è possibile dare una nozione di aciclicità che permette di risolvere i sistemi nel caso di \textit{tre} funzioni di hash, ma in questo caso il limite che garantisce l'aciclicità è $m > 1.23n$ - un miglioramento netto rispetto al caso di ordine 2.
 Alla fine, per memorizzare la funzione statica \fun{f}{X}{2^b} dovremo utilizzare solo 1.23 bit per elemento.
 \subsection{Firme}
-La funzione così costruita, per quanto sia minimale, perfetta e preservi l'ordine non permette di riconoscere se un elemento fa parte di \set{X} o no. Per ovviare all'inconveniente utilizziamo un insieme di \textit{firme} associato all'insieme \set{X} delle chiavi. Consideriamo cioè una funzione \fun{s}{U}{2^r} che associ a ogni chiave possibile una sequenza di $r$ bit "casuale", nel senso che la probabilità che $s(x) = s(y)$ se $x$ e $y$ sono presi uniformemente a caso da \set{U} è \set{2^{-r}} (per esempio una buona funzione di hash). Consideriamo l'enumerazione ordinata $x_0 \leq x_1 \leq \dots \leq x_{n - 1}$ degli elementi di \set{X}. Oltre a $f$, memorizziamo 
+La funzione così costruita, per quanto sia minimale, perfetta e preservi l'ordine non permette di riconoscere se un elemento fa parte di \set{X} o no. Per ovviare all'inconveniente utilizziamo un insieme di \textit{firme} associato all'insieme \set{X} delle chiavi. Consideriamo cioè una funzione \fun{s}{U}{2^r} che associ a ogni chiave possibile una sequenza di $r$ bit "casuale", nel senso che la probabilità che $s(x) = s(y)$ se $x$ e $y$ sono presi uniformemente a caso da \set{U} è \set{2^{-r}} (per esempio una buona funzione di hash). Consideriamo l'enumerazione ordinata $x_0 \leq x_1 \leq \dots \leq x_{n - 1}$ degli elementi di \set{X}. Oltre a $f$, memorizziamo
 un vettore di dimensione $n$ in cui i valori di \set{X} sono mappati nelle posizioni $f(x)$, che é il rango lessicografico di $x$, affinché, preso $x \in X$, calcolati $f(x)$ ed $s(x)$ avró che
 \begin{equation*}
     S_{f(x)} = s(x)

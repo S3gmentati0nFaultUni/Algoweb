@@ -58,7 +58,7 @@ siccome $\bigb{1 + \alpha/n}^n \rightarrow e^{\alpha}$ per $n \rightarrow \infty
 \begin{equation*}
     \varphi = \bigb{1 - \bigb{1 - \frac{1}{m}}^{-m \frac{-dn}{m}}}^d \sim \bigb{1 - e^{-\frac{dn}{m}}}^d
 \end{equation*}
-Sia ora $p = e^{-\frac{dn}{m}}$, allora 
+Sia ora $p = e^{-\frac{dn}{m}}$, allora
 \begin{align*}
     &\ln(p) = -\frac{dn}{m}\\
     &m\ln(p) = dn\\
@@ -176,7 +176,7 @@ Ogni volta che un URL $u$ viene inserito nel crivello, aggiungiamo $h(u)$ a \tex
     \item Deduplico \textbf{S}, quindi elimino le occorrenze successive alla prima per ogni firma.
     \item Z' = Z $\cup$ \textbf{S} marchiamo utili le firme in \textbf{S} che non compaiono in Z.
     \item Scandiamo ogni entry di \textbf{S} e A in parallelo (sono entrambi ordinati) e diamo in output gli URL in A corrispondenti alle entry marcate come utili al passo precedente.
-    \item \textbf{S} e A vengono svuotati e Z viene sostituito da Z'. 
+    \item \textbf{S} e A vengono svuotati e Z viene sostituito da Z'.
 \end{enumerate}
 Innanzitutto, si noti che Z, alla fine di uno scarico, contiene di nuovo le firme di tutti gli URL mai incontrati. Inoltre in output abbiamo dato tutti e soli gli URL la cui firma non era parte di Z, dunque si trattava di URL che non erano ancora stati visitati. Infine, gli URL in output sono stati ovviamente emessi nell'ordine di accodamento in A.
 \subsection{Gestione dei quasi duplicati}

@@ -286,7 +286,7 @@ Questa è una caratteristica comune a tutti i sistemi di numerazione asimmetrica
 Generalizziamo ora l'idea all'ambito di un numero arbitrario di simboli con distribuzione arbitraria. Definiremo:
 \begin{itemize}
     \item L'operazione di \textit{push} che riceve in ingresso l'intero rappresentante la sequenza, un nuovo simbolo e restituisce la rappresentazione della sequenza con il simbolo aggiunto.
-    \item L'operazione di \textit{pop} che riceve in ingresso l'intero rappresentante la sequenza e restituisce il valore rappresentante la coda privato dell'ultimo simbolo e l'ultimo simbolo. 
+    \item L'operazione di \textit{pop} che riceve in ingresso l'intero rappresentante la sequenza e restituisce il valore rappresentante la coda privato dell'ultimo simbolo e l'ultimo simbolo.
 \end{itemize}
 Sia $\Sigma = [0 \dots k)$ l'insieme dei simboli, per ogni $s \in \Sigma$ sia $p_s$ la sua probabilità. Fissata una precisione $d$, tutte le probabilità verranno espresse, da qui in avanti, come approssimazioni di multipli $1/2^d$.
 
@@ -368,7 +368,7 @@ Una lista di affissione è la lista dei puntatori a documenti associati a un uni
 La struttura di un elemento di una lista di affissione potrebbe essere il seguente
 \begin{equation*}
     \langle p, c, \langle p_1, \dots, p_n \rangle \rangle
-\end{equation*} 
+\end{equation*}
 dove $p$ è il puntatore al documento, $c$ è il conteggio, ovvero il numero di volte in cui $t$ compare in $p$, la $n$-pla ordinata (in ordine crescente) $\langle p_1, \dots, p_n \rangle$ indica le posizioni che il token occupa nel file.
 \subsection{Codici per gli indici}
 Nella scelta dei codici istantanei da utilizzare per la compressione di un indice è fondamentale la conoscenza della distribuzione degli interi da comprimere. In alcuni casi è possibile creare un modello statistico che spiega la distribuzione empirica riscontrata.

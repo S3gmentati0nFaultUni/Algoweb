@@ -62,7 +62,7 @@ Un \textit{autovalore dominante} è un autovalore di modulo massimo. Un autovett
 
 Il teorema di Perron Frobenius ci dá qualche garanzia a riguardo.
 \begin{teo}
-    Se $A$ è una matrice irriducibile\footnote{Una matrice $M \in \reals^{k \times k}$ si dice irriducibile quando $\fa i, j \in k, \exists n \in \nat \st a_{i, j}^n > 0$}, quindi il grafo associato ad $A$ è fortemente connesso, esiste un unico autovalore di modulo massimo, detto autovalore di Perron Frobenius, o dominante, a cui è associato un autovettore positivo. Se la matrice è stocastica (ha quindi somma di ogni riga pari a 1 $\implies$ è associata a un grafo i cui pesi sono normalizzati) l'autovalore dominante ha modulo 1.  
+    Se $A$ è una matrice irriducibile\footnote{Una matrice $M \in \reals^{k \times k}$ si dice irriducibile quando $\fa i, j \in k, \exists n \in \nat \st a_{i, j}^n > 0$}, quindi il grafo associato ad $A$ è fortemente connesso, esiste un unico autovalore di modulo massimo, detto autovalore di Perron Frobenius, o dominante, a cui è associato un autovettore positivo. Se la matrice è stocastica (ha quindi somma di ogni riga pari a 1 $\implies$ è associata a un grafo i cui pesi sono normalizzati) l'autovalore dominante ha modulo 1.
 \end{teo}
 \noindent La prima ovvia misura spettrale è l'autovettore dominante sinistro della matrice di adiacenza associata al grafo. L'idea realizza l'intuizione di Landau: assumiamo $\textbf{e}_i$ sia una base di autovettori per la matrice $M$ con autovalori $\lambda_i$ tali che $|\lambda_0| > |\lambda_1| > \dots$. Se consideriamo un vettore \textbf{x} e lo vediamo come combinazione lineare dei vettori dell'autobase
 \begin{equation*}

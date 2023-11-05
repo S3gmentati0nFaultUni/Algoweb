@@ -53,7 +53,7 @@ Per ogni agente $a \in A$, utilizziamo $a$ per inizializzare il generatore e sce
 
 In pratica, il cerchio viene diviso in segmenti massimali che non contengono repliche. Associamo a ogni segmento la replica successiva in senso orario, e tutti gli URL mappati sul segmento avranno come agente responsabile quello associato alla replica. La funzione cosí definita è ovviamente controvariante. L'effetto di aggiungere un nuovo agente è semplicemente quello di spezzare tramite le nuove repliche i segmenti preesistenti: la prima parte verrá mappata sul nuovo agente, la seconda continuerá a essere mappata sull'agente precedente.
 
-La parte delicata è, in questo caso, il bilanciamento: se $C$ viene scelto sufficientemente grande (rispetto al numero di agenti possibili; si veda % AGGIUNGERE LA CITAZIONE % 
+La parte delicata è, in questo caso, il bilanciamento: se $C$ viene scelto sufficientemente grande (rispetto al numero di agenti possibili; si veda % AGGIUNGERE LA CITAZIONE %
 ) i segmenti risultano cosí piccoli da poter dimostrare che la funzione è bilanciata con alta probabilitá.
 
 Si noti che la struttura puó essere realizzata in maniera interamente discreta memorizzando interi, che rappresentano (in virgola fissa) le posizioni delle repliche, in un dizionario ordinato (come un b-tree), A questo punto, dato un URL $u$ è sufficiente generare uno hash intero e trovare il minimo maggiorante presente nel dizionario (eventualmente debordando alla fine dell'insieme e restituendo quindi il primo elemento).
