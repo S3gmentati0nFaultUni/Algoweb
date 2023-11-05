@@ -24,7 +24,8 @@ Come abbiamo notato il problema della closeness sta nel fatto che vi sono coppie
     \bigb{\frac{\sum_i^n{a_i^{-1}}}{n}}^{-1}
 \end{equation*}
 }.\\
-In generale, per ogni nozione teorica sui grafi basata sulla media aritmetica o la massimizzazione ve n'è una definizione alternativa basata sulla media armonica. Se consideriamo la closeness il reciproco di una media denormalizzata delle distanze, è naturale considerare anche una media armonica denormalizzata delle distanze. Definiamo dunque la \textit{centralità armonica} di $x$ come segue
+In generale, per ogni nozione teorica sui grafi basata sulla media aritmetica o la massimizzazione
+v'è una definizione alternativa basata sulla variante armonica dell'operatore. Se consideriamo la closeness il reciproco di una media denormalizzata delle distanze, è naturale considerare anche una media armonica denormalizzata delle distanze. Definiamo dunque la \textit{centralità armonica} di $x$ come segue
 \begin{equation}
     \sum_{y \neq x}{\frac{1}{d(y, x)}} = \sum_{d(y, x) < \infty, y \neq x}{\frac{1}{d(y, x)}}
 \end{equation}
@@ -45,9 +46,10 @@ Per incrementare la precisione del sistema, lo scacchista austriaco Oscar Gelbfu
 La procedura sarebbe stata ripetuta per ottenere i punteggi dei turni successivi.\\
 Edmund Landau \cite{landau} notò nel primo articolo che pubblicò \cite{landaus} che se uno considera il processo iterato proposto da Gelbfuhs, il risultato non è attendibile perchè il valore oscilla e quindi la classifica dei giocatori cambia sulla base del numero di iterazioni $k$. Egli propose dunque di calcolare un vettore di punteggio \textbf{r} che soddisfacesse la seguente equazione
 \begin{equation}
-    M\textbf{r}^T = \lambda \textbf{r}^T
+    M\textbf{r} = \lambda \textbf{r}
 \end{equation}
-dunque \textbf{r} sarebbe dovuto essere un autovettore destro, la cui direzione e verso sono fissati durante la procedura, mentre il modulo viene moltiplicato per una costante (e quindi è soggetto a dilatazioni). Questa è stata la prima apparizione del \textit{ranking spettrale} - che usa gli autovettori di una qualche matrice, solitamente derivata da un grafo, per calcolare una misura di centralità.
+dunque \textbf{r} sarebbe dovuto essere un autovettore destro\footnote{Importante puntiglio di
+notazione, considereremo l'autovettore destro come il vettore colonna di $N$ elementi.}, la cui direzione e verso sono fissati durante la procedura, mentre il modulo viene moltiplicato per una costante (e quindi è soggetto a dilatazioni). Questa è stata la prima apparizione del \textit{ranking spettrale} - che usa gli autovettori di una qualche matrice, solitamente derivata da un grafo, per calcolare una misura di centralità.
 \subsubsection{L'autovettore dominante sinistro}
 Un \textit{autovalore dominante} è un autovalore di modulo massimo. Un autovettore associato all'autovalore dominante è noto come \textit{autovettore dominante}. Nella maggior parte dei casi pratici di ranking spettrale l'autovalore di modulo massimo è unico\footnote{Questo significa che la soluzione del polinomi caratteristico ha molteplicità 1}.\\
 Il teorema di Perron Frobenius ci dá qualche garanzia a riguardo.
@@ -104,7 +106,9 @@ Katz notò immediatamente che l'indice poteva essere espresso usando operatori c
 una semplice generalizzazione (consigliata da Hubbell in \cite{hub}) rimpiazza il vettore \textbf{1} con un vettore di preferenze \textbf{v} affinchè i cammini vengano pesati in maniera differente sulla base del nodo di partenza.
 \subsection{PageRank}
 PageRank è una delle centralitá spettarli oggi in uso piú discusse, sembrerebbe essere usata all'interno dell'algoritmo di ranking di Google\footnote{Il lettore dovrebbe essere a conoscenza, a ogni modo, del fatto che la letteratura riguardante l'efficacia di PageRank nel campo dell'information retrieval è alquanto povera, ed è composta essenzialmente di risultati negativi quali \cite{prank} e \cite{prankoind}}.\\
-Di fatto quando lavoriamo con PageRank è come se avessimo a disposizione una moneta truccata ($p_T > p_C$) e continuiamo ripetutamente a fare dei lanci, se esce testa, continuiamo la visita corrente, altrimenti ricominciamo da un'altra parte (eseguendo un teletrasporto). La cosa interessante è che se il processo di visita si blocca in una componente connessa basta attendere alcuni try e prima o poi il processo aleatorio è in grado di tirarsene fuori da solo. Questo concetto dovrebbe far drizzare le antenne a coloro che hanno seguito corsi riguardanti processi aleatori ripetuti (e.g. Catene di Markov) o su algoritmi euristici (e.g. algoritmo di Simulated Annealing che cerca di sfuggire da un minimo locale)
+Di fatto quando lavoriamo con PageRank è come se avessimo a disposizione una moneta truccata ($p_T >
+p_C$) e continuassimo ripetutamente a fare dei lanci, se esce testa, si continua la visita corrente,
+altrimenti sir ricomincia da un'altra parte (eseguendo la cosiddetta operazione di teletrasporto). La cosa interessante è che se il processo di visita si blocca in una componente connessa basta attendere alcuni try e prima o poi il processo aleatorio è in grado di tirarsene fuori da solo. Questo concetto dovrebbe far drizzare le antenne a coloro che hanno seguito corsi riguardanti processi aleatori ripetuti (e.g. Catene di Markov) o su algoritmi euristici (e.g. algoritmo di Simulated Annealing che cerca di sfuggire da un minimo locale)
 Per definizione PageRank è l'unico vettore \textbf{p} (autovettore dominante) soddisfacente
 \begin{equation}
     \textbf{p} = \alpha\textbf{p}\overline{A} + (1 - \alpha)\textbf{v}
