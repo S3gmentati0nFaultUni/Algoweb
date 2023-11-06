@@ -1,0 +1,400 @@
+\section{Codici istantanei}
+Un \textit{codice} è un insieme $C \subseteq 2^*$, cioè un insieme di parole binarie. Si noti che per ovvie ragioni di cardinalità \set{C} è al più numerabile.
+
+Definiamo l'\textit{ordinamento per prefissi} delle sequenze in \set{2^*} come segue:
+\begin{equation}
+    x \preceq y \iff \exists z \st y = xz
+\end{equation}
+Cioè $x \preceq y$ se e solo se $x$ è un prefisso di $y$. Ricordiamo che in un \textit{ordine parziale} due elementi sono inconfrontabili se nessuno dei due è minore dell'altro.
+
+Un codice è detto \textit{istantaneo} o \textit{privo di prefissi} se ogni coppia di parole distinte del codice è inconfrontabile. L'effetto pratico di questa proprietà è che a fronte di una parola $w$ formata da una concatenazione di parole del codice, non esiste una diversa concatenazione che dà $w$. In particolare, leggendo uno a uno i bit di $w$ è possibile ottenere in maniera istantanea le parole del codice che lo compongono.
+
+Ad esempio, il codice \set{\{0, 1\}} è istantaneo, mentre \set{\{0, 1, 01\}} non lo è. Se prendiamo ad esempio la stringa 001 e la confrontiamo con il primo codice sappiamo che è formata da 0, 0, 1, ma nel secondo caso possiamo scegliere tra 0, 0, 1 e 0, 01.
+
+Un codice si dice \textit{completo} o \textit{non ridondante} se ogni parola $w \in 2^*$ è confrontabile con qualche parola del codice (esiste quindi una parola del codice di cui $w$ è prefisso o una parola del codice che è un prefisso di $w$). Il primo dei due codici summenzionato è completo, mentre il secondo non lo è.
+
+Quando un codice istantaneo è completo, non è possibile aggiungere parole al codice senza perdere la proprietà d'istantaneità; inoltre, qualunque parola \textit{infinita} è decomponibile in maniera unica come una sequenza di parole del codice, qualunque parola \textit{finita} è decomponibile in maniera unica come sequenza di parole del codice più un prefisso di qualche parola del codice.
+
+Ora enunciamo la disequazione di \textit{Kraft-McMillan}, che dimostreremo successivamente.
+\begin{teo}
+    Sia $C \subseteq 2^*$ un codice, se \set{C} è istantaneo, allora
+    \begin{equation*}
+        \sum_{w \in C}{2^{-|w|}} \leq 1
+    \end{equation*}
+    \set{C} è completo se e solo se l'uguaglianza vale. Inoltre, data una sequenza, eventualmente infinita, $t_0, \dots, t_{n - 1}, \dots$ che soddisfa:
+    \begin{equation*}
+        \sum_{i \in n}{2^{-t_i}} \leq 1
+    \end{equation*}
+    esiste un codice istantaneo formato da parole $w_0, \dots, w_{n - 1}, \dots$ tali che $|w_i| = t_i$
+\end{teo}
+\noindent Prima di cominciare la dimostrazione facciamo un preambolo utile a eseguirla in modo veloce.
+
+Un \textit{diadico} è un razionale della forma $k2^{-h}$. A ogni parola $w \in 2^*$. Possiamo associare un sottointervallo semiamperto di $[0\dots1)$ con estremi diadici come segue:
+\begin{itemize}
+    \item Se $w$ è la parola vuota, l'intervallo è $[0\dots1)$
+    \item Se $w$ privata dell'ultimo bit ha $[x \dots y)$ come intervallo associato, se l'ultimo bit è 0 allora l'intervallo di $w$ è $[x \dots (x + y)/2)$, altrimenti l'intervallo di $w$ è $[(x + y)/2 \dots y)$
+\end{itemize}
+Per poter visualizzare quanto segue è utile costruire qualche esempio semplice e inserire le parole del codice in un albero, in cui ogni nodo ha al più due figli etichettati 0 e 1. Si possono fare le seguenti \textbf{osservazioni}:
+\begin{enumerate}
+    \item L'intervallo associato a una parola di lunghezza $n$ ha dimensione $2^{-n}$
+    \item se $v \preceq w$ l'intervallo associato a $v$ contiene quello associato a $w$
+    \item Due parole sono inconfrontabili se solo i corrispondenti intervalli sono disgiunti; infatti, se $v$ e $w$ sono inconfrontabili e $z$ è il loro massimo prefisso comune, assumendo senza perdita di generalità che $z_0 \preceq v$ e $z_1 \preceq w$ l'intervallo di $v$ sarà contenuto in quello di $z_0$ e l'intervallo di $w$ in quello di $z_1$: dato che gli intervalli di $z_0$ e $z_1$ sono disgiunti per definizione, lo sono anche quelli di $v$ e $w$
+    \item Dato un qualunque intervallo diadico $[k2^{-h} \dots (k + 1)2^{-h})$ esiste un'unica parola di lunghezza $h$ a cui è associato l'intervallo, vale a dire, la parola formata dalla rappresentazione binaria di $k$ allineata ad $h$ bit; questo è certamente vero per $h = 0$, e data una parola $w$ con $|w| = h + 1$ se l'intervallo associato a $w$ privato dell'ultimo carattere è $[k2^{-h} \dots (k + 1)2^{-h})$ l'intervallo associato a $w$ è $[(2k)2^{-h-1} \dots (2k + 1)2^{-h-1})$; se l'ultimo carattere di $w$ è 0, $[(2k + 1)2^{-h-1} \dots 2(k + 1)2^{-h-1})$
+\end{enumerate}
+Fatte le dovute premesse possiamo passare alla dimostrazione del Teorema 1.
+\begin{proof}
+    Sia ora \set{C} un codice istantaneo. La sommatoria contenuta nell'enunciato del Teorema 1 è la somma delle lunghezze degli intervalli associati alle parole di \set{C}; questi intervalli sono disgiunti e la loro unione forma un sottoinsieme di $[0\dots1)$ che ha necessariamente lunghezza minore o uguale di 1.
+
+    ($\Longrightarrow$) Se la sommatoria è strettamente minore di 1 deve esserci per forza un intervallo scoperto, diciamo $[x \dots y)$. Questo intervallo contiene necessariamente un sottointervallo della forma $[k2^{-h} \dots (k + 1)2^{-h})$ per qualche $h, k$. Ma allora la parola associata a quest'ultimo potrebbe essere aggiunta al codice (essendo inconfrontabile con le altre [osservazione 3]). Che quindi risulta essere incompleto.
+
+    ($\Longleftarrow$) D'altra parte, se il codice è incompleto l'intervallo corrispondente a una parola inconfrontabile con tutte quelle del codice è necessariamente scoperto, e rende la somma strettamente minore di 1.
+
+    Andiamo ora a dimostrare l'ultima parte dell'enunciato, assumendo, senza perdita di generalità, che la sequenza $t_0, \dots, t_{n - 1}, \dots$ sia monotona non decrescente.
+
+    Genereremo le parole  $w_0, \dots, w_{n - 1}, \dots$ in maniera \textit{miope}. Sia $d$ l'estremo sinistro della parte d'intervallo unitario correntemente coperta dagli intervalli associati dalle parole già generate: inizialmente, $d = 0$. Manterremo vero l'invariante che prima dell'emissione della parola $w_n$ si ha $d = k2^{-t_n}$ per qualche $k$, il che ci permetterà di scegliere come $w_n$ l'unica parola di lunghezza $t_n$ il cui intervallo ha estremo sinistro $d$. Dato che l'intervallo associato a ogni nuova parola è disgiunto dall'unione dei precedenti, le parole generate saranno tutte inconfrontabili.
+
+    L'invariante è ovviamente vero quando $n = 0$. Dopo aver generato $w_n$, $d$ viene aggiornato sommandogli $2^{-t_n}$ e diventa quindi $(k + 1)2^{-t_n}$. Ma dato che $(k + 1)2^{-t_n} = ((k + 1)2^{t_{n + 1}-t_n})2^{-t_{n + 1}}$ e $t_{n + 1} \geq t_n$, l'invariante viene mantenuto.
+    \qedhere
+\end{proof}
+\subsection{Codici istantanei per gli interi}
+Alcuni dei metodi più utilizzati per la compressione degli indici utilizzano codici istantanei per gli interi. Questa scelta può apparire a prima vista opinabile per il fatto che i valori che compaiono in un indice hanno delle limitazioni superiori naturali e sono facili da calcolare, e quindi potrebbe essere più efficiente calcolare un codice istantaneo per il solo sottoinsieme d'interi effettivamente utilizzato.
+
+In realtà se si lavora con collezioni documentali di grandi dimensioni la semplicità teorica e implementativa dei codici per gli interi li rende molto interessanti.
+
+Innanzitutto si noti che un codice istantaneo per gli interi è numerabile. L'associazione tra interi e parole del codice va specificata di volta in volta, anche se, in tutti i codici che vedremo, l'associazione è semplicemente data dall'ordinamento prima per lunghezza e poi lessicografico delle parole. Inoltre assumeremo che le parole rappresentino numeri naturali, e quindi la parola minima (cioè lessicograficamente minima tra quelle di lunghezza minima) rappresenti lo zero\footnote{Questa scelta non è uniforme in letteratura, e in effetti si possono trovare nello stesso libro due codici per gli interi che, a seconda della bisogna, vengono numerati a partire da zero o da uno}.
+La rappresentazione più elementare di un intero $n$ è quella \textit{binaria}, che però non è istantanea (le prime parole sono 0, 1, 10, 11, 100). È possibile rendere il codice istantaneo facendo un allineamento a $k$ bit. La lunghezza di una parola di codice binario (non allineato) è $\lambda(n) + 1$\footnote{Ricordo che: $\lambda(n) = \flr{\log(n)}$}.
+
+Chiameremo \textit{rappresentazione binaria ridotta} di $n$ la rappresentazione binaria di $n + 1$ alla quale viene rimosso il bit più significativo; anch'essa non è istantanea. La lunghezza della parola di codice per $n$ è $\lambda(n + 1)$. Le prime parole sono $\varepsilon$, 0, 1, 00, 01, 10.
+
+Un ruolo importante nella costruzione dei codici istantanei è svolto dai \textit{codici binari minimali} - codici istantanei e completi per i primi $k$ numeri naturali che utilizzano un numero variabile di bit. Esistono diverse possibilità per le scelte delle parole del codice\footnote{In realtà, un codice binario minimale è semplicemente un codice ottimo per la distribuzione uniforme, il che spiega perché sono possibili scelte diverse per le parole del codice}, ma in quanto segue diremo che il codice binario minimale di $n$ (nei primi $n$ naturali) è definito come segue: sia $s = \ceil{\log(k)}$; se $n < 2^s -k$, $n$ è codificato dall'$n$-esima parola binaria (in ordine lessicografico) di lunghezza $s - 1$; altrimenti, $n$ è codificato utilizzando la $(n - k + 2^s)$-esima parola binaria di lunghezza $s$.
+
+La lunghezza di una parola di binario minimale è $s + [n < 2^s - k]$
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c||c|c|c|c|c|c|c|}
+      \hline
+      \multicolumn{8}{|c|}{k} \\
+      \hline
+       &1 &2 &3 &4 &5 &6  &7 \\
+      \hline
+      0 &$\varepsilon$ &0 &0 &00 &00 &00 &00 \\
+      1 & &1 &10 &01 &01 &01 &010 \\
+      2 & & &11 &10 &10 &100 &011 \\
+      3 & & & &11 &110 &101 &100 \\
+      2 & & & & &111 &110 &101 \\
+      2 & & & & & &111 &110 \\
+      2 & & & & & & &111 \\
+      \hline
+    \end{tabular}
+\end{table}
+\noindent La base di tutti i codici istantanei per gli interi è il codice \textit{unario}. Il codice unario rappresenta il naturale $n$ tramite $n$ uno seguiti da uno 0\footnote{Nelle note originali il professore definisce l'unario all'incontrario e mette in una nota quello che ho definito io, ma è evidente che questa definizione è più importante all'atto pratico per il semplice fatto che fa coincidere ordine lessicografico e l'ordine dei valori rappresentati}. Le prime parole del codice sono 0, 10, 110, \dots. La lunghezza di una parola in unario è banalmente $n + 1$. Il codice è sia istantaneo e completo.
+
+Il codice $\gamma$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione ridotta in unario, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 1, 010, 011, 00100, 00101, \dots. La lunghezza della parola di codice è quindi $2\lambda(n + 1) + 1$ e il codice è sia istantaneo che completo, questo si deve al fatto che l'unario è istantaneo e completo.
+
+Analogamente, il codice $\delta$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione binaria ridotta di $n$ in $\gamma$, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 1, 0100, 0101, 01100, 01101, \dots. La lunghezza della parola di codice per $n$ è quindi $2\lambda(\lambda(n + 1) + 1) + 1 + \lambda(n + 1)$ e il fatto che il codice sia istantaneo e completo deriva dal fatto che il $\gamma$ lo sia.
+
+Si potrebbe provare a continuare in questa direzione, ma come vedremo, senza vantaggi significativi.
+
+Il \textit{Codice di Golomb di modulo $k$} \cite{golomb} codifica un numero intero $n$ scrivendo il quoziente della divisione di $n$ per $k$ in unario, seguito dal resto in binario minimale. Le prime parole del codice per $k = 3$ sono 10, 110, 111, 010, \dots. La lunghezza della parola di codice per $n$ è quindi $\flr{n/k} + 1 + \lambda(x\mod(k)) + [x\mod(k) \geq 2^{\ceil{\log(k)}} - k]$ e il fatto che sia istantaneo e completo deriva dal fatto che lo sono sia il codice unario che il codice binario minimale.
+
+Infine conviene ricordare i \textit{codici a blocchi di lunghezza variabile}, come il codice variabile a nibble o a byte. L'idea è che ogni parola è formata da un numero variabile di blocchi di $k$ bit (4 nel caso di nibble e 8 nel caso di byte). Il primo bit non è codificante ed è noto come \textit{bit di continuazione}, se posto a 1 il blocco che stiamo considerando non è quello finale, se posto a 0 abbiamo raggiunto il blocco terminale.
+
+In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato a un multiplo di $k + 1$ bit, diviso in blocchi di $k + 1$ bit ($k$ bit codificanti e un bit di continuazione che non codifica i valori), e rappresentato tramite una sequenza di suddetti blocchi, ciascuno preceduto dal bit di continuazione. La lunghezza della parola di codice è pari a $\ceil{(\log(x) + 1) / k}(k + 1)$. I codici a lunghezza variabile sono ovviamente istantanei ma non completi, questo perché sequenze di 0 che sono più lunghe di un blocco non sono confrontabili con nessuna delle parole del codice. Uno standard alternativo per questo tipo di codici è quello implementato da UTF-8, che anzichè perdere il primo bit di ogni blocco per i bit di continuazione, sfrutta il primo blocco dell'intera parola per codificare quanti saranno i blocchi costituenti la parola.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c||c|c|c|c|}
+      \hline
+      &$\gamma$ &$\delta$ &Golomb ($b$ = 3) &nibble \\
+      \hline
+      0 &1 &1 &10 &1000 \\
+      1 &010 &0100 &110 &1001 \\
+      2 &011 &0101 &111 &1010 \\
+      3 &00100 &01100 &010 &1011 \\
+      4 &00101 &01101 &0110 &1100 \\
+      5 &00110 &01110 &0111 &1101 \\
+      6 &00111 &01111 &0010 &1110 \\
+      7 &0001000 &00100000 & 00110 &1111 \\
+      8 &0001001 &00100001 &00111 &00011000 \\
+      9 &0001010 &00100010 &00010 &00011001 \\
+      10 &0001011 &00100011 &000110 &00011010 \\
+      11 &0001100 &00100100 &000111 &00011011 \\
+      12 &0001101 &00100101 &000010 &00011100 \\
+      13 &0001110 &00100110 &0000110 &00011101 \\
+      14 &0001111 &00100111 &0000111 &00011110 \\
+      15 &000010000 &001010000 &0000010 &00011111 \\
+      \hline
+    \end{tabular}
+\end{table}
+\subsection{Caratteristiche matematiche dei codici}
+Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice è \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$) il valore atteso della lunghezza di una parola rispetto a $p$ è minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ciò significa che se $l(n)$ è la lunghezza della parola di codice per $n$ e $H(p)$ è l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
+\begin{equation*}
+    \sum_{x \in \nat}{l(n)p(n)} \leq cH(p) + d
+\end{equation*}
+Un codice è detto \textit{asintoticamente ottimo} quando a destra il limite superiore è della forma $f(H(p))$ con $\lim_{n \to \infty} f(n) = 1$.
+
+Il codice unario e i codici di Golomb non sono universali, mentre lo sono $\gamma$ e $\delta$ inoltre, quest'ultimo, è anche asintoticamente ottimo.
+\subsection{Codifiche alternative}
+È possibile utilizzare tecniche standard quali i codici di Huffman o la compressione aritmetica per la codifica di ogni parte di un indice. Ci sono però delle considerazioni ovvie che mostrano come questi metodi, utilizzati direttamente, non siano di fatto implementatibili. La codifica di Huffman richiederebbe un numero di parole di codice esorbitante, e le parole dovrebbero essere calcolate separatamente per ogni termine. La codifica aritmetica richiede alcuni bit di scarico prima di poter essere interrotta, e quindi non si presta a essere inframezzata da altri dati (come i conteggi e le posizioni). Inoltre, per quanto efficientemente implementata, è estremamente lenta.
+\subsubsection{PFOR-DELTA}
+Un approccio che ha rivoluzionato il modo di memorizzare le liste di affissione, è quello proposto in \cite{pfordelta}, comunemente chiamato PFOR-DELTA o FOR. L'idea è molto semplice: si sceglie una dimensione di blocco $B$ (di solito 128 o 256), e per ogni blocco consecutivo di $B$ scarti si trova l'intero $b$ tale per cui la maggior parte dei valori\footnote{Il professore trattando l'argomento propone di coprire il 90\% dei valori con $b$ bit, assumeremo 90\% come valore di riferimento da qui in avanti. In questo caso però la filosofia è semplicemente più valori si coprono con $b$, meglio è (attenzione a non cadere nell'approccio miope di coprire tutti i valori, soprattutto qualora si fosse costretti a impiegare un numero di bit considerevole.)} possono essere rappresentati con $b$ bit.
+
+A questo punto viene scritto un vettore di $B$ interi a $b$ bit, che descrive correttamente il 90\% dei valori, quelli che non possono essere espressi in $b$ bit sono dette \textit{eccezioni} e vengono scritte in un vettore a parte impiegando, il minimo numero di bit, atti a descrivere il massimo valore nell'array, per ogni elemento. Gli scarti vengono memorizzati in ordine in $B$, quando incontriamo un'eccezione inseriamo una sequenza di escape (tipo un elemento dell'array costituito da soli 1) che consente di capire che lì è presente un eccezione, è dunque possibile in fase di decodifica rimpiazzare il valore di escape con l'eccezione corrispondente; siccome tutti e due i vettori sono ordinati l'operazione può essere eseguita sequenzialmente.
+
+In fase di decodifica, si copiano i primi $B$ valori a $b$ bit in un vettore di interi. Quest'operazione è molto veloce, in particolare se vengono creati dei cicli srotolati diversi\footnote{Unrolling loops, significa semplicemente scrivere un'istruzione per ogni valore del loop, richiede di scrivere migliaia di righe di codice che però possono essere generate automaticamente.} per ogni possibile valore di $b$. A questo punto si passa attraverso la lista delle eccezioni, che vengono copiate dal secondo vettore nelle posizioni corrette.
+
+Questo approccio fa sì che il processore esegua dei cicli estremamente predicibili, e riesca a decodificare un numero di scarti al secondo significativamente più alto delle tecniche basate su codici. Le performance di compressione sono di solito buone, anche se è difficile dare garanzie teoriche. Lo svantaggio (che può risultare significativo) è che è sempre necessario decodificare $B$ elementi.
+\subsubsection{Elias Fano}
+Elias Fano è un meccanismo di codifica e compressione che può essere utilizzato per memorizzare in maniera efficiente sequenze di interi monotone non decrescenti.
+
+La lista dei puntatori documentali associati a un determinato token in una lista di affissione possono essere memorizzati tramite una lista per scarti (la stessa cosa può essere fatta, volendo, su posizioni e conteggi). Il problema di una lista per scarti è che senza ulteriori magheggi (tabelle di salto) hanno performance di rango e selezione pessime e la loro implementazione efficiente ed efficace può non essere banale, oltre a richiedere un ulteriore sforzo non indifferente.
+
+La codifica di Elias Fano consente di rappresentare sequenze monotone in maniera quasi succinta\footnote{Una struttura dati è quasi-succinta quando lo spazio occupato dalla struttura si avvicina molto al lower bound teorico. Si tratta di un termine impiegato dal professor Vigna nelle dispense di cui non sono riuscito a trovare ulteriore evidenza in rete.}.
+
+Supponiamo di avere la seguente successione monotona non decrescente, di lunghezza $n$, $x_0, \dots, x_{n - 1}$. Supponiamo che il limite superiore della successione sia un valore $u$.
+
+Elias Fano consiste nella memorizzazione dei $\flr{\log(u / n)}$ bit meno significativi di ogni valore in maniera esplicita (avremo un vettore $L$); i bit più significativi di ogni valore verranno memorizzati come una lista di scarti in unario dove $0^k1$ rappresenta $k$ (avremo quindi anche un vettore $H$). Questa struttura ci consente di memorizzare $n$ valori utilizzando solamente $\log(u / n) + 2$ bit al più per elemento, affermazione che dimostreremo al termine di questa sottosezione.
+
+Consideriamo il seguente esempio: Abbiamo la seguente successione di valori
+\begin{equation*}
+    5\hspace{5mm}8\hspace{5mm}8\hspace{5mm}15\hspace{5mm}32
+\end{equation*}
+vogliamo memorizzarla con Elias Fano usando $u = 36$. Siccome $n = 5$ $l = 2$, dunque il vettore contenente i bit meno significativi avrà la seguente struttura
+\begin{equation*}
+    01\hspace{5mm}00\hspace{5mm}00\hspace{5mm}11\hspace{5mm}00
+\end{equation*}
+il vettore di valori in unario sarà il seguente
+\begin{equation*}
+    0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}1
+\end{equation*}
+Prendiamo qualche valore per capire come funziona il processo di memorizzazione:
+per il valore 5 (101) prendo gli $l$ bit meno significativi (01), li metto nel vettore $L$, prendo i bit rimanenti (1) e li memorizzo in unario (01) all'interno del vettore $H$.
+
+Per memorizzare 8 (il valore successivo, 1000) prendo gli $l$ bit meno significativi (00), li metto nel vettore $L$, prendo i bit rimanenti (10), calcolo lo scarto rispetto a $H[0]$ (1 - 2 = 1) e lo memorizzo in unario (01) all'interno del vettore $H$, e il ciclo continua fino a quando tutti i valori non sono stati memorizzati.
+
+I vantaggi di Elias Fano sono i seguenti:
+\begin{itemize}
+    \item Utilizzo ottimale dello spazio.
+    \item Per utilizzare questa codifica non è necessario che i valori seguano una particolare distribuzione.
+    \item La lettura sequenziale richiede pochissime operazioni.
+    \item Restrizione del problema di rango e selezione a un array di circa 2n bit contente per metà 0 e per metà 1.
+\end{itemize}
+Visto che abbiamo nominato il problema di rango e selezione, come viene calcolato rango e selezione in Elias Fano?
+
+Per avere il $k$-esimo elemento recuperiamo gli $l$ bit meno significativi usando $L[k - 1]$\footnote{Uso $k - 1$ supponendo che la numerazione parta da 0 e che quindi si voglia ottenere il terzo valore secondo un conteggio ordinale} mentre i bit più significativi corrispondono al numero di zeri prima del $k$-esimo 1.
+
+Se per esempio volessi recuperare il terzo valore all'interno della sequenza d'esempio che si trova sopra:
+
+I bit meno significativi sono quelli in posizione $L[2] = 00$, i bit più significativi sono il numero di 0 prima del $k$-esimo 1, quindi $2 = 10$. Il terzo valore è 1000 cioè $8$.
+
+Il processo di rango è un po'meno intuitivo ma comunque in tutto simile a quello di selezione. Volendo trovare il minimo valore $x \geq b$ facciamo quanto segue
+\begin{itemize}
+    \item $b >> l$ per capire quanti bit a 0 devo saltare dentro $H$
+    \item Calcolo la posizione di blocco in cui sono
+    \item Gli upper bits sono la somma di tutti i valori in unario che incontro fino a quando non trovo l'$(b >> l)$-esimo bit a 0.
+    \item Prendo il valore di blocco dentro l'array dei lower bits nella posizione che ho trovato prima.
+\end{itemize}
+Proviamo a chiarire il concetto con un esempio (rimanendo sempre sui valori definiti prima). Il minimo valore maggiore di 11011 (27) è
+\begin{itemize}
+    \item So di dover saltare 110 bit a 0, quindi 6.
+    \item La posizione del blocco in cui sono è 4 (partendo da 0).
+    \item La parte alta del numero è data da 01 + 01 + 1 + 01 + 000001 = 000000001 (8), 1000 in binario.
+    \item I lower bits sono quelli in posizione 4 all'interno di $L$, quindi 00. Il risultato finale è 100000, cioè 32.
+\end{itemize}
+Prendiamo ora il caso in esame, vogliamo memorizzare l'indice inverso, il che significa memorizzare i puntatori documentali ed eventualmente posizioni e conteggi. Per quel che riguarda i puntatori documentali utilizziamo, ovviamente, una lista quasi-succinta implementando una tabella di salto che ci consenta di rendere le letture ancora più veloci facendo un piccolo sacrificio in termini di spazio. Per quel che riguarda le posizioni e i conteggi basta tenere a mente che possiamo tenere in memoria una lista quasi-succinta memorizzando $x_i - i$  per successioni strettamente monotone.
+
+Al posto di memorizzare i conteggi, possiamo memorizzare la loro cumulata ($x_0, x_0 + x_1, x_0 + x_1 + x_2, \dots$), che risulta non decrescente, mentre per le posizioni si può salvare la cumulata degli scarti. L'idea di base è che la cumulata dei conteggi può essere utilizzata come funzione per indicizzare le posizioni.
+
+Elias Fano è una tecnica di codifica per indici veloce e compatta, che può essere battuta per compressione solo da codifiche più lente come il Golomb, per contro è scalabile e ha un accesso locale molto migliore di altri approcci, rendendolo una tecnica che si può quasi definire un \textit{go-to}.
+\subsubsection{Analisi spaziale di Elias Fano}
+Prima di partire con l'analisi spaziale di Elias Fano definiamo una serie di strumenti che potrebbero tornare utili nell'arco della dimostrazione.
+
+Sia $X=\{x_i\}$ una successione di valori monotona non decrescente, sia $u$ l'upper bound di questa successione di valori, siano:
+\begin{itemize}
+    \item $L$ il vettore in cui verranno salvate le parti inferiori dei valori della successione
+    \item $H$ il vettore in cui verranno salvate le parti superiori dei valori della successione
+\end{itemize}
+siano inoltre $n$ la dimensione della successione $X$, $l$ il numero dei bit meno significativi ($l = \flr{\log(u/n)}$). A questo punto reintroduciamo il teorema e poi passiamo a dare la sua dimostrazione.
+\begin{teo}
+    Una successione monotona non decrescente può essere memorizzata tramite la codifica di Elias Fano impiegando, al più
+    \begin{equation}
+        \ceil{\log(u/n)} + 2
+    \end{equation}
+    bit per elemento
+\end{teo}
+\begin{proof}
+    Come si è già detto in precedenza, per ogni elemento $x$, memorizzo:
+    \begin{itemize}
+        \item I bit più significativi come $0^x1$, impiegando $x + 1$ bit, chiameremo i bit più significativi $u_i$.
+        \item I bit meno significativi in binario con $\log(u/n)$ elementi.
+    \end{itemize}
+    Quindi lo spazio occupato dal vettore $U$ è
+    \begin{equation*}
+        \sum_{i = 0}^{n - 1}{u_i + 1}
+    \end{equation*}
+    Ricordo che i valori più significativi $u_i$ sono salvati come scarti in $U$, quindi posso scrivere la somma qui sopra come:
+    \begin{equation*}
+        \sum_{i = 0}^{n - 1}{\flr{\frac{x_i}{2^l}} - \flr{\frac{x_{i - 1}}{2^l}} + 1}
+    \end{equation*}
+    A questo punto se consideriamo $\flr{\frac{x_i}{2^l}} - \flr{\frac{x_{i - 1}}{2^l}}$ e calcoliamo l'espressione per tutti i valori di $i$ quello che scopriremo è che viene una somma finita di questo tipo:
+    \begin{equation*}
+        \flr{\frac{x_0}{2^l}} - \flr{\frac{x_{- 1}}{2^l}} + \flr{\frac{x_1}{2^l}} - \flr{\frac{x_{0}}{2^l}} + \dots + \flr{\frac{x_{n - 1}}{2^l}} - \flr{\frac{x_{n - 2}}{2^l}}
+    \end{equation*}
+    È intuitivo notare quanto segue:
+    \begin{equation*}
+        \cancel{\flr{\frac{x_0}{2^l}}} - \flr{\frac{x_{- 1}}{2^l}} + \cancel{\flr{\frac{x_1}{2^l}}} - \cancel{\flr{\frac{x_{0}}{2^l}}} + \dots + \flr{\frac{x_{n - 1}}{2^l}} - \cancel{\flr{\frac{x_{n - 2}}{2^l}}}
+    \end{equation*}
+    Quindi rimangono solamente i termini $- \flr{\frac{x_{- 1}}{2^l}}$ e $\flr{\frac{x_{n - 1}}{2^l}}$. Facendo la supposizione che $x_{- 1} = 0$\footnote{Supposizione fatta durante le lezioni del professor Paolo Boldi, non ho guardato dimostrazioni alternative quindi non so se sia standard o una semplificazione introdotta per far tornare i conti.} possiamo dire quanto segue
+    \begin{equation*}
+        \sum_{i = 0}^{n - 1}{\flr{\frac{x_i}{2^l}} - \flr{\frac{x_{i - 1}}{2^l}} + 1} = n + \flr{\frac{x_{n - 1}}{2^l}} \leq n + \frac{u}{2^l}
+    \end{equation*}
+    Siccome $l = \flr{\log(u/n)}$ possono succedere due cose sulla base del valore di $u/n$
+    Se $u/n \mod(2) = 0$ allora
+    \begin{equation*}
+        n + \frac{u}{\frac{u}{n}} = 2n
+    \end{equation*}
+    Altrimenti
+    \begin{equation*}
+        n + \frac{u}{2^{\flr{\log(u/n)}}} \leq  n + \frac{u}{2^{\log(u/n) - 1}} = n + \frac{u}{\frac{u}{2n}} = 3n
+    \end{equation*}
+    Quindi la struttura dati occupa lo spazio necessario a memorizzare il vettore $U$, cioè $ln$ e poi $2n$ o $3n$ bit sulla base di $u/n$. Per poter uniformare la formula ricordo che:
+    \begin{equation*}
+        \ceil{\log(u/n)} =
+        \begin{cases}
+            l \hspace{1cm}\textnormal{Se $u/n$ è potenza di 2}\\
+            l + 1
+        \end{cases}
+    \end{equation*}
+    Quindi facendo una banale sostituzione, si ricava la seguente formula unificata:
+    \begin{equation}
+        D_n = 2n + \ceil{\log\bigb{\frac{u}{n}}}n
+    \end{equation}
+\end{proof}
+\subsubsection{Sistemi di numerazione asimmetrica (approfondimento)}
+Nel 2013, Duda \cite{duda} ha introdotto un nuovo metodo di codifica di sequenze di simboli che ha rivoluzionato il campo della compressione dati. I \textit{sistemi di numerazione asimmetrica} hanno velocità pari o superiore a un codice di Huffman, ma performance di compressione confrontabili con quelle della codifica aritmetica, quindi davvero ottime (molto vicine al limite teorico di Shannon). Sono alla base di tutti i moderni sistemi di compressione come \texttt{zstd} di Facebook e lo standard JPEG XL.
+
+L'idea alla base dei sistemi di numerazione arimtetica è che per comprimere una sequenza di simboli vorremo (idealmente) utilizzare un intero molto grande. Se una sequenza è codificata da $x$, vorremmo che aggiungere un simbolo $y$ che ha probabilità di comparire $p_y$ portasse a una codifica $x' \approx x / p_s$, perché in questo modo $\log(x') = \log(x) + \log(1 / p_y)$. Aggiungendo quindi $y$ alla sequenza, spenderemo $\log(1 / p_y)$ bit. Complessivamente il costo del messaggio sarà l'entropia di Shannon.
+
+Possiamo vedere questo concetto nella codifica banale della sorgente più semplice, con 0 e 1 equiprobabili. Se $x$ è la codifica dei simboli visti fino ad ora, $x' = 2x$ oppure $x' = 2x + 1$ a seconda del simbolo che compare. Il risultato è un intero che in base 2 è descritto dalla sequenza di 0 e 1 da codificare.
+
+Se vogliamo decodificare la sequenza rispetto a $x'$, l'ultimo valore codificato è semplicemente $x' \mod 2$, la sequenza rimane $\flr{x'/2}$. Iterando la procedura otteniamo le cifre in ordine \textit{inverso} rispetto alla codifica.
+
+Questa è una caratteristica comune a tutti i sistemi di numerazione asimmetrica: si codifica in una direzione, si decodifica nella direzione opposta, come in una pila. Possiamo decomprimere i valori nell'ordine corretto comprimendo la sequenza al contrario.
+
+È chiaro che il ragionamento è analogo nel caso in cui si abbiano $k$ valori equiprobabili: L'unica differenza è che i valori saranno codificati tramite stringhe di $k$ simboli.
+
+Generalizziamo ora l'idea all'ambito di un numero arbitrario di simboli con distribuzione arbitraria. Definiremo:
+\begin{itemize}
+    \item L'operazione di \textit{push} che riceve in ingresso l'intero rappresentante la sequenza, un nuovo simbolo e restituisce la rappresentazione della sequenza con il simbolo aggiunto.
+    \item L'operazione di \textit{pop} che riceve in ingresso l'intero rappresentante la sequenza e restituisce il valore rappresentante la coda privato dell'ultimo simbolo e l'ultimo simbolo.
+\end{itemize}
+Sia $\Sigma = [0 \dots k)$ l'insieme dei simboli, per ogni $s \in \Sigma$ sia $p_s$ la sua probabilità. Fissata una precisione $d$, tutte le probabilità verranno espresse, da qui in avanti, come approssimazioni di multipli $1/2^d$.
+
+Dunque per ogni $s$, abbiamo che $p_s = f_s / 2^d$. Definiamo $f_n = 2^d$, più grande è $d$, maggiore sarà la precisione con cui rappresentiamo le probabilità iniziali (quindi migliore sarà la compressione).
+
+Prendiamo ora i primi $2^d$ interi e dividiamoli in $n$ segmenti contigui di lunghezza $f_s$. A simboli più frequenti corrisponderanno segmenti di lunghezza maggiore, definiamo la cumulata degli $f_s$ come segue
+\begin{equation*}
+    \sum_{t < s}f_t \hspace{5mm} \textnormal{per $s$} \in [0 \dots n]
+\end{equation*}
+Notiamo che ogni elemento $x$ di $2^d$ sta in uno dei segmenti, e quindi a ogni simbolo è associato esattamente un simbolo $s$. Più precisamente, esiste un solo $s$ tale per cui $c_s \leq x \leq c_{s + 1}$. Poniamo $sym(x) = s$ e $sym(f_s) = s$, questo ci permette di fare in modo che, prendendo un elemento $x$ di $2^d$ uniformemente a caso, $sym(x) \in \Sigma$ ha esattamente distribuzione $p$.
+
+Procediamo ora a dare la definizione delle operazioni di cui si parlava prima:
+\begin{align*}
+\texttt{push(x, s)} &= (\flr{x / f_s} << d) + c_s + x \mod f_s \\
+\texttt{pop(x)} &= \langle (x >> d) \cdot f_s + x \mod 2^d - c_s, s \rangle \quad \textnormal{dove $s = sym(x \mod 2^d)$}
+\end{align*}
+È facile notare che le due operazioni sono una l'inversa dell'altra. Inoltre, $\texttt{push(x, s)} \approx (x / f_s) \cdot 2^d = x \cdot (f_s / 2^d) = x / p_s$, come volevamo.
+
+Mettiamo ora alla prova ciò di cui abbiamo parlato con un semplice esempio. Abbiamo tre simboli:
+\begin{itemize}
+    \item 0, che compare con probabilità $9 / 10$ ($\log(1/p_0) \approx 0.152$)
+    \item 1, che compare con probabilità $1 / 30$ ($\log(1/p_1) \approx 4.9$)
+    \item 2, che compare con probabilità $2 / 30$ ($\log(1/p_2) \approx 3.9$)
+\end{itemize}
+L'entropia di Shannon, che viene calcolata come $\sum_{x \in X}p(x) \log(p(x))$ è circa $0.558$. Se utilizziamo $d = 10$ abbiamo le seguenti probabilità:
+\begin{itemize}
+    \item $922 / 1024$ per 0
+    \item $34 / 1024$ per 1
+    \item $68 / 1024$ per 2
+\end{itemize}
+Consideriamo la sequenza
+\begin{equation*}
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0
+\end{equation*}
+Partiamo ora da $x = 0$, ora
+\begin{align*}
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit})\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit} / 2)\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0  \qquad (1 \textnormal{bit} / 3)\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit} / 4)\\
+\texttt{push(0, 0)} &= (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit} / 5) \\
+\texttt{push(0, 1)} &= (\flr{0 / 34} << 10) + 922 + 0 = 922 \qquad (9 \textnormal{bit} / 6) \\
+\texttt{push(1024, 0)} &= (\flr{1024 / 922} << 10) + 0 + 0 = 1024 \qquad (10 \textnormal{bit} / 7) \\
+\texttt{push(1024, 0)} &= (\flr{922 / 922} << 10) + 0 + 102 = 1126 \qquad (11 \textnormal{bit} / 8) \\
+\texttt{push(1126, 0)} &= (\flr{1126 / 922} << 10) + 0 + 204 = 1228 \qquad (11 \textnormal{bit} / 9) \\
+\texttt{push(1228, 2)} &= (\flr{1228 / 68} << 10) + 956 + 4 = 19392 \qquad (15 \textnormal{bit} / 10) \\
+\texttt{push(19392, 0)} &= (\flr{19392 / 922} << 10) + 0 + 30 = 21534 \qquad (15 \textnormal{bit} / 11) \\
+\texttt{push(21534, 0)} &= (\flr{21534 / 922} << 10) + 0 + 328 = 23880 \qquad (15 \textnormal{bit} / 12)
+\end{align*}
+Nelle implementazioni pratiche viene eseguito un processo di \textit{rinormalizzazione}: quando l'intero calcolato diviene troppo grande da maneggiare, la metà superiore dei suoi bit viene scritta in un buffer di output e si continua a gestire la metà inferiore. Laa stessa operazione, invertita, consente di rileggere. La rinormalizzazione comporta un'ulteriore perdita di compressione, ma permette di operare su interi di dimensione fissata.
+\subsection{Distribuzioni intese}
+Ogni codice istantaneo completo per gli interi definisce implicitamente una \textit{distribuzione intesa} sugli interi, che assegna a $w$ la probabilità $2^{-|w|}$. Il codice, in effetti, risulta \textit{ottimo} per la distribuzione associata. La scelta di un codice istantaneo può quindi essere ricondotta a considerazioni sulla distribuzione statistica degli interi che si intendo rappresentare.
+
+Al codice unario è associata una distribuzione geometrica.
+\begin{equation*}
+    \frac{1}{2^{x + 1}}
+\end{equation*}
+mentre la distribuzione associata a $\gamma$ è
+\begin{equation*}
+    \frac{1}{2^{2\flr{\log(x + 1)} + 1}} \approx \frac{1}{2(x + 1)^2}
+\end{equation*}
+e quella associata a $\delta$ è
+\begin{equation*}
+    \frac{1}{2^{\flr{\log(\flr{\log(x + 1)}) + 1} + 1 + \flr{\log(x + 1)}}} \approx \frac{1}{2(x + 1)(\log(x + 1) + 1)^2}
+\end{equation*}
+Il codice di Golomb ha, naturalmente, una distribuzione dipendente dal modulo, che però è geometrica:
+\begin{equation*}
+    \frac{1}{2^{\flr{x / k} + \log(k) + [x\mod(k) \geq 2^{\ceil{\log(k)}} - k]}} \approx \frac{1}{k\bigb{\sqrt[k]{2}}^x}
+\end{equation*}
+Infine, sebbene i codici a lunghezza variabile non siano completi, a meno di un fattore di normalizzazione è comunque possibile osservarne la distribuzione intesa:
+\begin{equation*}
+    \frac{1}{2^{\ceil{\log(x) / k}(k + 1)}} \approx \frac{1}{(x + 1)^{1 + 1/k}}
+\end{equation*}
+\subsection{Struttura di un indice}
+Dai documenti crawlati si costruisce un indice inverso, cioè una relazione che mappa ogni termine nei documenti in cui compare. Partendo dalla lista di termini, costituita da elementi della forma $\langle documento, termine, posizione \rangle$, posso fare ordinamento rispetto alla colonna centrale e a partire da questo costruire l'indice inverso, ovvero l'indice che contiene, per ogni termine, l'insieme dei documenti (e delle posizioni nel documento) in cui il termine compare, in ordine crescente per valore del puntatore documentale.
+
+Una lista di affissione è la lista dei puntatori a documenti associati a un unico termine, spesso, all'informazione essenziale dei puntatori documentali, sono associate una serie d'informazioni accessorie quali la frequenza con cui il token compare nei documenti associati e le posizioni occupate.
+
+La struttura di un elemento di una lista di affissione potrebbe essere il seguente
+\begin{equation*}
+    \langle p, c, \langle p_1, \dots, p_n \rangle \rangle
+\end{equation*}
+dove $p$ è il puntatore al documento, $c$ è il conteggio, ovvero il numero di volte in cui $t$ compare in $p$, la $n$-pla ordinata (in ordine crescente) $\langle p_1, \dots, p_n \rangle$ indica le posizioni che il token occupa nel file.
+\subsection{Codici per gli indici}
+Nella scelta dei codici istantanei da utilizzare per la compressione di un indice è fondamentale la conoscenza della distribuzione degli interi da comprimere. In alcuni casi è possibile creare un modello statistico che spiega la distribuzione empirica riscontrata.
+
+I termini sono tipicamente salvati per ID (e.g. rango lessicografico), con un meccanismo per ricavarlo, come MWHC (che sarà trattato in seguito).
+
+Per quanto riguarda frequenze e conteggi, la presenza significativa degli \textit{hapax legomena} rende il codice $\gamma$ quello usato più di frequente.
+
+La questione degli scarti tra puntatori documentali è più complessa. Il modello \textit{Bernoulliano} di distribuzione prevede che un termine con frequenza $f$ compaia in una collezione di $N$ documenti con probabilità $p = f / N$ indipendentemente in ogni documento. L'assunzione di indipendenza ha l'effetto di semplificare enormemente la distribuzione degli scarti, che risulta una geometrica di ragione $p$: lo scarto $x > 0$ compare cioè con probabilità $p(1 - p)^{x - 1}$.
+
+Abbiamo già notato come il codice di Golomb abbia distribuzione intesa geometrica: si tratta quindi di trovare il modulo adatto a $p$, un risultato importante di teoria dei codici dice che il codice ottimo per una geometrica di ragione $p$ è un Golomb di modulo
+\begin{equation}
+    k = \ceil{- \frac{\log(2 - p)}{\log(1 - p)}}
+\end{equation}
+Una controindicazione può essere però la \textit{correlazione} tra documenti adiacenti. Per esempio, se i documenti della collezione provengono da un crawl e sono nell'ordine di visita, è molto probabile che documenti vicini contengano termini simili. Questo fatto sposta significativamente da una geometrica la distribuzione degli scarti.
+
+Più spesso gli scarti tra puntatori documentali all'interno delle liste di affissione vengono memorizzati usando Elias-Fano (di parametro dipendente dal termine) o la $\gamma$ di Elias.
+
+Per quanto riguarda le posizioni, non esistono modelli noti e affidabili degli scarti, si usa pertanto un codice dalle buone prestazioni come il $\delta$. È anche possibile utilizzare Golomb, assumendo un modello Bernoulliano anche per le posizioni, ma per calcolare il modulo è necessario avere la lunghezza del documento, che quindi deve essere disponibile in memoria centrale. Alla fine, in ogni caso, considerazioni come la facilità d'implementazione, velocità di decodifica, e altri fattori, possono essere forze determinanti nella scelta delle tecniche di codifica.
+\subsection{Problemi implementativi}
+I codici istantanei comprimono in maniera ottima rispetto alle distribuzioni intese. Riducono quindi la dimensione dell'indice in maniera significativa, cosa particolarmente utile se l'indice verrà caricato in tutto o in parte in memoria centrale. In effetti, esperimenti condotti all'inizio dell'attività di ricerca sugli indici inversi hanno mostrato che un indice compresso è significativamente più veloce di un indice non compresso, dato che l'I/O è ridotto in maniera significativa e il prezzo da pagare nella decodifica è di pochi cicli macchina per intero.
+
+L'implementazione della lettura dei codici istantanei va però effettuata con una certa cura se si vogliono ottenere prestazioni ragionevoli. L'idea più importante è quella di mantenere un \textit{bit buffer} che contiene una finestra sul file delle liste di affissione. Le manipolazioni relative alla decodifica dei codici dovrebbero essere confinate al bit buffer nella stragrande maggioranza dei casi. In particolare, un numero significativo di prefissi (per esempio, $2^{16}$) può essere decodificato tramite una tabella che contiene, per ogni prefisso, il numero di bit immediatamente decodificabili e l'intero corrispondente, o l'indicazione che è necessario procedere a una decodifica manuale.
+\subsection{Salti}
+Non è possibile ottenere in tempo costante un elemento arbitrario di una lista compressa per scarti: è necessario decodificare gli elementi precedenti. In realtà, più problematica è l'impossibilità di saltare rapidamente al primo elemento della lista maggiore o uguale a un limite inferiore $b$, operazione detta comunemente \textit{salto}. I salti sono fondamentali, come vedremo, per la risoluzione veloce delle interrogazioni congiunte.
+
+La tecnica di base per ovviare a questo inconveniente è quella di memorizzare, insieme alla lista di affissioni, una \textit{tabella di salto} che memorizza, dato un \textit{quanto} $q$, il valore degli elementi d'indice $iq, i > 0$, e la loro posizione (espressa in bit) nella lista di affissioni. Quando si vuole effettuare un salto, e più precisamente quando si vuole trovare minimo valore maggiore o uguale a $b$, si cerca nella tabella (per esempio tramite una ricerca dicotomica o una \textit{ricerca esponenziale}) l'elemento di posto $iq \leq b$, e si comincia a decodificare la lista per cercare il minimo maggiorante di $b$. Al più $q$ elementi dovranno essere decodificati, e $q$ deve essere scelto sperimentalmente in modo da, al tempo stesso, non accrescere eccessivamente la dimensione dell'indice e fornire un significativo aumento di prestazioni.
+
+Si noti che una volta che è possibile saltare all'interno della lista dei puntatori ai documenti, è necessario mettere in piedi strutture di accesso per conteggio e posizioni, se presenti e memorizzate separatamente. Se cioè è possibile accedere in modo diretto ai puntatori documentali d'indice $iq$, deve essere possibile accedere allo stesso modo alle parti rimanenti dell'indice.

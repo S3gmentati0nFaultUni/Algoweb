@@ -1,0 +1,67 @@
+\section{Tecniche di distribuzione del carico}
+Per coordinare un insieme \set{A} di agenti indipendenti che effettuano attività di crawling è necessario assegnare in qualche modo ciascun URL a uno specifico agente: denoteremo con $\delta_A(-): U \rightarrow A$ la funzione che, dati l'insieme dei agenti \set{A} e l'universo degli URL \set{U}, assegna a ciascun URL l'agente che ne è responsabile. Assumiamo qui che gli agenti in \set{A} siano identici, in particolare che abbiano a disposizione le stesse risorse.
+
+Una richiesta banale ma necessaria è che la funzione sia \textit{bilanciata}, ovvero che:
+\begin{equation*}
+    |\delta_A(-)^{-1}| \approx \frac{|U|}{|A|}
+\end{equation*}
+Quindi ogni agente deve gestire, all'incirca, lo stesso numero di URL.
+
+Nel caso in cui l'insieme degli agenti sia statico, basta ad esempio numerare gli agenti a partire da zero, fissare una funzione di hash $h$ applicabile agli URL, e dato un URL $u$ assegnargli l'agente $h(u)\mod|A|$.
+
+La questione è più interessante quando l'insieme degli agenti varia nel tempo. In questo frangente non vogliamo solo che la funzione di assegnamento sia bilanciata, deve anche essere \textit{controvariante}.
+
+Una funzione si dice controvariante quando, dato un insieme $B \supseteq A$ e $a \in A$
+\begin{equation*}
+    |\delta_B(a)^{-1}| \subseteq |\delta_A(a)^{-1}|
+\end{equation*}
+Questo significa che se \set{B} è un insieme di agenti più grande (al più uguale) di \set{A}, l'insieme di URL associato a ciascuno degli agenti in \set{B} sarà più piccolo (al più uguale) dell'insieme di URL associato al corrispettivo agente in \set{A}. In particolare, se si aggiunge un agente, nessuno degli agenti preesistenti si vede assegnare nuovi URL.
+
+Questo problema è comune ad altri contesti, come il caching nelle \textit{content delivery network} e i sistemi di calcolo distribuito \textit{peer-to-peer}. È facile convincersi che una strategia come quella proposta per l'ambito statico risulterà disastrosa. Vedremo adesso tre modi diversi per gestire la questione.
+\subsection{Permutazioni aleatorie}
+Il primo approccio che esploreremo si basa sulle permutazioni aleatorie. Assumiamo vi sia un universo \set{P} di possibili agenti. A ogni istante dato l'insieme di agenti effettivamente utili è un insieme $A \subseteq P$. Per semplicità assumiamo che \set{P} sia formato dai primi $|P|$ numeri naturali (anche se in realtà è solo necessario che \set{P} sia totalmente ordinato).
+
+Fissiamo una volta per tutte un generatore di numeri pseudocasuali. La strategia è ora la seguente: dato un URL $u$, inizializziamo il generatore utilizzando $u$ (per esempio, passando $u$ attraverso una funzione di hash prefissata) e utilizziamolo per generare una permutazione aleatoria di $P$ scelta in maniera uniforme. A questo punto, l'agente scelto è il primo agente in \set{A} nell'ordine indotto dalla permutazione così calcolata.
+
+Chiaramente, dato che le permutazioni vengono generate in maniera uniforme approssimativamente la stessa frazione di URL viene assegnata a ogni agente. Inoltre, se consideriamo un insieme $B \supseteq A$ le uniche variazioni di assegnazione consistono nello spostamento di URL verso elementi di $B \smallsetminus A$, spostamento che avviene esattamente quando uno di tali elementi precede tutti quelli di \set{A} nella permutazione associata all'URL.
+
+In sostanza, la permutazione fornisce un ordine di preferenza per assegnare $u$ all'interno dell'insieme degli agenti possibili \set{P}. Il primo agente effettivamente disponibile (cioè, in \set{A}) sarà responsabile per il crawling di $u$. Dato che la permutazione è generata tramite un generatore comune a tutti gli agenti e utilizza lo stesso seme ($u$) tutti gli agenti calcolano lo stesso ordine di preferenza.
+
+Si noti che è possibile generare una tale permutazione in tempo e spazio lineare in $|P|$. La tecnica, nota come \textit{Knuth shuffle} o \textit{Fisher-Yates shuffle} (lo pseudocodice viene mostrato nell'Algoritmo 2), consiste nell'inizializzare un vettore di $|P|$ elementi con i primi $|P|$ numeri naturali (o con gli elementi di \set{P}, nel caso generale).
+
+A questo punto si eseguono $|P|$ iterazioni: all'iterazione di indice $i$ (a partire da zero) si scambia l'elemento i-esimo con uno delle seguenti $|P| - i$ scelto a caso uniformemente (si noti che $i$ stesso è una scelta possibile). Alla fine dell'algoritmo, il vettore contiene una permutazione aleatoria scelta in maniera uniforme.
+\begin{algorithm}
+\caption{Fisher-Yates shuffle}
+\begin{algorithmic}
+    \Require{vettore di $n$ posizioni \texttt{array}}
+    \For{$i \in$ \set{\{0, \dots, n - 2\}}}
+    \State $j \gets i + \texttt{UNIFORM}(n - i)$
+    \State \texttt{SWAP}(\texttt{array}$[i]$, \texttt{array}$[j]$)
+    \EndFor
+\end{algorithmic}
+\end{algorithm}
+In realtà non è necessario generare l'intera permutazione: non appena completiamo l'iterazione $i$, se troviamo in posizione $i$ un elemento di \set{A} possiamo restituirlo, dato che nei passi successivi non verrà più spostato. Inoltre, tutte le modifiche ad \set{A} avvengono in tempo costante (dato che non c'è nulla da fare).
+\subsection{Min hashing}
+Il secondo approccio non richiede che ci sia un universo predeterminato o ordinato. Fissiamo una funzione di hash aleatoria $h(-, -)$ a due argomenti che prende un URL e un agente. L'agente $a \in A$ responsabile dell'URL $u$ è quello che realizza il minimo tra tutti i valori $h(u, a)$.
+
+Di nuovo, assumendo che $h$ sia aleatoria, il bilanciamento è banale. Ma anche la proprietà di controvarianza è elementare: se $B \supseteq A$, gli unici URL che cambiano assegnamento sono quegli URL $u$ per cui esiste un $b \in B \smallsetminus A \st h(b, u) < h(a, u) \fa a \in A$.
+Si noti che questo metodo richiede tempo di calcolo proporzionale a \set{A}, e spazio costante (basta tenere traccia del minimo elemento trovato). Anche in questo caso, le modifiche a \set{A} richiedono tempo costante, dato che non c'è nulla da fare.
+\subsection{Hashing Coerente}
+L'ultimo approccio è il più sofisticato. Consideriamo idealmente una circonferenza di lunghezza unitaria e una funzione di hash aleatoria $h$ che mappa gli URL nell'intervallo $[0\dots1)$ (cioè sulla circonferenza unitaria). Fissiamo inoltre un generatore di numeri pseudocasuali.
+
+Per ogni agente $a \in A$, utilizziamo $a$ per inizializzare il generatore e scegliere $C$ posizioni pseudoaleatorie sul cerchio (ad esempio, in pratica, $C = 300$): queste saranno le \textit{repliche} assegnate all'agente $a$. A questo punto per trovare l'agente responsabile di un URL $u$ partiamo dalla posizione $h(u)$ e proseguiamo in senso orario finchè non troviamo una replica: l'agente associato è quello responsabile per $u$.
+
+In pratica, il cerchio viene diviso in segmenti massimali che non contengono repliche. Associamo a ogni segmento la replica successiva in senso orario, e tutti gli URL mappati sul segmento avranno come agente responsabile quello associato alla replica. La funzione così definita è ovviamente controvariante. L'effetto di aggiungere un nuovo agente è semplicemente quello di spezzare tramite le nuove repliche i segmenti preesistenti: la prima parte verrà mappata sul nuovo agente, la seconda continuerà a essere mappata sull'agente precedente.
+
+La parte delicata è, in questo caso, il bilanciamento: se $C$ viene scelto sufficientemente grande (rispetto al numero di agenti possibili; si veda % AGGIUNGERE LA CITAZIONE %
+) i segmenti risultano così piccoli da poter dimostrare che la funzione è bilanciata con alta probabilità.
+
+Si noti che la struttura può essere realizzata in maniera interamente discreta memorizzando interi, che rappresentano (in virgola fissa) le posizioni delle repliche, in un dizionario ordinato (come un b-tree), A questo punto, dato un URL $u$ è sufficiente generare uno hash intero e trovare il minimo maggiorante presente nel dizionario (eventualmente debordando alla fine dell'insieme e restituendo quindi il primo elemento).
+
+Questo metodo richiede spazio lineare in $|A|$ e tempo logaritmico in $|A|$. Aggiungere o togliere un elemento ad \set{A} richiede, contrariamente ai casi precedenti, tempo logaritmico in $|A|$.
+\subsection{Note generali}
+In tutti i metodi che abbiamo delineato c'è una componente pseudoaleatoria. Questo fa sì che la distribuzione degli URL agli agenti non sia veramente bilanciata, ma segua piusttosto una distribuzione binomiale negativa. Considerato però il grande numero di elementi in gioco, il risultato approssima bene una distribuzione bilanciata.
+
+Sia il min hashing che lo hashing coerente possono presentare \textit{collisioni} - situazioni in cui non sappiamo come scegliere l'output perché due minimi, o due repliche, coincidono - in tal caso, è necessario disambiguare deterministicamente il risultato (imponendo, ad esempio, un ordine arbitrario sugli agenti).
+
+Tutti i metodi permettono (eventualmente con uno sforzo computazionale aggiuntivo) di sapere quale sarebbe il prossimo agente responsabile per un URL, se quello corrente non fosse presente (l'agente designato è crashato). Nel caso delle permutazioni aleatorie è sufficiente progredire nello shuffle, cercando l'elemento successivo in \set{A}. Nel caso del min hashing è necessario tenere traccia di due valori: il minimo e il valore immediatamente successivo. Infine, nel caso dell'hashing coerente, basta continuare a procedere in senso orario fino a giungere alla replica di un nuovo agente.
