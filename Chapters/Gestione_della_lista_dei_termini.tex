@@ -21,7 +21,7 @@ Chiaramente, memorizzando $h$, $g$ e il vettore \textbf{w} abbiamo memorizzato $
 
 Andiamo ora a eseguire l'operazione di \textit{esfoliazione} dell grafo così costruito: partendo da una qualunque foglia $v$ (un vertice di grado 0 o 1), la rimuoviamo dal grafo. Se questa è adiacente a un altro vertice, rimuoviamo anche il lato $l$ che li connette, a questo punto mettiamo la coppia $\langle v, l \rangle$ dentro uno stack.
 
-Il processo continua fino a quando il grafo non è vuoto o non si incontra un ciclo. Se non incontriamo alcun ciclo, significa che il sistema può essere risolto, questo perchè ogni equazione del sistema deve comparire una sola volta nello stack, altrimenti il processo si conclude quando rimuoviamo gli ultimi nodi, che avranno degree zero, e di conseguenza il loro valore $w_i$ sará pari a 0. Se risolviamo l'equazione associata a ogni elemento $\langle v, l \rangle$ sfruttando il fatto che $v = h(x) \lor v = g(x)$, e $v$ non è stato certamente assegnato precedentemente, dato che ogni vertice in una coppia non compare mai in coppie successive. Essenzialmente stiamo \textit{triangolando} la matrice associata al sistema (si vedano i lucidi animati online).
+Il processo continua fino a quando il grafo non è vuoto o non si incontra un ciclo. Se non incontriamo alcun ciclo, significa che il sistema può essere risolto, questo perché ogni equazione del sistema deve comparire una sola volta nello stack, altrimenti il processo si conclude quando rimuoviamo gli ultimi nodi, che avranno degree zero, e di conseguenza il loro valore $w_i$ sarà pari a 0. Se risolviamo l'equazione associata a ogni elemento $\langle v, l \rangle$ sfruttando il fatto che $v = h(x) \lor v = g(x)$, e $v$ non è stato certamente assegnato precedentemente, dato che ogni vertice in una coppia non compare mai in coppie successive. Essenzialmente stiamo \textit{triangolando} la matrice associata al sistema (si vedano i lucidi animati online).
 
 Ora, assumendo che $h$ e $g$ siano casuali e indipendenti, il grafo che andiamo a costruire è un grafo casuale di $m$ vertici con $n$ archi, e un risultato importante di teoria dei grafi casuali dice che per $n$ sufficientemente grande, quando $m > 2.09n$ il grafo è quasi sempre privo di cicli (questo significa che il rapporto tra il numero di grafi privi cicli e quelli totali tende a 1). In sostanza, scegliendo bene $h$ e $g$ quasi tutti i grafi che otterremo permetteranno di risolvere il sistema.
 
@@ -29,11 +29,11 @@ Il caso ora descritto non è in realtà ottimo. La teoria degli ipergrafi casual
 Alla fine, per memorizzare la funzione statica \fun{f}{X}{2^b} dovremo utilizzare solo 1.23 bit per elemento.
 \subsection{Firme}
 La funzione così costruita, per quanto sia minimale, perfetta e preservi l'ordine non permette di riconoscere se un elemento fa parte di \set{X} o no. Per ovviare all'inconveniente utilizziamo un insieme di \textit{firme} associato all'insieme \set{X} delle chiavi. Consideriamo cioè una funzione \fun{s}{U}{2^r} che associ a ogni chiave possibile una sequenza di $r$ bit "casuale", nel senso che la probabilità che $s(x) = s(y)$ se $x$ e $y$ sono presi uniformemente a caso da \set{U} è \set{2^{-r}} (per esempio una buona funzione di hash). Consideriamo l'enumerazione ordinata $x_0 \leq x_1 \leq \dots \leq x_{n - 1}$ degli elementi di \set{X}. Oltre a $f$, memorizziamo
-un vettore di dimensione $n$ in cui i valori di \set{X} sono mappati nelle posizioni $f(x)$, che é il rango lessicografico di $x$, affinché, preso $x \in X$, calcolati $f(x)$ ed $s(x)$ avró che
+un vettore di dimensione $n$ in cui i valori di \set{X} sono mappati nelle posizioni $f(x)$, che è il rango lessicografico di $x$, affinché, preso $x \in X$, calcolati $f(x)$ ed $s(x)$ avrò che
 \begin{equation*}
     S_{f(x)} = s(x)
 \end{equation*}
-mentre se $x \notin X$ il valore di $f(x)$ sará arbitrario, quindi $S_{f(x)} = -1$ e il valore di $s(x)$ sará a sua volta arbitrario.
+mentre se $x \notin X$ il valore di $f(x)$ sarà arbitrario, quindi $S_{f(x)} = -1$ e il valore di $s(x)$ sarà a sua volta arbitrario.
 
 Per interrogare la struttura risultante su input $x \in U$, agiamo come segue:
 \begin{enumerate}
