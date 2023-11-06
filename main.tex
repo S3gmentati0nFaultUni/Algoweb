@@ -1,52 +1,5 @@
 \documentclass{article}
-\usepackage[utf8]{inputenc}
-
-\usepackage{a4wide}
-
-\usepackage[english,italian]{babel}
-
-\usepackage{amsfonts}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
-\usepackage{cancel}
-\usepackage{tikz}
-
-\usepackage{hyperref}
-\hypersetup{colorlinks,
-           citecolor=black,
-           filecolor=black,
-           linkcolor=black,
-           urlcolor=black,
-           bookmarksopen=true}
-
-\newtheorem{teo}{Teorema}
-
-\newcommand{\set}[1]{\ensuremath{#1}}
-\newcommand{\caProd}[2]{\set{#1_0 \times #1_1 \times \dots \times #1_#2}}
-\newcommand{\reals}{\mathbb{R}}
-\newcommand{\nat}{\mathbb{N}}
-\newcommand{\bigo}[1]{$\mathcal{O}(#1)$}
-\newcommand{\bigz}[1]{$\Omega(#1)$}
-\newcommand{\bigt}[1]{$\Theta(#1)$}
-\newcommand{\fun}[3]{$#1 : #2 \rightarrow #3$}
-\newcommand{\st}{\hspace{1mm}|\hspace{1mm}}
-\newcommand{\fa}{\hspace{1mm}\forall \hspace{1mm}}
-\newcommand{\curly}{\mathrel{\leadsto}}
-\newcommand{\flr}[1]{\left\lfloor #1 \right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
-\newcommand{\bigb}[1]{\left(#1\right)}
-\newcommand{\bigs}[1]{\left[#1\right]}
-\newcommand{\bigc}[1]{\left\{#1\right\}}
-\newcommand{\norm}[1]{\lvert\lvert #1 \rvert\rvert}
-\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
-
-\pagenumbering{arabic}
-\hfuzz = .6pt % avoid black boxes
-
+\usepackage{src/preambolo}
 
 \title{
     Nozioni per il corso di Algoritmica per il Web\\
@@ -71,18 +24,17 @@ quali alcuni passaggi sarebbero ancora oscuri.
 
 L'intento delle dispense è quello di raccogliere le informazioni necessarie, fornendo una spiegazione per i passaggi meno chiari e aggiungendo parti inizialmente mancanti.
 
-% Chapters
-\include{Chapters/NozioniDiBase}
-\include{Chapters/Crawling}
-\include{Chapters/Tecniche_di_distribuzione_del_carico}
-\include{Chapters/Codici_istantanei}
-\include{Chapters/Gestione_della_lista_dei_termini}
-\include{Chapters/Risoluzione_delle_interrogazioni}
-\include{Chapters/Centrality}
-\include{Chapters/Information_retrieval}
-\include{Chapters/Punteggi_endogeni}
+\incl{NozioniDiBase}
+\incl{Crawling}
+\incl{Tecniche_di_distribuzione_del_carico}
+\incl{Codici_istantanei}
+\incl{Gestione_della_lista_dei_termini}
+\incl{Risoluzione_delle_interrogazioni}
+\incl{Centrality}
+\incl{Information_retrieval}
+\incl{Punteggi_endogeni}
 \bibliography{Bibliography}
 \bibliographystyle{alpha}
-\include{Chapters/License}
+\incl{License}
 
 \end{document}

@@ -1,0 +1,44 @@
+\usepackage[utf8]{inputenc}
+
+\usepackage{a4wide}
+
+\usepackage[english,italian]{babel}
+
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{algorithm,algpseudocode}
+\usepackage{cancel}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks,
+           citecolor=black,
+           filecolor=black,
+           linkcolor=black,
+           urlcolor=black,
+           bookmarksopen=true}
+
+\newtheorem{teo}{Teorema}
+
+\newcommand{\@includebasepath}{src}
+\newcommand{\incl}[1]{\include{\@includebasepath/#1}}
+
+\newcommand{\set}[1]{\ensuremath{#1}}
+\newcommand{\caProd}[2]{\set{#1_0 \times #1_1 \times \dots \times #1_#2}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\bigo}[1]{$\mathcal{O}(#1)$}
+\newcommand{\bigz}[1]{$\Omega(#1)$}
+\newcommand{\bigt}[1]{$\Theta(#1)$}
+\newcommand{\fun}[3]{$#1 : #2 \rightarrow #3$}
+\newcommand{\st}{\hspace{1mm}|\hspace{1mm}}
+\newcommand{\fa}{\hspace{1mm}\forall \hspace{1mm}}
+\newcommand{\curly}{\mathrel{\leadsto}}
+\newcommand{\flr}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\bigb}[1]{\left(#1\right)}
+\newcommand{\bigs}[1]{\left[#1\right]}
+\newcommand{\bigc}[1]{\left\{#1\right\}}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
+
+\pagenumbering{arabic}
+\hfuzz = .6pt % avoid black boxes
