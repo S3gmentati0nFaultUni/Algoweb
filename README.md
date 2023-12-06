@@ -16,12 +16,10 @@ Alcune importanti correzioni sono necessarie per renderlo migliore. Nel caso in 
 Prendete tutto cum grano salis!
 
 <h2>Aggiornamenti futuri 👷</h2>
-
   - [ ] Aggiungere alcuni grafi utili
-
   - [ ] Correzioni per la bibliografia
-
   - [ ] Aggiungere un'appendice per l'algebra lineare
+  - [ ] Artwork per la copertina
 
 Se il corso è tenuto anche in inglese provvederò a fare una traduzione integrale delle dispense (anche se, da quel che so, la versione inglese delle dispense ufficiali è più completa, non so se sia effettivamente migliore).
 
