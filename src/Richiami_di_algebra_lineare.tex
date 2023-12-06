@@ -1,0 +1,74 @@
+\section{Appendice A - Richiami di algebra lineare}
+\label{sec:algebra}
+In questa sezione rivedremo alcuni dei più importanti concetti di algebra lineare che è utile rispolverare ai fini di capire al meglio il corso.
+Andiamo con ordine
+
+\begin{definition}
+    In matematica, un campo, è una struttura algebrica composta da un insieme vuoto e da due operazioni binarie interne, cioè due operazioni che, data una qualsiasi coppia di valori presi dall'insieme di definizione, restituiscono un valore all'interno dell'insieme di definizione.
+\end{definition}
+Un esempio di operazione binaria interna è la somma tra numeri naturali. Ora che abbiamo definito un campo possiamo passare alla definizione di matrice,
+\begin{definition}
+    Una matrice $A$ definita su un campo $F$ è una collezione ordinata di elementi di $F$.
+
+    In una matrice $A \in F^{n \times n}$, chiameremo l'elemento in posizione $ij$-esima ($i, j \in n$) $a_{ij}$
+\end{definition}
+Una matrice $A \in \reals^n \times n$ sarà una matrice $n \times n$, dunque una matrice con $n$ righe ed $n$ colonne, le matrici possono anche non essere quadrate. I vettori sono speciali matrici che hanno una delle due dimensioni pari a $1$, chiamiamo vettore riga un vettore $\vec{v} \in \reals^n$ che ha dimensioni $1 \times n$, chiamiamo vettore colonna un vettore $\vec{v} \in \reals^n$ che ha dimensioni $n \times 1$.
+
+In generale parleremo moltissimo di vettori in questo corso, e non espliciteremo mai di che tipo di vettore si stia parlando (a meno che non vada contro alla convenzione che scegliamo), seguendo la convenzione classica, quando si parla di vettore intenderemo sempre un vettore colonna.
+
+Avendo parlato di vettori è importante andare a definire uno spazio vettoriale/
+\begin{definition}
+    Si dice spazio vettoriale su un campo $F$ un insieme $V$ dotato di due operazioni:
+    \begin{itemize}
+        \item operazione interna $+ : V \times V \rightarrow V$
+        \item operazione esterna $\cdot : K \times V \rightarrow V$
+    \end{itemize}
+    Le due operazioni devono soddisfare le seguenti proprietà:
+    \begin{itemize}
+        \item Commutatività dell'operazione interna
+        \item Associatività dell'operazione interna
+        \item Esistenza dell'elemento neutro per l'operazione interna
+        \item Esistenza dell'opposo per l'operazione interna
+        \item Distributività a destra e a sinistra dell'operazione esterna
+        \item Associatività dell'operazione esterna
+        \item Esistenza dell'elemento neutro per l'operazione esterna
+    \end{itemize}
+    Andremo a definire meglio queste due operazioni in seguito.
+\end{definition}
+Passiamo ora a definire alcune delle operazioni, per matrici e vettori, che verranno utilizzate nell'arco delle dispense e il cui funzionamento verrà dato per scontato.
+\subsection{Addizione e Sottrazione}
+L'addizione tra due matrici $A$ ed $B$ può essere eseguita se e solo se le loro dimensioni sono le stesse, quindi se $A$ è una matrice $n \times n$ e $N$ è un vettore $n \times 1$ l'operazione non potrà essere eseguita.
+
+Se le dimensioni delle matrici combaciano l'operazione di somma può essere eseguita sommando elementi corrispondenti, dunque l'operazione può essere tradotta (supponendo di sommare due matrici $n \times n$) come segue:
+\begin{equation*}
+    \sum_{i, j \in n} a_{ij} + b_{ij}
+\end{equation*}
+Discorso duale può essere fatto per la sottrazione tra due matrici.
+\subsection{Moltiplicazione per uno scalare}
+In generale, quando parliamo di vettori e matrici, ci riferiamo a qualunque elemento $c \in F$, dove $F$ è il campo sul quale abbiamo definito il nostro \clrz{red}{campo vettoriale}, come scalare.
+
+Quando eseguiamo la moltiplicazione di una matrice $A \in \reals^{n \times n}$ per uno scalare $c \in \reals$, moltiplichiamo tutti gli elementi della matrice per suddetto scalare, dunque l'operazione può essere tradotta come segue:
+\begin{equation*}
+    \prod_{i, j \in n} c \cdot a_{ij}
+\end{equation*}
+\subsection{Trasposizione}
+L'operazione di trasposizione consiste nel ribaltamento dei valori all'interno della matrice rispetto alla sua diagonale. Questo significa che, data una matrice $A \in \reals^{n \times n}, \trans{a}_{ij} = a_{ji}$, ovviamente l'operazione di trasposizione non produce alcun cambiamento per i valori lungo la diagonale.
+
+Per noi la trasposizione è particolarmente interessante perchè trasforma un vettore riga in un vettore colonna e viceversa.
+\subsection{Prodotto tra matrici}
+Date due matrici $A \in \reals^{n \times m}, B \in \reals^{m \times n}$ il prodotto riga per colonna tra loro è valido se e solo se il numero di elementi per riga della prima è equivalente al numero di elementi per colonna della seconda. Questo significa, per intenderci, che il prodotto tra matrici è valido solamente se la seconda dimensione della prima matrice è uguale alla prima dimensione dell'altra.
+Il risultato dell'operazione di moltiplicazione sarà una matrice di dimensioni $n \times n$.
+
+L'elemento in posizione $ij$ all'interno della matrice prodotto può essere calcolato come segue:
+\begin{equation*}
+    c_{ij} = \sum_{k \in m}a_{ik}b_{kj}
+\end{equation*}
+Il prodotto tra matrici, in generale, non gode della proprietà commutativa.
+
+ (oltre a quelle ereditate dalle matrici che abbiamo appena definito sopra).
+\subsection{Prodotto scalare}
+Si definisce prdotto scalare sullo spazio vettoriale $V$ un'operazione che associa a due vettori $\vec{u}, \vec{v} \in V$ uno scalare nel campo reale $\reals$, generalmente indicato come $\scalar{\vec{v}, \vec{u}}$
+
+
+% Autovalori
+% Autovettori

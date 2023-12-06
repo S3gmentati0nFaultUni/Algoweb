@@ -16,7 +16,7 @@ Un codice si dice \textit{completo} o \textit{non ridondante} se ogni parola $w 
 Quando un codice istantaneo è completo, non è possibile aggiungere parole al codice senza perdere la proprietà d'istantaneità; inoltre, qualunque parola \textit{infinita} è decomponibile in maniera unica come una sequenza di parole del codice, qualunque parola \textit{finita} è decomponibile in maniera unica come sequenza di parole del codice più un prefisso di qualche parola del codice.
 
 Ora enunciamo la disequazione di \textit{Kraft-McMillan}, che dimostreremo successivamente.
-\begin{teo}
+\begin{theorem}
     Sia $C \subseteq 2^*$ un codice, se \set{C} è istantaneo, allora
     \begin{equation*}
         \sum_{w \in C}{2^{-|w|}} \leq 1
@@ -26,7 +26,7 @@ Ora enunciamo la disequazione di \textit{Kraft-McMillan}, che dimostreremo succe
         \sum_{i \in n}{2^{-t_i}} \leq 1
     \end{equation*}
     esiste un codice istantaneo formato da parole $w_0, \dots, w_{n - 1}, \dots$ tali che $|w_i| = t_i$
-\end{teo}
+\end{theorem}
 \noindent Prima di cominciare la dimostrazione facciamo un preambolo utile a eseguirla in modo veloce.
 
 Un \textit{diadico} è un razionale della forma $k2^{-h}$. A ogni parola $w \in 2^*$. Possiamo associare un sottointervallo semiamperto di $[0\dots1)$ con estremi diadici come segue:
@@ -215,13 +215,13 @@ Sia $X=\{x_i\}$ una successione di valori monotona non decrescente, sia $u$ l'up
     \item $H$ il vettore in cui verranno salvate le parti superiori dei valori della successione
 \end{itemize}
 siano inoltre $n$ la dimensione della successione $X$, $l$ il numero dei bit meno significativi ($l = \flr{\log(u/n)}$). A questo punto reintroduciamo il teorema e poi passiamo a dare la sua dimostrazione.
-\begin{teo}
+\begin{theorem}
     Una successione monotona non decrescente può essere memorizzata tramite la codifica di Elias Fano impiegando, al più
     \begin{equation}
         \ceil{\log(u/n)} + 2
     \end{equation}
     bit per elemento
-\end{teo}
+\end{theorem}
 \begin{proof}
     Come si è già detto in precedenza, per ogni elemento $x$, memorizzo:
     \begin{itemize}

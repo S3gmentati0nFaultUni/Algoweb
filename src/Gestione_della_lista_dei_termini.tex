@@ -13,11 +13,11 @@ Esistono numerose tecniche per la costruzione di hash perfetti \cite{mwhc}.
 
 Quello che andiamo a descrivere è basato sulla teoria dei grafi casuali, e utilizza la randomizzazione per la costruzione della struttura dati. Quella che descriveremo è in effetti una tecnica completamente generale per memorizzare una funzione statica (immutabile) \fun{f}{X}{2^b} dall'insieme \set{X} all'insieme dei valori $2^b$. Scegliendo $b = \ceil{\log(n)}$ e mappando ogni termine in un indice al suo rango lessicografico, otterremo il risultato richiesto.
 
-L'idea della costruzione è la seguente: prendiamo due funzioni di hash aleatorie \fun{h}{U}{m} e \fun{g}{U}{m}, dove $m \geq n$ e $n$ è la cardinalità di \set{X}, e consideriamo un vettore \textbf{w} di interi a $b$ bit che sia soluzione del sistema
+L'idea della costruzione è la seguente: prendiamo due funzioni di hash aleatorie \fun{h}{U}{m} e \fun{g}{U}{m}, dove $m \geq n$ e $n$ è la cardinalità di \set{X}, e consideriamo un vettore $\vec{w}$ di interi a $b$ bit che sia soluzione del sistema
 \begin{equation*}
     w_{h(x)} \oplus w_{g(x)} = f(x) \hspace{5mm} x \in X
 \end{equation*}
-Chiaramente, memorizzando $h$, $g$ e il vettore \textbf{w} abbiamo memorizzato $f$: per calcolare $f(x)$ basta semplicemente risolvere il sistema, che è di $n$ equazioni con $w_i$ incognite, che, però, potrebbe non avere soluzione. Il sistema deve essere risolto una sola volta, in fase di inizializzazione della struttura, e poi potremo accedere a tutti i valori associati alla funzione $f(x)$ in tempo lineare nel numero di funzioni di hash (calcolo le funzioni di hash, accedo alle posizioni del vettore e calcolo lo XOR dei valori). Possiamo rappresentare i vincoli imposti dal sistema come segue: costruiamo un grafo G non orientato con $m$ vertici e $n$ lati in cui, per ogni $x \in X$, abbiamo che $h(x)$ è adiacente a $g(x)$ tramite un lato etichettato da $x$.
+Chiaramente, memorizzando $h$, $g$ e il vettore $\vec{w}$ abbiamo memorizzato $f$: per calcolare $f(x)$ basta semplicemente risolvere il sistema, che è di $n$ equazioni con $w_i$ incognite, che, però, potrebbe non avere soluzione. Il sistema deve essere risolto una sola volta, in fase di inizializzazione della struttura, e poi potremo accedere a tutti i valori associati alla funzione $f(x)$ in tempo lineare nel numero di funzioni di hash (calcolo le funzioni di hash, accedo alle posizioni del vettore e calcolo lo XOR dei valori). Possiamo rappresentare i vincoli imposti dal sistema come segue: costruiamo un grafo G non orientato con $m$ vertici e $n$ lati in cui, per ogni $x \in X$, abbiamo che $h(x)$ è adiacente a $g(x)$ tramite un lato etichettato da $x$.
 
 Andiamo ora a eseguire l'operazione di \textit{esfoliazione} dell grafo così costruito: partendo da una qualunque foglia $v$ (un vertice di grado 0 o 1), la rimuoviamo dal grafo. Se questa è adiacente a un altro vertice, rimuoviamo anche il lato $l$ che li connette, a questo punto mettiamo la coppia $\langle v, l \rangle$ dentro uno stack.
 
@@ -47,19 +47,19 @@ Se invece $x \notin X$, $S_{f(x)}$ sarà una firma arbitraria, e quindi restitui
 \subsection{Ottimizzazioni}
 È possibile migliorare ulteriormente l'occupazione in spazio, quando $b$ non è troppo piccolo, utilizzando un \textit{vettore compatto} per memorizzare i valori della soluzione del sistema. In effetti, per come abbiamo descritto il processo di risoluzione, non è possibile che vengano poste a valori diversi da 0 più di $n$ variabili. Se potessimo memorizzare, con una piccola perdita di spazio, \textit{solo i valori diversi da zero} potremmo ridurre l'occupazione di memoria a quasi $nb$ bit.
 
-Per farlo consideriamo un vettore di bit \textbf{b} che contiene in posizione $i$ un uno se la variabile corrispondente $w_i$ è diversa da zero, e zero altrimenti. Definiamo l'operazione \textit{rank}
+Per farlo consideriamo un vettore di bit $\vec{b}$ che contiene in posizione $i$ un uno se la variabile corrispondente $w_i$ è diversa da zero, e zero altrimenti. Definiamo l'operazione \textit{rank}
 \begin{equation*}
-    rank(\textbf{b}, i) = |\{j < i \st b_j \neq 0\}|
+    rank(\vec{b}, i) = |\{j < i \st b_j \neq 0\}|
 \end{equation*}
-che conta il numero di uno che compaiono a sinistra della posizione corrente. Chiaramente se mettiamo in un vettore \textbf{c} i valori delle variabili $w_i$ diversi da zero avremo che:
+che conta il numero di uno che compaiono a sinistra della posizione corrente. Chiaramente se mettiamo in un vettore $\vec{c}$ i valori delle variabili $w_i$ diversi da zero avremo che:
 \begin{equation*}
     w_i =
     \begin{cases}
         0 \hspace{7mm} &\textnormal{se } b_i = 0\\
-        \textbf{c}[rank(\textbf{b}, i)] \hspace{7mm} &\textnormal{se } b_i \neq 0\\
+        \vec{c}[rank(\vec{b}, i)] \hspace{7mm} &\textnormal{se } b_i \neq 0\\
     \end{cases}
 \end{equation*}
-Quanto spazio occorre per calcolare rapidamente il rango? Esistono soluzioni molto sofisticate che occupano spazio $o(n)$\footnote{Un esempio non banale di strutture efficienti per la memorizzazione del rango è la struttura di Jacobson.}, ma qui proporremo un metodo molto semplice: scelto un quanto $q$, memorizziamo in una tabella $R$ i valori $rank(\textbf{b}, kq)$. Per calcolare il rango in posizione $p$, basta recuperare $R[\flr{p / q}]$ e completare il calcolo contando gli uno dalla posizione $q\flr{p / q}$ alla posizione $p$ (utilizzando le istruzioni di conteggio efficiente per le CPU moderne). Per $q$ fissato, il tempo del calcolo è costante. Lo spazio occupato dipende anch'esso da $q$, che permette quindi di bilanciare lo spazio occupato e la velocità.
+Quanto spazio occorre per calcolare rapidamente il rango? Esistono soluzioni molto sofisticate che occupano spazio $o(n)$\footnote{Un esempio non banale di strutture efficienti per la memorizzazione del rango è la struttura di Jacobson.}, ma qui proporremo un metodo molto semplice: scelto un quanto $q$, memorizziamo in una tabella $R$ i valori $rank(\vec{b}, kq)$. Per calcolare il rango in posizione $p$, basta recuperare $R[\flr{p / q}]$ e completare il calcolo contando gli uno dalla posizione $q\flr{p / q}$ alla posizione $p$ (utilizzando le istruzioni di conteggio efficiente per le CPU moderne). Per $q$ fissato, il tempo del calcolo è costante. Lo spazio occupato dipende anch'esso da $q$, che permette quindi di bilanciare lo spazio occupato e la velocità.
 
 Alla fine, la funzione occuperà $nb + 1.23n$ bit, più il necessario per la struttura di rango (supponendo $q = 512$ saranno necessari altri $0.125n$ bit). Si noti che è impossibile scrivere una funzione in meno di $n^2$ bit, dato che esistono $(2^b)^n$ funzioni da un insieme di $n$ a un insieme di $2^b$ elementi.
 \subsection{Auto-firma}

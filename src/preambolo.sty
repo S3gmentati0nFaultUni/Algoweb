@@ -6,6 +6,7 @@
 
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{algorithm,algpseudocode}
+\usepackage{bm}
 \usepackage{cancel}
 
 \usepackage{hyperref}
@@ -16,7 +17,10 @@
            urlcolor=black,
            bookmarksopen=true}
 
-\newtheorem{teo}{Teorema}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Teo}
+\newtheorem{definition}{Def}
 
 \newcommand{\@includebasepath}{src}
 \newcommand{\incl}[1]{\include{\@includebasepath/#1}}
@@ -37,7 +41,11 @@
 \newcommand{\bigb}[1]{\left(#1\right)}
 \newcommand{\bigs}[1]{\left[#1\right]}
 \newcommand{\bigc}[1]{\left\{#1\right\}}
+\newcommand{\scalar}[1]{\left<#1\right>}
 \newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\clrz}[2]{\textcolor{#1}{#2}}
+\newcommand{\trans}[1]{#1^\intercal}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
 \algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
 
 \pagenumbering{arabic}
