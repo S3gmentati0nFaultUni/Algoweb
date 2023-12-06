@@ -67,8 +67,20 @@ Il prodotto tra matrici, in generale, non gode della proprietà commutativa.
 
  (oltre a quelle ereditate dalle matrici che abbiamo appena definito sopra).
 \subsection{Prodotto scalare}
-Si definisce prdotto scalare sullo spazio vettoriale $V$ un'operazione che associa a due vettori $\vec{u}, \vec{v} \in V$ uno scalare nel campo reale $\reals$, generalmente indicato come $\scalar{\vec{v}, \vec{u}}$
+Si definisce prdotto scalare sullo spazio vettoriale $V$ un'operazione che associa a due vettori $\vec{u}, \vec{v} \in V$ uno scalare nel campo $F$ su cui è definito lo spazio vettoriale $V$, generalmente indicato come $\scalar{\vec{v}}{\vec{u}}$.
 
+Dati tre vettori $\vec{u}, \vec{v}, \vec{w}$, l'operatore di prodotto scalare deve godere delle seguenti proprietà:
+\begin{itemize}
+    \item $\scalar{\vec{v}}{\vec{w}} = \scalar{\vec{w}}{\vec{v}}$
+    \item $\scalar{\vec{v} + \vec{w}}{\vec{u}} = \scalar{\vec{v}}{\vec{u}} + \scalar{\vec{w}}{\vec{u}}$
+    \item $\scalar{k\vec{v}}{\vec{w}} = k\scalar{\vec{v}}{\vec{w}}$
+\end{itemize}
+Un esempio classico di prodotto scalare è quello nello spazio euclideo, che viene calcolato nel modo seguente:
+\begin{equation*}
+    \scalar{\vec{v}}{\vec{u}} = |\vec{a}| |\vec{b}| \cos{\theta}
+\end{equation*}
+\subsection{Prodotto vettoriale}
+In generale il prodotto vettoriale è un'operazione interna allo spazio vettoriale che restituisce un altro vettore in direzione normale al piano formato dai vettori di partenza.
 
 % Autovalori
 % Autovettori
