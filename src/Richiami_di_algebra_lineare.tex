@@ -45,7 +45,7 @@ Se le dimensioni delle matrici combaciano l'operazione di somma può essere eseg
 \end{equation*}
 Discorso duale può essere fatto per la sottrazione tra due matrici.
 \subsection{Moltiplicazione per uno scalare}
-In generale, quando parliamo di vettori e matrici, ci riferiamo a qualunque elemento $c \in F$, dove $F$ è il campo sul quale abbiamo definito il nostro \clrz{red}{campo vettoriale}, come scalare.
+In generale, quando parliamo di vettori e matrici, ci riferiamo a qualunque elemento $c \in F$, dove $F$ è il campo sul quale abbiamo definito il nostro spazio vettoriale, come scalare.
 
 Quando eseguiamo la moltiplicazione di una matrice $A \in \reals^{n \times n}$ per uno scalare $c \in \reals$, moltiplichiamo tutti gli elementi della matrice per suddetto scalare, dunque l'operazione può essere tradotta come segue:
 \begin{equation*}
@@ -82,5 +82,22 @@ Un esempio classico di prodotto scalare è quello nello spazio euclideo, che vie
 \subsection{Prodotto vettoriale}
 In generale il prodotto vettoriale è un'operazione interna allo spazio vettoriale che restituisce un altro vettore in direzione normale al piano formato dai vettori di partenza.
 
-% Autovalori
-% Autovettori
+Probabilmente il concetto più importante che andremo ad affrontare in questo recap è sicuramente quello di autovalore e autovettore. Il loro valore nella seconda parte del corso è incredibilmente grande e quindi si cercherà di dare la spiegazione più dettagliata possibile.
+\subsection{Autovalori, Autovettori, Autospazi}
+Si consideri una matrice $A \in F^{n \times n}$, la matrice deve essere necessariamente quadrata, chiameremo autovalore $\lambda_0 \in F$ associato alla matrice $A$ uno scalare tale per cui esiste un vettore colonna $\vec{v} \in F^n \setminus {0^n}$ tale per cui
+\begin{equation}
+    A\vec{v} = \lambda_0\vec{v}
+\end{equation}
+Questo vettore è noto come vettore destro associato alla matrice $A$, relativo all'autovalore $\lambda_0$.
+
+È utile osservare che se $\vec{v}$ è autovettore relativo all'autovalore $\lambda_0$, allora anche $\alpha\vec{v}$ è autovettore relativo all'autovalore $\lambda_0$ indipendentemente dalla scelta dello scalare $\alpha \in F$.
+
+Oltre all'autovettore destro possiamo definire anche l'autovettore sinistro per $A$ rispetto all'autovalore $\lambda_0$ che avrà definizione analoga rispetto alla controparte destra.
+\begin{equation}
+    \trans{\vec{v}}A = \lambda_0\trans{\vec{v}}
+\end{equation}
+
+Per concludere andiamo a definire il cosiddetto autospazio relativo ad un autovalore.
+\begin{definition}
+    Data una matrice $A \in F^{n \times n}$, siano $\vec{v_0}, \dots, \vec{v_k}$ gli autovettori associati all'autovalore $\lambda_0$, questi autovettori formano un sottospazio vettoriale di $F^n$. Questo sottospazio viene definito autospazio relativo all'autovalore $\lambda_0$.
+\end{definition}
