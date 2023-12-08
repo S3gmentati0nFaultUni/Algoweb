@@ -24,7 +24,7 @@ Prendete tutto cum grano salis!
   - [x] Aggiungere un'appendice per l'algebra lineare<br>
         Appendice aggiunto, adesso bisogna solo controllare che abbia senso.
   
-  - [x] Aggiungere un artwork per la copertina
+  - [x] Aggiungere un artwork per la copertina<br>
         Courtesy of ChatGPT e prova e riprova fino a quando non esce qualcosa di carino.
 
 Se il corso è tenuto anche in inglese provvederò a fare una traduzione integrale delle dispense (anche se, da quel che so, la versione inglese delle dispense ufficiali è più completa, non so se sia effettivamente migliore).
