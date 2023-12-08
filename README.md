@@ -3,7 +3,7 @@ Questa repository raccoglie tutte le informazioni disponibili per il corso di Al
 
 Questo compendio è pensato per evitare a chi studia per questo esame, il più possibile, di consultare fonti alternative e di avere una fonte principale a cui affidarsi per l'intero processo, dato che le dispense ufficiali hanno parecchi problemi di inconsistenze e non sono complete.
 
-Per avere il file pdf potete scaricare la release <a href="https://github.com/S3gmentati0nFault/Algoweb/releases/tag/First-release">qui</a> oppure potete clonare il codice sulla vostra macchina, andare nella directory `./Algoweb` e lanciare `latexmk` nel modo seguente:
+Per avere il file pdf potete scaricare la release <a href="https://github.com/S3gmentati0nFault/Algoweb/releases">qui</a> oppure potete clonare il codice sulla vostra macchina, andare nella directory `./Algoweb` e lanciare `latexmk` nel modo seguente:
 ```
 $ latexmk -lualatex main.tex
 ```
