@@ -1,4 +1,4 @@
-\section{Gestione della lista dei termini}
+\chapter{Gestione della lista dei termini}
 La lista dei termini di un indice può essere molto ingombrante. Esistono diversi metodi per rappresentarla: in questo contesto, ne vedremo uno piuttosto sofisticato, che ha il grosso vantaggio di essere in grado, data una lista di stringhe, di restituire il numero ordinale di qualunque elemento della lista, ma di \textit{non memorizzare la lista stessa}: in effetti, l'occupazione di memoria sarà di $1,23n$ interi di $\log(n)$ bit, dove $n$ è il numero delle stringhe.
 
 Una funzione di hash per un insieme di chiavi \set{X} $\subseteq$ \set{U}, dove \set{U} è l'universo di tutte le chiavi possibili, è una funzione \fun{f}{X}{m} detta:
@@ -27,7 +27,7 @@ Ora, assumendo che $h$ e $g$ siano casuali e indipendenti, il grafo che andiamo 
 
 Il caso ora descritto non è in realtà ottimo. La teoria degli ipergrafi casuali ci dice che utilizzando 3-ipergrafi (cioè un insieme di sottoinsiemi di ordine 3 dell'insieme dei vertici) è possibile dare una nozione di aciclicità che permette di risolvere i sistemi nel caso di \textit{tre} funzioni di hash, ma in questo caso il limite che garantisce l'aciclicità è $m > 1.23n$ - un miglioramento netto rispetto al caso di ordine 2.
 Alla fine, per memorizzare la funzione statica \fun{f}{X}{2^b} dovremo utilizzare solo 1.23 bit per elemento.
-\subsection{Firme}
+\section{Firme}
 La funzione così costruita, per quanto sia minimale, perfetta e preservi l'ordine non permette di riconoscere se un elemento fa parte di \set{X} o no. Per ovviare all'inconveniente utilizziamo un insieme di \textit{firme} associato all'insieme \set{X} delle chiavi. Consideriamo cioè una funzione \fun{s}{U}{2^r} che associ a ogni chiave possibile una sequenza di $r$ bit "casuale", nel senso che la probabilità che $s(x) = s(y)$ se $x$ e $y$ sono presi uniformemente a caso da \set{U} è \set{2^{-r}} (per esempio una buona funzione di hash). Consideriamo l'enumerazione ordinata $x_0 \leq x_1 \leq \dots \leq x_{n - 1}$ degli elementi di \set{X}. Oltre a $f$, memorizziamo
 un vettore di dimensione $n$ in cui i valori di \set{X} sono mappati nelle posizioni $f(x)$, che è il rango lessicografico di $x$, affinché, preso $x \in X$, calcolati $f(x)$ ed $s(x)$ avrò che
 \begin{equation*}
@@ -44,7 +44,7 @@ Per interrogare la struttura risultante su input $x \in U$, agiamo come segue:
 Si noti che se $x \in X$, $f(x)$ è il suo rango in \set{X}, e quindi $S_{f(x)}$ conterrà, per definizione, $s(x)$.
 Se invece $x \notin X$, $S_{f(x)}$ sarà una firma arbitraria, e quindi restituiremo quasi sempre -1, tranne nel caso ci sia una collisione tra firme, il che avviene, come detto, con probabilità $2^{-r}$. Tarando il numero $r$ di bit delle firme, è quindi possibile bilanciare spazio occupato e precisione della struttura.
 
-\subsection{Ottimizzazioni}
+\section{Ottimizzazioni}
 È possibile migliorare ulteriormente l'occupazione in spazio, quando $b$ non è troppo piccolo, utilizzando un \textit{vettore compatto} per memorizzare i valori della soluzione del sistema. In effetti, per come abbiamo descritto il processo di risoluzione, non è possibile che vengano poste a valori diversi da 0 più di $n$ variabili. Se potessimo memorizzare, con una piccola perdita di spazio, \textit{solo i valori diversi da zero} potremmo ridurre l'occupazione di memoria a quasi $nb$ bit.
 
 Per farlo consideriamo un vettore di bit $\vec{b}$ che contiene in posizione $i$ un uno se la variabile corrispondente $w_i$ è diversa da zero, e zero altrimenti. Definiamo l'operazione \textit{rank}
@@ -62,7 +62,7 @@ che conta il numero di uno che compaiono a sinistra della posizione corrente. Ch
 Quanto spazio occorre per calcolare rapidamente il rango? Esistono soluzioni molto sofisticate che occupano spazio $o(n)$\footnote{Un esempio non banale di strutture efficienti per la memorizzazione del rango è la struttura di Jacobson.}, ma qui proporremo un metodo molto semplice: scelto un quanto $q$, memorizziamo in una tabella $R$ i valori $rank(\vec{b}, kq)$. Per calcolare il rango in posizione $p$, basta recuperare $R[\flr{p / q}]$ e completare il calcolo contando gli uno dalla posizione $q\flr{p / q}$ alla posizione $p$ (utilizzando le istruzioni di conteggio efficiente per le CPU moderne). Per $q$ fissato, il tempo del calcolo è costante. Lo spazio occupato dipende anch'esso da $q$, che permette quindi di bilanciare lo spazio occupato e la velocità.
 
 Alla fine, la funzione occuperà $nb + 1.23n$ bit, più il necessario per la struttura di rango (supponendo $q = 512$ saranno necessari altri $0.125n$ bit). Si noti che è impossibile scrivere una funzione in meno di $n^2$ bit, dato che esistono $(2^b)^n$ funzioni da un insieme di $n$ a un insieme di $2^b$ elementi.
-\subsection{Auto-firma}
+\section{Auto-firma}
 Un utilizzo interessante delle funzioni che abbiamo descritto è quello di memorizzare efficientemente un dizionario statico approssimato. Per farlo, consideriamo un insieme $X \subseteq U$ che vogliamo rappresentare, e una funzione di firma \fun{s}{U}{2^r}.
 Possiamo utilizzare la tecnica generale di rappresentazione delle funzioni per scrivere in $nr + 1.23n$ bit la funzione \fun{f}{X}{2^r} data da $f(x) = s(x)$. La funzione $f$, cioè, mappa ogni chiave nella propria firma. Il dizionario viene a questo punto interrogato come segue:
 \begin{enumerate}

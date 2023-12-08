@@ -1,4 +1,4 @@
-\section{Una nozione astratta di sistema per il reperimento di informazioni}
+\chapter{Una nozione astratta di sistema per il reperimento di informazioni}
 Nella sua accezione più generale, un sistema di reperimento di informazioni (\textit{information retrieval system}) è dato da una collezione documentale \set{D} (insieme di documenti) di dimensione \set{N}, da un insieme \set{Q} di interrogazioni, e da una funzione di ranking \fun{r}{Q \times D}{\reals} che assegna a ogni coppia data da un'interrogazione e un documento, un punteggio (un numero reale), L'idea è che a fronte di un'interrogazione, a ogni documento viene assegnato un punteggio: i documenti con punteggio nullo non sono considerati rilevanti, mentre quelli a punteggio non nullo sono tanto più rilevanti quanto più il punteggio è alto.
 
 Fissata un'interrogazione $q$ il sistema assegna un rango (cioè una graduatoria) tra i documenti rilevanti, ordinandoli per punteggio; il rango è essenziale per restituire i documenti in un ordine specifico, in particolare quando la collezione documentale è di grandi dimensioni.

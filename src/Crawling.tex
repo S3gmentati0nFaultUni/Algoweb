@@ -1,4 +1,4 @@
-\section{Crawling}
+\chapter{Crawling}
 Il \textit{crawling} è l'attività di scaricamento delle pagine web. Un \textit{crawler} è un dispositivo software che visita, scarica e analizza i contenuti delle pagine web a partire da un insieme di URL dato, detto \textit{seme}. Il crawler esegue una visita seguendo i collegamenti ipertestuali contenuti nelle pagine analizzate.
 
 Le pagine web durante il processo di crawl si dividono in tre:
@@ -12,7 +12,7 @@ Le differenze tra l'attività di crawling e una banale visita all'interno di un 
 In generale l'operazione di crawling parte caricando il seme in frontiera e, finchè la frontiera non è vuota, viene estratto un URL dalla frontiera, secondo determinate politiche, l'URL viene visitato (e quindi scarica la pagina corrispondente), lo analizza derivandone nuovi URL tramite i collegamenti ipertestuali contenuti all'interno della pagina e sposta l'URL nell'insieme dei visitati. I nuovi URL vengono invece aggiunti alla frontiera se sono sconosciuti, e quindi non sono in \set{V \cup F}.
 
 Diverse politiche di prioritizzazione della frontiera possono poi dare luogo ad approcci diversi al processo di crawling, posso per esempio estrarre prima degli URL a cui si arriva partendo da pagine che contengono determinate parole chiave.
-\subsection{Il crivello}
+\section{Il crivello}
 Il crivello è la struttura dati di base di un crawler, questo accetta in ingresso URL potenzialmente da visitare e permette di prelevare URL pronti alla visita. Ogni URL viene estratto una e una sola volta in tutto il processo di crawling, indipendentemente da quante volte è stato inserito all'interno della struttura. In questo senso il crivello unisce le proprietà di un dizionario a quelle di una coda con priorità e rappresenta al tempo stesso la frontiera, l'insieme dei visitati e la coda di visita. Combinare questi aspetti in una sola struttura è un lavoro complesso ma permette risparmi notevoli dal punto di vista pratico\footnote{Si noti che è possibile riordinare ulteriormente gli URL \textit{dopo} l'uscita dal crivello}.
 
 Una prima osservazione è che spesso, per mantenere l'informazione di quali URL sono stati già visitati (\set{V \cup F}) è preferibile sostituire gli URL con delle \textit{firme}, cioè con il risultato del calcolo di $h(u)$, dove h è una funzione di hash definita sulle stringhe e restituisce una stringa di bit di dimensione arbitraria, per esempio 64 bit. Questo ha due grandi benefici:
@@ -31,7 +31,7 @@ Anche un semplice dizionario di firme in memoria che rappresenta \set{V \cup F},
 Questo è un compromesso tipico delle attività di crawling - strutture che si espandono in memoria centrale proporzionalmente alla frontiera sono troppo fragili e quindi rischiano di mandare in crash il processo o di sovraccaricare il sistema di gestione della memoria virtuale.
 
 Solitamente le strutture dati impiegate in ambiti di crawling importanti dovrebbero entrare in un processo di \textit{degrado grazioso}, riducendo le performance, ma senza interrompere all'improvviso il funzionamento del programma.
-\subsection{I filtri di Bloom}
+\section{I filtri di Bloom}
 La prima struttura che vedremo con queste proprietà è il \textit{filtro di Bloom}. Un filtro di Bloom \cite{Bloom} è una semplicissima struttura dati probabilistica a falsi positivi che rappresenta un dizionario, cioè un insieme di elementi da un universo dato. Permette di aggiungere elementi all'insieme e chiedere se un elemento è presente o meno nell'insieme.
 
 Un filtro di Bloom di universo \set{X} è rappresentato da un vettore $\vec{b}$ di $m$ bit e da $d$ funzioni di hash $f_0, \dots, f_d$ da \set{X} in $m$. Per aggiungere un elemento al filtro è necessario calcolare i valori per tutte le $d$ funzioni di hash e mettere a 1 il bit $d_{f_i(x)}$ con $0 \leq i < d$. Per sapere se un elemento è presente all'interno del filtro è comunque necessario calcolare tutte le $d$ funzioni di hash, qualora esista $i \in [0, d) \st d_{f_i(x)} = 0$ allora il valore non è presente nella struttura, altrimenti la risposta è positiva.
@@ -44,7 +44,7 @@ Di fatto, i filtri di Bloom sono risultati estremamente pratici per mantenere in
 
 Andiamo ora a vedere qual è la probabilità di un falso positivo. Con un'analisi ragionevolmente precisa (quella che presenta Bloom in \cite{Bloom}) saremo in grado di fornire valori ottimi di $m$ e $d$ data la probabilità di falsi positivi desiderata e il massimo numero di elementi memorizzabili nel filtro. In questo modo saremo in grado di scegliere la struttura dati meno ingombrante per ottenere una probabilità di falsi positivi scelta a piacere.
 
-\subsubsection{Dimostrazione dell'efficacia dei filtri di Bloom}
+\subsection{Dimostrazione dell'efficacia dei filtri di Bloom}
 Per calcolare l'efficacia dei filtri di Bloom, come detto in precedenza, si considererà la probabilità di osservare un falso positivo. Una prima semplificazione lecita (seguendo l'analisi di \cite{Bloom}) è quella di andare a calcolare la probabilità di un positivo qualunque dopo $n$ inserimenti, che è ovviamente una maggiorazione del caso dei falsi positivi.
 Supponiamo di avere un vettore di $m$ posizioni e $d$ funzioni di hash uniformemente distribuite e indipendenti. Dopo l'$n$-esimo inserimento, la probabilità che un bit sia 0 è data da:
 \begin{equation*}
@@ -101,7 +101,7 @@ Passiamo ora a fare alcune osservazioni tecniche:
     \item In teoria per utilizzare un filtro di Bloom dobbiamo calcolare $d$ funzioni di hash diverse, il che può essere molto costoso in termini di tempo. In realtà Kirsch e Mitzenmacher hanno dimostrato che estraendo due numeri interi a 64 bit $a$ e $b$ tramite una funzione di hash, i numeri $ai + b$, $0 \leq i < d$ sono $d$ hash sufficienti a replicare l'analisi condotta utilizzando funzioni indipendenti e pienamente casuali.
     \item Se un filtro di Bloom viene utilizzato per rappresentare gli URL già visti, soddisfa pienamente le nostre richieste: utilizza una quantità di memoria centrale costante, è relativamente veloce e affidabile e degrada graziosamente, man mano che il vettore si riempie la probabilità di falsi positivi aumenterà fino a diventare 1.
 \end{itemize}
-\subsection{Crivelli basati su database NoSQL}
+\section{Crivelli basati su database NoSQL}
 Un modo più sofisticato e con degrado più grazioso di implementare un crivello è quello di utilizzare un cosiddetto \textit{database NoSQL}, che consiste semplicemente in una struttura parzialmente su disco che permette di memorizzare coppie chiave/valore utilizzando una quantità limitata di memoria centrale.
 
 Uno degli esempi classici di database NoSQL è il BerkeleyDB, che permette di memorizzare coppie/chiave valore in maniera non ordinata od ordinata tramite una hash table e un B-tree parzialmente su disco. La memoria centrale è utilizzata come cache per accelerare le operazioni su disco.
@@ -142,7 +142,7 @@ Ci sono a questo punto numerose e importanti questioni ingegneristiche e impleme
 Ci sono anche soluzioni ibride, che reinseriscono parzialmente gli alberi bilanciati negli LSM tree. Questo tipo di tecnologia è in continua evoluzione, anche perché diverse implementazioni o politiche di aggiornamento possono essere adatte a diversi carichi di lavoro.
 
 Si noti che al crescere della frontiera l'LSM-tree continua a occupare la stessa quantità di memoria centrale e non ha decrementi di precisione, però il crivello rallenta e occupa più memoria di massa.
-\subsection{Un crivello offline}
+\section{Un crivello offline}
 Un modo meno \textit{responsive} ma molto più semplice di implementare il crivello che effettua una visita in ampiezza e richiede memoria centrale costante senza utilizzare strutture dati, consiste nel tenere traccia, in ogni istante, di tre file:
 \begin{itemize}
     \item Un file Z di URL già visitati (\set{V \cup F}), in ordine lessicografico.
@@ -165,7 +165,7 @@ Va notato che l'ordinamento effettuato su A altera l'ordine di accodamento. Per 
 Infine, da un punto di vista pratico è conveniente mantenere in Z non gli URL già visti, ma le loro firme. Per fare funzionare correttamente il passo di fusione è però a questo punto necessario ordinare e deduplicare A utilizzando come chiavi le firme degli URL.
 
 Si noti che al crescere della frontiera il crivello offline diventa più lento e occupa più memoria di massa, ma l'utilizzo di memoria centrale resta costante e non si hanno decrementi di precisione.
-\subsection{Il crivello di Mercator}
+\section{Il crivello di Mercator}
 Mercator è un crawler \cite{Mercator} il cui crivello è una versione parzialmente in memoria del crivello offline descritto in precedenza. Le firme degli elementi in A vengono mantenute in un vettore in memoria, evitando di eseguire ordinamenti su disco.
 
 Il crivello è formato da un vettore $\vec{S}$, di dimensione fissata $n$, in memoria centrale che contiene firme di URL, inizialmente vuoto, ed è riempito incrementalmente. Su disco, invece, teniamo un file Z che contiene tutte le firme degli URL sinora mai incontrati e un file ausiliario A, inizialmente vuoto.
@@ -179,7 +179,7 @@ Ogni volta che un URL $u$ viene inserito nel crivello, aggiungiamo $h(u)$ a $\ve
     \item $\vec{S}$ e A vengono svuotati e Z viene sostituito da Z'.
 \end{enumerate}
 Innanzitutto, si noti che Z, alla fine di uno scarico, contiene di nuovo le firme di tutti gli URL mai incontrati. Inoltre in output abbiamo dato tutti e soli gli URL la cui firma non era parte di Z, dunque si trattava di URL che non erano ancora stati visitati. Infine, gli URL in output sono stati ovviamente emessi nell'ordine di accodamento in A.
-\subsection{Gestione dei quasi duplicati}
+\section{Gestione dei quasi duplicati}
 Durante l'attività di crawling è comune trovare pagine che sono quasi identiche (varianti dello stesso sito, calendari, immagini, etc\dots). In base al tipo di crawling (e quindi in base alle sue politiche), queste pagine andrebbero considerate duplicate e non ulteriormente elaborate.
 
 Un modo semplice ma efficace di gestire il problema in memoria centrale è quello di analizzare una forma normalizzata del documento, rimuovendo marcatura, date e altri dati che sono standard ma che potrebbero risultare differenti sulla base di meccanismi automatici. Il documento dovrebbe poi essere memorizzato in un filtro di Bloom.
@@ -198,7 +198,7 @@ Due documenti che hanno lo stesso SimHash sono molto simili, e la somiglianza di
 
 Trovare elementi a breve distanza di Hamming è un problema interessante una cui soluzione pratica per distanze piccole è descritta è \cite{google}.
 
-\subsection{Gestione della politeness}
+\section{Gestione della politeness}
 Un altro dei problemi pratici che rende l'attività di crawling diversa da una semplice visita è la gestione della \textit{politeness}: non si dovrebbe eccedere nella quantità di tempo dedicato allo scaricamento da un singolo sito (pena, in genere, email furiose o taglio del traffico dal vostro IP).
 
 Ci sono due modi fondamentali di operare questa limitazione:
@@ -210,7 +210,7 @@ Nel primo caso, dato un intervallo di tempo $t$, diciamo, quattro secondi, siamo
 
 La seconda soluzione è più interessante, perché permette di sfruttare una caratteristica della versione 1.1 del protocollo HTTP: è possibile cioè effettuare richieste multiple attraverso la stessa connessione TCP, evitando la (lenta) apertura e chiusura di una connessione per ogni risorsa scaricata. Le attività di scaricamento terminano non appena si supera la soglia $s$, con tempo di scaricamento effettivo $s'$, e a questo punto si aspetta per tempo $s'/p$, in maniera da forzare la gentilezza.
 Per implementare questo tipo di politica, però è necessario alterare l'ordine di visita, dato che visitando gli URL nell'ordine in cui escono dal crivello si potrebbe incorrere in attese a vuoto consistenti.
-\subsection{La coda degli host}
+\section{La coda degli host}
 Un altro problema finora lasciato in parte è il ruolo della concorrenza. Certamente vorremo scaricare contemporaneamente da più siti: per farlo, possiamo istanziare molti flussi (sotto forma di migliaia di \textit{visiting thread}) di esecuzione che si occupano di scaricare i dati, e saranno quindi sempre occupati in attività di I/O. Le pagine scaricate possono essere poi analizzate da un gruppo di flussi più ridotto (i \textit{parsing thread}). Si noti che, al di là delle questioni di politeness, non possiamo permetterci che due flussi accedano allo stesso sito.
 
 Questi problemi vengono risolti riorganizzando gli URL che escono dal crivello. Consideriamo una \textit{coda con priorità} contenente i siti noti al crawler. A ogni sito assegnamo come priorità il primo istante di tempo in cui sarà possibile scaricare dal sito senza violare la politeness. Si tratta di una coda di min-priorità, dunque in cima alla coda c'è il minimo.
@@ -230,7 +230,7 @@ Questo meccanismo rende automatica l'esclusività del download tra flussi: gli e
 Il costo della coda è logaritmico e l'aggiunta e la rimozione sono operazioni relativamente costose (al più polilogaritmiche) ma possono diventare problematiche in momenti di concorrenza intensa.
 
 Infine, nel caso sia necessaria una politica di gentilezza da applicare agli indirizzi IP possiamo organizzare gli IP in una lista come quella descritta sopra. Rimanendo lungo il solco tracciato dalla metafora del token: quando un thread trova in cima alla lista un IP e un URL significa che il thread è in possesso del token per scaricare i dati associati da quell'URL e quello specifico indirizzo IP per una quantità limitata di tempo.
-\subsection{Tecniche di programmazione concorrente lock-free}
+\section{Tecniche di programmazione concorrente lock-free}
 Nella gestione delle strutture dati che abbiamo discusso è possibile che l'elevata concorrenza renda le strutture stesse poco efficienti. Se il numero di host è molto grande, per esempio, i flussi di scrittura e lettura potrebbero rimanere fermi per molto tempo ai punti di sincronizzazione o sui semafori che proteggono le zone di mutua esclusione.
 
 è possibile alleviare il conflitto tra i flussi utilizzando delle tecniche di programmazione non bloccante, dette \textit{lock-free}. Una struttura dati lock-free non utilizza semafori: utilizza invece istruzioni hardware che permettono implementazioni efficienti. Quella che useremo è CAS (\textit{compare-and-swap}): dato un indirizzo $p$ e due valori $a$ e $b$, la CAS controlla che il valore memorizzato in $p$ sia $a$ e in questo caso lo sostituisce atomicamente con $b$, restituendo vero se la sostituzione è avvenuta.

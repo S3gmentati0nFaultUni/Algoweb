@@ -1,4 +1,4 @@
-\section{Risoluzione delle interrogazioni}
+\chapter{Risoluzione delle interrogazioni}
 La risoluzione di un'interrogazione dipende fondamentalmente da due fattori:
 \begin{itemize}
     \item Il linguaggio di interrogazione e la corrispondente semantica.
@@ -33,7 +33,7 @@ Si noti che nel caso le liste siano interamente caricabili in memoria, il proble
 L'osservazione fondamentale è che intersecare due liste, se una è molto più corta dell'altra (per esempio esponenzialmente più corta), può essere conveniente cercare con una ricerca dicotomica gli elementi della lista più corta in quella più lunga.
 
 Questa osservazione permette di risolvere rapidamente in memoria centrale, in maniera non pigra (term-at-a-time), intersezioni di liste. È sufficiente ordinare le liste in ordine di frequenza (questo è sempre possibile, essendo l'algoritmo non pigro) e procedere a ridurre, una lista alla volta, ma la speranza è che quando arriveremo alle liste più lunghe (le ultime) i candidati siano così pochi che sia possibile utilizzare tecniche di intersezione come quelle summenzionate.
-\subsection{Indici distribuiti}
+\section{Indici distribuiti}
 Le dimensioni degli indici del web sono tali da rendere poco pratica la memorizzazione dell'intero indice in una sola macchina. È quindi necessario \textit{segmentare} l'indice complessivo in sottoindici, detti \textit{segmenti}, le cui risposte verranno poi opportunamente combinate. È sottointeso che i segmenti saranno in genere memorizzati su un gruppo di macchine collegate in rete, e che un opportuno protocollo di comunicazione permetterà di accedere al contenuto dei segmenti in una macchina remota.
 
 In linea di principio, un indice può essere partizionato tramite una funzione che assegna a ogni affissione un segmento destinazione. A ogni segmento saranno associati i termini per i quali compare almeno un'affissione.

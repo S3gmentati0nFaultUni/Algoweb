@@ -1,16 +1,16 @@
-\section{Centralità}
+\chapter{Centralità}
 La centralità è un argomento fondamentale nel campo dell'analisi delle reti. Partendo da un grafo G, vogliamo associare a ogni nodo un \textit{punteggio} che definisce l'importanza del nodo in un grafo. Immaginiamo che i nodi corrispondano a qualche tipo di entità, e che un arco da $x$ in $y$ rappresenti una \textit{relazione} tra l'entità $x$ e l'entità $y$. Questa relazione può misurare l'appoggio, ad esempio "$x$ crede in $y$ tanto così", o il punteggio di $x$ contro $y$, come nel caso di "$x$ batte $y$". Il primo caso è comune nel campo della psicometria e della sociometria, mentre il secondo è comune nel caso dei tornei.
 
 Molti \textit{indici di centralità} sono basati su semplici somme sulle righe o le colonne delle matrici di adiacenza e sono comuni da molto tempo nel campo della psicometria e della sociometria. Un esempio banale, consiste nell'utilizzare il \textit{degree} (indegree od outdegree) come misura di centralità. Il problema principale con il degree è che è una misura interamente locale - non tiene conto della sua topologia.
 
 Più in generale, se si considerano \textit{grafi pesati}, in cui un peso è associato a ogni arco, è possibile considerare il grafo come la matrice di adiacenza $M$ che gli è associata.
-\subsection{Misure di centralità geometriche}
+\section{Misure di centralità geometriche}
 Chiamiamo \textit{geometriche} quelle misure che vedono la centralità come dipendente dalla distanza di un nodo o un arco dagli altri elementi del grafo. Più precisamente, una centralità geometrica dipende unicamente da quanti nodi esistono a ogni distanza. Queste sono alcune delle misure più antiche definite in letteratura.
-\subsubsection{Indegree}
+\subsection{Indegree}
 L'indegree è il numero di archi che entrano in un determinato nodo, è denotato come $d_+^{(x)}$ e può essere considerata una misura di centralità geometrica. Si tratta semplicemente del numero di nodi a distanza 1\footnote{La maggioranza delle misure di centralità proposte in letteratura sono state descritte solo per grafi non direzionati e connessi. Siccome lo studio del grafo del web e delle reti sociali elettronicamente mediate ha posto il problema di estendere i concetti di centralità a reti che sono direzionate, e possibilmente non fortemente connesse, nel resto di questo articolo considereremo le misure dipendenti dal numero di archi entranti di un nodo (e. g. percorsi entranti, autovettori dominanti sinistri, distanze da tutti i nodi verso un nodo specifico). Se necessario, queste misure possono essere chiamate "positive", in opposizione alle misure "negative" ottenute considerando percorsi uscenti, o (equivalentemente trasponendo il grafo)}. L'indegree è probabilmente una delle più vecchie misure di centralità, in quanto è equivalente alla maggioranza dei votanti alle elezioni ($x \rightarrow y$ se $x$ ha votato per $y$), il vincitore delle elezioni è quello che ha preso più voti, quindi quello che ha l'indegree più alto.
 
 L'indegree ha una serie di problematiche evidenti (e.g. è facile da aggirare), ma è un buon punto di partenza, e in alcuni casi ha raggiunto risultati migliori di tecniche più sofisticate (si veda, ad esempio \cite{degree}).
-\subsubsection{Closeness}
+\subsection{Closeness}
 Bavelas ha introdotto il concetto di closeness alla fine degli anni quaranta in \cite{bavelas}; la closeness di $x$ è definita come segue
 \begin{equation}
     \frac{1}{\sum_y{d(y, x)}}
@@ -22,7 +22,7 @@ Non era probabilmente nelle intenzioni di Bavelas di applicare la misura ai graf
     \frac{1}{\sum_{d(y, x) < \infty}d(y, x)}
 \end{equation*}
 e assumendo che i nodi con un insieme di nodi raggiungibili banale abbiano centralità 0 per definizione: questa è, in realtà, la definizione che useremo nel resto dell'articolo. Questi aggiustamenti, apparentemente innocui, inducono una forte polarizzazione nella rete verso quei nodi che hanno un insieme di nodi raggiungibili di piccole dimensioni. Nel 2016 un gruppo di scienziati a Facebook ha calcolato l'inverso della closeness per tutti gli utenti\footnote{\texttt{\href{https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separation/}{https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separation/}}}
-\subsubsection{Centralità armonica}
+\subsection{Centralità armonica}
 Come abbiamo notato il problema della closeness sta nel fatto che vi sono coppie di nodi non raggiungibili. Prendiamo quindi ispirazione da Marchiori e Latora \cite{armonica}: presentatogli il problema di offrire una nozione sensata di "lunghezza media del percorso più breve" per un grafo direzionato generico, hanno proposto di rimpiazzare la media delle distanze con la \textit{media armonica di tutte le distanze}\footnote{Definiamo media armonica per un gruppo di valori $a_0, \dots, a_{n - 1}$ il seguente valore
 \begin{equation*}
     \bigb{\frac{\sum_i^n{a_i^{-1}}}{n}}^{-1}
@@ -35,13 +35,13 @@ v'è una definizione alternativa basata sulla variante armonica dell'operatore. 
     \sum_{y \neq x}{\frac{1}{d(y, x)}} = \sum_{d(y, x) < \infty, y \neq x}{\frac{1}{d(y, x)}}
 \end{equation}
 la differenza tra quest'ultima equazione e (7) potrebbe apparire minima, però si tratta di un cambiamento radicale. La centralità armonica è fortemente legata alla closeness in reti semplici, ma la prima è in grado di tenere da conto automaticamente anche dei nodi $y$ che non sono in grado di raggiungere $x$. Quindi può essere applicata a grafi che non sono fortemente connessi.
-\subsubsection{Betweenness}
+\subsection{Betweenness}
 La \textit{betweenness} è stata introdotta da Anthonisse \cite{ant} per gli archi, ed è stata poi ripresa da Freeman per i nodi \cite{morgan}. L'idea è quella di misurare la probabilità che un cammino brave a caso passi attraverso un determinato nodo: sia $\sigma_{xy}$ il numero di cammini brevi che vanno da $x$ a $y$ e $\sigma_{xy}(z)$ il numero di cammini brevi che vanno da $x$ a $y$ e passano per $z$, definiamo la \textit{betweenness} di $x$ come
 \begin{equation*}
     \sum_{x, y \neq z, \sigma_{xy} \neq 0}{\frac{\sigma_{xy}(z)}{\sigma_{xy}}}
 \end{equation*}
 L'intuizione che sta dietro la betweenness, è che se una grande parte dei cammini minimi passa da $z$, allora $z$ deve essere un punto di articolazione importante all'interno del grafo.
-\subsection{Misure di centralità spettrale}
+\section{Misure di centralità spettrale}
 Verso la metà del XIX secolo i risultati di un torneo di scacchi furono rappresentati tramite una matrice $M$ popolata di 0, 1 e 1/2, rappresentando sconfitta, vittoria e pareggio. La diagonale di tali matrici doveva per forza essere zero, e la somma di entry simmetriche avrebbe fatto sempre 1. Le somme sulle righe, ovvero $M\vec{1}^T$, erano un modo facile di fornire un punteggio globale per un giocatore, dal quale il suo rank poteva essere calcolato, in modo tale da poter assegnare premi o dividere i soldi in maniera proporzionale.
 
 Per incrementare la precisione del sistema, lo scacchista austriaco Oscar Gelbfuhs propose nel 1873 di iterare la procedura, ovvero di calcolare $M^2\vec{1}^T$, raffinando i punteggi precedenti. Essenzialmente, partendo da un punteggio iniziale di 1 dato a tutti i giocatori, ciascuno avrebbe ottenuto un nuovo punteggio, risultato della somma di:
@@ -57,7 +57,7 @@ Edmund Landau \cite{landau} notò nel primo articolo che pubblicò \cite{landaus
 \end{equation}
 dunque $\vec{r}$ sarebbe dovuto essere un autovettore destro\footnote{Importante puntiglio di
 notazione, considereremo l'autovettore destro come il vettore colonna di $N$ elementi.}, la cui direzione e verso sono fissati durante la procedura, mentre il modulo viene moltiplicato per una costante (e quindi è soggetto a dilatazioni). Questa è stata la prima apparizione del \textit{ranking spettrale} - che usa gli autovettori di una qualche matrice, solitamente derivata da un grafo, per calcolare una misura di centralità.
-\subsubsection{L'autovettore dominante sinistro}
+\subsection{L'autovettore dominante sinistro}
 Un \textit{autovalore dominante} è un autovalore di modulo massimo. Un autovettore associato all'autovalore dominante è noto come \textit{autovettore dominante}. Nella maggior parte dei casi pratici di ranking spettrale l'autovalore di modulo massimo è unico\footnote{Questo significa che la soluzione del polinomi caratteristico ha molteplicità 1}.
 
 Il teorema di Perron Frobenius ci dà qualche garanzia a riguardo.
@@ -88,7 +88,7 @@ Abbiamo dunque provato che il \textit{metodo della potenza} per calcolare l'auto
 
 Gli autovettori dominanti non si comportano come ci aspetteremmo quando il grafo in questione non è fortemente connesso. In base all'autovalore dominante della componente fortemente connessa, l'autovettore dominante potrebbe o potrebbe non essere diverso da zero per componenti terminali (un discorso più completo può essere trovato in \cite{autovalori}).
 Un esempio recente di applicazione di centralità basata su autovettori dominanti può essere trovato in \cite{calcio}.
-\subsubsection{Indice di Seeley}
+\subsection{Indice di Seeley}
 Un altro passo fondamentale verso il ranking spettrale fu fatto mezzo secolo dopo da John R. Seeley \cite{seeley}
 , il quale non era al corrente del lavoro fatto da Landau: notò che gli indici basati su somme di righe o colonne non avevano chissà quale significato a causa del fatto che non prendevano in considerazione l'importante fatto che bisogna piacere a chi piace a molti, e così via. In altre parole, un indice di importanza, di centralità o di autorità, dovrebbe essere definito in maniera \textit{ricorsiva}, così che il mio punteggio sia uguale alla somma dei punteggi di tutti quelli che mi sostengono. In notazione matriciale
 \begin{equation*}
@@ -104,7 +104,7 @@ L'indice di Seeley può essere espresso tramite la seguente equazione
 
 La matrice risultante dal processo di $l_1$-normalizzazione è stocastica, quindi il punteggio può essere interpretato come uno stato stabile di una catena di Markov\footnote{Il punteggio può essere interpretato come il tempo che spenderemo in un vertice durante un processo di visita casuale ed equiprobaile in un grafo}. In particolare, se il grafo sottostante è simmetrico allora l'indice di Seeley collassa al degree (normalizzato) a causa del noto carattere della distribuzione stazionaria nel caso di una camminata casuale all'interno di un grafo simmetrico. Ripetendo il processo fino a stabilità otteniamo l'autovettore sinistro della matrice del grafo normalizzata.
 Anche l'indice di Seeley non gestisce molto bene la mancanza di connettività forte: gli unici nodi con un punteggio non zero sono quelli che appartengono a componenti terminali che non sono formate da un singolo nodo di outdegree 0.
-\subsubsection{Indice di Katz}
+\subsection{Indice di Katz}
 Katz ha introdotto il suo celebre indice \cite{katz} usando la somma su tutti i percorsi entranti in un nodo, ma pesando ciascun cammino di modo che la somma avesse un valore finito. L'indice di Katz può essere espresso come
 \begin{equation}
     \vec{k} = \vec{1} \sum_{i = 0}^{\infty}{\beta^i A^i}
@@ -116,7 +116,7 @@ Katz notò immediatamente che l'indice poteva essere espresso usando operatori c
     \vec{k} = \vec{1}(1 - \beta A)^{-1}
 \end{equation}
 una semplice generalizzazione (consigliata da Hubbell in \cite{hub}) rimpiazza il vettore $\vec{1}$ con un vettore di preferenze $\vec{v}$ affinchè i cammini vengano pesati in maniera differente sulla base del nodo di partenza.
-\subsection{PageRank}
+\section{PageRank}
 PageRank è una delle centralità spettarli oggi in uso più discusse, sembrerebbe essere usata all'interno dell'algoritmo di ranking di Google\footnote{Il lettore dovrebbe essere a conoscenza, a ogni modo, del fatto che la letteratura riguardante l'efficacia di PageRank nel campo dell'information retrieval è alquanto povera, ed è composta essenzialmente di risultati negativi quali \cite{prank} e \cite{prankoind}}.
 
 Di fatto quando lavoriamo con PageRank è come se avessimo a disposizione una moneta truccata ($p_T >

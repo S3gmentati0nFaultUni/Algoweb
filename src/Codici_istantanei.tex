@@ -1,4 +1,4 @@
-\section{Codici istantanei}
+\chapter{Codici istantanei}
 Un \textit{codice} è un insieme $C \subseteq 2^*$, cioè un insieme di parole binarie. Si noti che per ovvie ragioni di cardinalità \set{C} è al più numerabile.
 
 Definiamo l'\textit{ordinamento per prefissi} delle sequenze in \set{2^*} come segue:
@@ -56,7 +56,7 @@ Fatte le dovute premesse possiamo passare alla dimostrazione del Teorema 1.
     L'invariante è ovviamente vero quando $n = 0$. Dopo aver generato $w_n$, $d$ viene aggiornato sommandogli $2^{-t_n}$ e diventa quindi $(k + 1)2^{-t_n}$. Ma dato che $(k + 1)2^{-t_n} = ((k + 1)2^{t_{n + 1}-t_n})2^{-t_{n + 1}}$ e $t_{n + 1} \geq t_n$, l'invariante viene mantenuto.
     \qedhere
 \end{proof}
-\subsection{Codici istantanei per gli interi}
+\section{Codici istantanei per gli interi}
 Alcuni dei metodi più utilizzati per la compressione degli indici utilizzano codici istantanei per gli interi. Questa scelta può apparire a prima vista opinabile per il fatto che i valori che compaiono in un indice hanno delle limitazioni superiori naturali e sono facili da calcolare, e quindi potrebbe essere più efficiente calcolare un codice istantaneo per il solo sottoinsieme d'interi effettivamente utilizzato.
 
 In realtà se si lavora con collezioni documentali di grandi dimensioni la semplicità teorica e implementativa dei codici per gli interi li rende molto interessanti.
@@ -126,7 +126,7 @@ In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato 
       \hline
     \end{tabular}
 \end{table}
-\subsection{Caratteristiche matematiche dei codici}
+\section{Caratteristiche matematiche dei codici}
 Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice è \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$) il valore atteso della lunghezza di una parola rispetto a $p$ è minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ciò significa che se $l(n)$ è la lunghezza della parola di codice per $n$ e $H(p)$ è l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
 \begin{equation*}
     \sum_{x \in \nat}{l(n)p(n)} \leq cH(p) + d
@@ -134,9 +134,9 @@ Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi 
 Un codice è detto \textit{asintoticamente ottimo} quando a destra il limite superiore è della forma $f(H(p))$ con $\lim_{n \to \infty} f(n) = 1$.
 
 Il codice unario e i codici di Golomb non sono universali, mentre lo sono $\gamma$ e $\delta$ inoltre, quest'ultimo, è anche asintoticamente ottimo.
-\subsection{Codifiche alternative}
+\section{Codifiche alternative}
 È possibile utilizzare tecniche standard quali i codici di Huffman o la compressione aritmetica per la codifica di ogni parte di un indice. Ci sono però delle considerazioni ovvie che mostrano come questi metodi, utilizzati direttamente, non siano di fatto implementatibili. La codifica di Huffman richiederebbe un numero di parole di codice esorbitante, e le parole dovrebbero essere calcolate separatamente per ogni termine. La codifica aritmetica richiede alcuni bit di scarico prima di poter essere interrotta, e quindi non si presta a essere inframezzata da altri dati (come i conteggi e le posizioni). Inoltre, per quanto efficientemente implementata, è estremamente lenta.
-\subsubsection{PFOR-DELTA}
+\subsection{PFOR-DELTA}
 Un approccio che ha rivoluzionato il modo di memorizzare le liste di affissione, è quello proposto in \cite{pfordelta}, comunemente chiamato PFOR-DELTA o FOR. L'idea è molto semplice: si sceglie una dimensione di blocco $B$ (di solito 128 o 256), e per ogni blocco consecutivo di $B$ scarti si trova l'intero $b$ tale per cui la maggior parte dei valori\footnote{Il professore trattando l'argomento propone di coprire il 90\% dei valori con $b$ bit, assumeremo 90\% come valore di riferimento da qui in avanti. In questo caso però la filosofia è semplicemente più valori si coprono con $b$, meglio è (attenzione a non cadere nell'approccio miope di coprire tutti i valori, soprattutto qualora si fosse costretti a impiegare un numero di bit considerevole.)} possono essere rappresentati con $b$ bit.
 
 A questo punto viene scritto un vettore di $B$ interi a $b$ bit, che descrive correttamente il 90\% dei valori, quelli che non possono essere espressi in $b$ bit sono dette \textit{eccezioni} e vengono scritte in un vettore a parte impiegando, il minimo numero di bit, atti a descrivere il massimo valore nell'array, per ogni elemento. Gli scarti vengono memorizzati in ordine in $B$, quando incontriamo un'eccezione inseriamo una sequenza di escape (tipo un elemento dell'array costituito da soli 1) che consente di capire che lì è presente un eccezione, è dunque possibile in fase di decodifica rimpiazzare il valore di escape con l'eccezione corrispondente; siccome tutti e due i vettori sono ordinati l'operazione può essere eseguita sequenzialmente.
@@ -144,7 +144,7 @@ A questo punto viene scritto un vettore di $B$ interi a $b$ bit, che descrive co
 In fase di decodifica, si copiano i primi $B$ valori a $b$ bit in un vettore di interi. Quest'operazione è molto veloce, in particolare se vengono creati dei cicli srotolati diversi\footnote{Unrolling loops, significa semplicemente scrivere un'istruzione per ogni valore del loop, richiede di scrivere migliaia di righe di codice che però possono essere generate automaticamente.} per ogni possibile valore di $b$. A questo punto si passa attraverso la lista delle eccezioni, che vengono copiate dal secondo vettore nelle posizioni corrette.
 
 Questo approccio fa sì che il processore esegua dei cicli estremamente predicibili, e riesca a decodificare un numero di scarti al secondo significativamente più alto delle tecniche basate su codici. Le performance di compressione sono di solito buone, anche se è difficile dare garanzie teoriche. Lo svantaggio (che può risultare significativo) è che è sempre necessario decodificare $B$ elementi.
-\subsubsection{Elias Fano}
+\subsection{Elias Fano}
 Elias Fano è un meccanismo di codifica e compressione che può essere utilizzato per memorizzare in maniera efficiente sequenze di interi monotone non decrescenti.
 
 La lista dei puntatori documentali associati a un determinato token in una lista di affissione possono essere memorizzati tramite una lista per scarti (la stessa cosa può essere fatta, volendo, su posizioni e conteggi). Il problema di una lista per scarti è che senza ulteriori magheggi (tabelle di salto) hanno performance di rango e selezione pessime e la loro implementazione efficiente ed efficace può non essere banale, oltre a richiedere un ulteriore sforzo non indifferente.
@@ -206,7 +206,7 @@ Prendiamo ora il caso in esame, vogliamo memorizzare l'indice inverso, il che si
 Al posto di memorizzare i conteggi, possiamo memorizzare la loro cumulata ($x_0, x_0 + x_1, x_0 + x_1 + x_2, \dots$), che risulta non decrescente, mentre per le posizioni si può salvare la cumulata degli scarti. L'idea di base è che la cumulata dei conteggi può essere utilizzata come funzione per indicizzare le posizioni.
 
 Elias Fano è una tecnica di codifica per indici veloce e compatta, che può essere battuta per compressione solo da codifiche più lente come il Golomb, per contro è scalabile e ha un accesso locale molto migliore di altri approcci, rendendolo una tecnica che si può quasi definire un \textit{go-to}.
-\subsubsection{Analisi spaziale di Elias Fano}
+\subsection{Analisi spaziale di Elias Fano}
 Prima di partire con l'analisi spaziale di Elias Fano definiamo una serie di strumenti che potrebbero tornare utili nell'arco della dimostrazione.
 
 Sia $X=\{x_i\}$ una successione di valori monotona non decrescente, sia $u$ l'upper bound di questa successione di valori, siano:
@@ -270,7 +270,7 @@ siano inoltre $n$ la dimensione della successione $X$, $l$ il numero dei bit men
         D_n = 2n + \ceil{\log\bigb{\frac{u}{n}}}n
     \end{equation}
 \end{proof}
-\subsubsection{Sistemi di numerazione asimmetrica (approfondimento)}
+\subsection{Sistemi di numerazione asimmetrica (approfondimento)}
 Nel 2013, Duda \cite{duda} ha introdotto un nuovo metodo di codifica di sequenze di simboli che ha rivoluzionato il campo della compressione dati. I \textit{sistemi di numerazione asimmetrica} hanno velocità pari o superiore a un codice di Huffman, ma performance di compressione confrontabili con quelle della codifica aritmetica, quindi davvero ottime (molto vicine al limite teorico di Shannon). Sono alla base di tutti i moderni sistemi di compressione come \texttt{zstd} di Facebook e lo standard JPEG XL.
 
 L'idea alla base dei sistemi di numerazione arimtetica è che per comprimere una sequenza di simboli vorremo (idealmente) utilizzare un intero molto grande. Se una sequenza è codificata da $x$, vorremmo che aggiungere un simbolo $y$ che ha probabilità di comparire $p_y$ portasse a una codifica $x' \approx x / p_s$, perché in questo modo $\log(x') = \log(x) + \log(1 / p_y)$. Aggiungendo quindi $y$ alla sequenza, spenderemo $\log(1 / p_y)$ bit. Complessivamente il costo del messaggio sarà l'entropia di Shannon.
@@ -337,7 +337,7 @@ Partiamo ora da $x = 0$, ora
 \texttt{push(21534, 0)} &= (\flr{21534 / 922} << 10) + 0 + 328 = 23880 \qquad (15 \textnormal{bit} / 12)
 \end{align*}
 Nelle implementazioni pratiche viene eseguito un processo di \textit{rinormalizzazione}: quando l'intero calcolato diviene troppo grande da maneggiare, la metà superiore dei suoi bit viene scritta in un buffer di output e si continua a gestire la metà inferiore. Laa stessa operazione, invertita, consente di rileggere. La rinormalizzazione comporta un'ulteriore perdita di compressione, ma permette di operare su interi di dimensione fissata.
-\subsection{Distribuzioni intese}
+\section{Distribuzioni intese}
 Ogni codice istantaneo completo per gli interi definisce implicitamente una \textit{distribuzione intesa} sugli interi, che assegna a $w$ la probabilità $2^{-|w|}$. Il codice, in effetti, risulta \textit{ottimo} per la distribuzione associata. La scelta di un codice istantaneo può quindi essere ricondotta a considerazioni sulla distribuzione statistica degli interi che si intendo rappresentare.
 
 Al codice unario è associata una distribuzione geometrica.
@@ -360,7 +360,7 @@ Infine, sebbene i codici a lunghezza variabile non siano completi, a meno di un 
 \begin{equation*}
     \frac{1}{2^{\ceil{\log(x) / k}(k + 1)}} \approx \frac{1}{(x + 1)^{1 + 1/k}}
 \end{equation*}
-\subsection{Struttura di un indice}
+\section{Struttura di un indice}
 Dai documenti crawlati si costruisce un indice inverso, cioè una relazione che mappa ogni termine nei documenti in cui compare. Partendo dalla lista di termini, costituita da elementi della forma $\langle documento, termine, posizione \rangle$, posso fare ordinamento rispetto alla colonna centrale e a partire da questo costruire l'indice inverso, ovvero l'indice che contiene, per ogni termine, l'insieme dei documenti (e delle posizioni nel documento) in cui il termine compare, in ordine crescente per valore del puntatore documentale.
 
 Una lista di affissione è la lista dei puntatori a documenti associati a un unico termine, spesso, all'informazione essenziale dei puntatori documentali, sono associate una serie d'informazioni accessorie quali la frequenza con cui il token compare nei documenti associati e le posizioni occupate.
@@ -370,7 +370,7 @@ La struttura di un elemento di una lista di affissione potrebbe essere il seguen
     \langle p, c, \langle p_1, \dots, p_n \rangle \rangle
 \end{equation*}
 dove $p$ è il puntatore al documento, $c$ è il conteggio, ovvero il numero di volte in cui $t$ compare in $p$, la $n$-pla ordinata (in ordine crescente) $\langle p_1, \dots, p_n \rangle$ indica le posizioni che il token occupa nel file.
-\subsection{Codici per gli indici}
+\section{Codici per gli indici}
 Nella scelta dei codici istantanei da utilizzare per la compressione di un indice è fondamentale la conoscenza della distribuzione degli interi da comprimere. In alcuni casi è possibile creare un modello statistico che spiega la distribuzione empirica riscontrata.
 
 I termini sono tipicamente salvati per ID (e.g. rango lessicografico), con un meccanismo per ricavarlo, come MWHC (che sarà trattato in seguito).
@@ -388,11 +388,11 @@ Una controindicazione può essere però la \textit{correlazione} tra documenti a
 Più spesso gli scarti tra puntatori documentali all'interno delle liste di affissione vengono memorizzati usando Elias-Fano (di parametro dipendente dal termine) o la $\gamma$ di Elias.
 
 Per quanto riguarda le posizioni, non esistono modelli noti e affidabili degli scarti, si usa pertanto un codice dalle buone prestazioni come il $\delta$. È anche possibile utilizzare Golomb, assumendo un modello Bernoulliano anche per le posizioni, ma per calcolare il modulo è necessario avere la lunghezza del documento, che quindi deve essere disponibile in memoria centrale. Alla fine, in ogni caso, considerazioni come la facilità d'implementazione, velocità di decodifica, e altri fattori, possono essere forze determinanti nella scelta delle tecniche di codifica.
-\subsection{Problemi implementativi}
+\section{Problemi implementativi}
 I codici istantanei comprimono in maniera ottima rispetto alle distribuzioni intese. Riducono quindi la dimensione dell'indice in maniera significativa, cosa particolarmente utile se l'indice verrà caricato in tutto o in parte in memoria centrale. In effetti, esperimenti condotti all'inizio dell'attività di ricerca sugli indici inversi hanno mostrato che un indice compresso è significativamente più veloce di un indice non compresso, dato che l'I/O è ridotto in maniera significativa e il prezzo da pagare nella decodifica è di pochi cicli macchina per intero.
 
 L'implementazione della lettura dei codici istantanei va però effettuata con una certa cura se si vogliono ottenere prestazioni ragionevoli. L'idea più importante è quella di mantenere un \textit{bit buffer} che contiene una finestra sul file delle liste di affissione. Le manipolazioni relative alla decodifica dei codici dovrebbero essere confinate al bit buffer nella stragrande maggioranza dei casi. In particolare, un numero significativo di prefissi (per esempio, $2^{16}$) può essere decodificato tramite una tabella che contiene, per ogni prefisso, il numero di bit immediatamente decodificabili e l'intero corrispondente, o l'indicazione che è necessario procedere a una decodifica manuale.
-\subsection{Salti}
+\section{Salti}
 Non è possibile ottenere in tempo costante un elemento arbitrario di una lista compressa per scarti: è necessario decodificare gli elementi precedenti. In realtà, più problematica è l'impossibilità di saltare rapidamente al primo elemento della lista maggiore o uguale a un limite inferiore $b$, operazione detta comunemente \textit{salto}. I salti sono fondamentali, come vedremo, per la risoluzione veloce delle interrogazioni congiunte.
 
 La tecnica di base per ovviare a questo inconveniente è quella di memorizzare, insieme alla lista di affissioni, una \textit{tabella di salto} che memorizza, dato un \textit{quanto} $q$, il valore degli elementi d'indice $iq, i > 0$, e la loro posizione (espressa in bit) nella lista di affissioni. Quando si vuole effettuare un salto, e più precisamente quando si vuole trovare minimo valore maggiore o uguale a $b$, si cerca nella tabella (per esempio tramite una ricerca dicotomica o una \textit{ricerca esponenziale}) l'elemento di posto $iq \leq b$, e si comincia a decodificare la lista per cercare il minimo maggiorante di $b$. Al più $q$ elementi dovranno essere decodificati, e $q$ deve essere scelto sperimentalmente in modo da, al tempo stesso, non accrescere eccessivamente la dimensione dell'indice e fornire un significativo aumento di prestazioni.
