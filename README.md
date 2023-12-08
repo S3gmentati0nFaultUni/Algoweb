@@ -21,7 +21,8 @@ Prendete tutto cum grano salis!
   
   - [ ] Correzioni per la bibliografia
   
-  - [ ] Aggiungere un'appendice per l'algebra lineare
+  - [x] Aggiungere un'appendice per l'algebra lineare<br>
+        Appendice aggiunto, adesso bisogna solo controllare che abbia senso
   
   - [ ] Aggiungere un artwork per la copertina
 
