@@ -3,94 +3,134 @@
 In questa sezione rivedremo alcuni dei più importanti concetti di algebra lineare che è utile rispolverare ai fini di capire al meglio il corso.
 Andiamo con ordine
 
-\begin{definition}
-    In matematica, un campo, è una struttura algebrica composta da un insieme vuoto e da due operazioni binarie interne, cioè due operazioni che, data una qualsiasi coppia di valori presi dall'insieme di definizione, restituiscono un valore all'interno dell'insieme di definizione.
+\begin{definition} [Campo]
+    Un campo è un insieme $\field$ dotato di una operazione di somma $\field \times \field \rightarrow \field$, $(x, y) \mapsto x + y$ e di una operazione prodotto $\field \times \field \rightarrow \field$, $(x, y) \mapsto xy$ tali che:
+    \begin{enumerate}
+        \renewcommand{\labelenumi}{\roman{enumi}.}
+        \item La somma e il prodotto godano delle proprietà associativa, commutativa e distributiva;
+        \item La somma ammetta un elemento neutro, cioè un elemento, denotato $0$, tale che $x + 0 = x$ per ogni $x \in \field$;
+        \item Il prodotto ammetta un elemento neutro denotato $1$;
+        \item Ogni elemento $x \in field$ ammetta un inverso additivo $-x$, cioè un elemento tale che $x + (-x) = 0$;
+        \item Ogni elemento $x \in \field$, con $x \neq 0$, ammetta un inverso moltiplicativo $x^{-1}$, cioze un elemento tale che $xx^{-1} = 1$.
+      \end{enumerate}
 \end{definition}
-Un esempio di operazione binaria interna è la somma tra numeri naturali. Ora che abbiamo definito un campo possiamo passare alla definizione di matrice,
-\begin{definition}
-    Una matrice $A$ definita su un campo $F$ è una collezione ordinata di elementi di $F$.
-
-    In una matrice $A \in F^{n \times n}$, chiameremo l'elemento in posizione $ij$-esima ($i, j \in n$) $a_{ij}$
+Un esempio di operazione binaria interna è la somma tra numeri naturali. 
+\begin{definition}[$\field$-spazio vettoriale]
+    Definiamo $\field$-spazio vettoriale (o spazio vettoriale sul campo $\field$) un insieme $V$ dotato delle due seguenti applicazioni:
+    \begin{enumerate}
+        \item Somma:
+        \begin{align*}
+            +: &V \times V \rightarrow V \\
+                &(\vec{v}, \vec{w}) \mapsto \vec{v} + \vec{w}
+        \end{align*}
+        \item Prodotto per scalare
+        \begin{align*}
+            \cdot: &\field \times V \rightarrow V \\
+                    &(\alpha, \vec{v}) \mapsto \alpha \cdot \vec{v}
+        \end{align*}
+    \end{enumerate}
+    tali che valgano le seguenti proprietà:
+    \begin{enumerate}
+        \renewcommand{\labelenumi}{(P\arabic{enumi})}
+        \item Proprietà associativa di $+: \fa \vec{v}, \vec{w}, \vec{z} \in V$ si ha $(\vec{v} + \vec{w}) + \vec{z} = \vec{v} + (\vec{w} + \vec{z})$;
+        \item Proprietà commutativa di $+: \fa \vec{v}, \vec{w} \in V$ si ha $\vec{v} + \vec{w} = \vec{w} + \vec{v}$;
+        \item Esistenza dell'elemento neutro di $+: $ esiste un elemento $\vec{0} \in V$ tale che $\fa \vec{v} \in V$ si ha $\vec{v} + \vec{0} = \vec{v}$;
+        \item Esistenza dell'elemento opposto, o inverso, relativamente a $+: \fa \vec{v} \in V$ esiste $\vec{w} \in V$ tale che $\vec{v} + \vec{w} = 0$, useremo la notazione $\vec{v} = -\vec{w}$;
+        \item Proprietà distributiva di $\cdot$ rispetto a $+: \fa \alpha \in \field, \fa \vec{v}, \vec{w} \in V$ si ha
+        \begin{equation*}
+            \alpha \cdot (\vec{v} + \vec{w}) = \alpha \cdot \vec{v} + \alpha \cdot \vec{w};
+        \end{equation*}
+        \item Proprietà distributiva di $\cdot$ rispetto a $+$ in $\field: \fa \alpha, \beta \in \field, \fa \vec{v} \in V$ si ha
+        \begin{equation*}
+            (\alpha + \beta) \cdot \vec{v} = \alpha \cdot \vec{v} + \beta \cdot \vec{v};
+        \end{equation*}
+        \item Proprietà associativa di $\cdot: \fa \alpha, \beta \in \field, \fa \vec{v} \in V$ si ha $(\alpha\beta) \cdot \vec{v} = \alpha \cdot (\beta \cdot \vec{v})$
+        \item Proprietà di $1: \fa \vec{v} \in V$ si ha $1 \cdot \vec{v} = \vec{v}$.
+    \end{enumerate}
 \end{definition}
-Una matrice $A \in \reals^n \times n$ sarà una matrice $n \times n$, dunque una matrice con $n$ righe ed $n$ colonne, le matrici possono anche non essere quadrate. I vettori sono speciali matrici che hanno una delle due dimensioni pari a $1$, chiamiamo vettore riga un vettore $\vec{v} \in \reals^n$ che ha dimensioni $1 \times n$, chiamiamo vettore colonna un vettore $\vec{v} \in \reals^n$ che ha dimensioni $n \times 1$.
+Sia $V$ un $\field$-spazio vettoriale. Gli elementi $\vec{v} \in V$ sono chiamati vettori e gli elementi $\alpha \in \field$ sono chiamati scalari.
 
-In generale parleremo moltissimo di vettori in questo corso, e non espliciteremo mai di che tipo di vettore si stia parlando (a meno che non vada contro alla convenzione che scegliamo), seguendo la convenzione classica, quando si parla di vettore intenderemo sempre un vettore colonna.
-
-Avendo parlato di vettori è importante andare a definire uno spazio vettoriale/
-\begin{definition}
-    Si dice spazio vettoriale su un campo $F$ un insieme $V$ dotato di due operazioni:
-    \begin{itemize}
-        \item operazione interna $+ : V \times V \rightarrow V$
-        \item operazione esterna $\cdot : K \times V \rightarrow V$
-    \end{itemize}
-    Le due operazioni devono soddisfare le seguenti proprietà:
-    \begin{itemize}
-        \item Commutatività dell'operazione interna
-        \item Associatività dell'operazione interna
-        \item Esistenza dell'elemento neutro per l'operazione interna
-        \item Esistenza dell'opposo per l'operazione interna
-        \item Distributività a destra e a sinistra dell'operazione esterna
-        \item Associatività dell'operazione esterna
-        \item Esistenza dell'elemento neutro per l'operazione esterna
-    \end{itemize}
-    Andremo a definire meglio queste due operazioni in seguito.
+Ora che abbiamo la definizione di campo e di spazio vettoriale, possiamo passare alla definizione di
+\begin{definition} [Matrice]
+    Sia $\field$ un campo. Siano dati $h$ ed $n \in \nat$ con $h, n \geq 1$. Definiamo matrice $h \times n$ a coefficienti in $\field$ una tabella della forma 
+    \begin{equation*}
+        A =
+        \begin{bmatrix}
+            a_{11} &\dots &a_{1n} \\
+            \vdots &\ddots &\vdots \\
+            a_{h1} &\dots &a_{hn}
+        \end{bmatrix}
+        = (a_{ij})_{(1 \leq i \leq h, 1 \leq j \leq n)}
+    \end{equation*}
+    con $a_{ij} \in \field$ per ogni $1 \leq i \leq h$ ed ogni $1 \leq j \leq n$. Denotiamo $M_{h \times n}(\field)$ l'insieme delle matrici $h \times n$ ($h$ righe, $n$ colonne) a coefficienti in $\field$. Introduciamo le due operazioni
 \end{definition}
-Passiamo ora a definire alcune delle operazioni, per matrici e vettori, che verranno utilizzate nell'arco delle dispense e il cui funzionamento verrà dato per scontato.
+I vettori, che abbiamo nominato prima, sono difatto matrici che hanno una delle due dimensioni pari a $1$, chiamiamo vettore riga un vettore $\vec{v} \in M_{1 \times n}(\field)$, chiamiamo vettore colonna un vettore $\vec{v} \in M_{n \times 1}(\field)$.
+
+In generale parleremo moltissimo di vettori in questo corso, e non espliciteremo mai di che tipo di vettore si stia parlando (a meno che non vada contro alla convenzione che scegliamo). Per tutto il corso delle dispense, qualora si farà riferimento a un vettore, seguendo la convenzione classica, si tratterà sempre di un vettore colonna (a meno che non sia specificato altrimenti).
+
+Passiamo ora a considerare le operazioni che possiamo eseguire su matrici e vettori.
 \section{Addizione e Sottrazione}
 L'addizione tra due matrici $A$ ed $B$ può essere eseguita se e solo se le loro dimensioni sono le stesse, quindi se $A$ è una matrice $n \times n$ e $N$ è un vettore $n \times 1$ l'operazione non potrà essere eseguita.
 
-Se le dimensioni delle matrici combaciano l'operazione di somma può essere eseguita sommando elementi corrispondenti, dunque l'operazione può essere tradotta (supponendo di sommare due matrici $n \times n$) come segue:
+Se le dimensioni delle matrici combaciano l'operazione di somma può essere eseguita sommando elementi corrispondenti, dunque l'operazione può essere tradotta (supponendo di sommare due matrici $m \times n$) come segue:
 \begin{equation*}
-    \sum_{i, j \in n} a_{ij} + b_{ij}
+    A + B = (a_{ij} + b_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}
 \end{equation*}
 Discorso duale può essere fatto per la sottrazione tra due matrici.
 \section{Moltiplicazione per uno scalare}
-In generale, quando parliamo di vettori e matrici, ci riferiamo a qualunque elemento $c \in F$, dove $F$ è il campo sul quale abbiamo definito il nostro spazio vettoriale, come scalare.
+In generale, quando parliamo di vettori e matrici, ci riferiamo a qualunque elemento $c \in \field$, dove $\field$ è il campo sul quale abbiamo definito il nostro spazio vettoriale, come scalare.
 
-Quando eseguiamo la moltiplicazione di una matrice $A \in \reals^{n \times n}$ per uno scalare $c \in \reals$, moltiplichiamo tutti gli elementi della matrice per suddetto scalare, dunque l'operazione può essere tradotta come segue:
+Quando eseguiamo la moltiplicazione di una matrice $A \in M_{m \times n}(\field)$ per uno scalare $c \in \field$, moltiplichiamo tutti gli elementi della matrice per suddetto scalare, dunque l'operazione può essere tradotta come segue:
 \begin{equation*}
-    \prod_{i, j \in n} c \cdot a_{ij}
+    c \cdot A = (c \cdot a_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}
 \end{equation*}
 \section{Trasposizione}
-L'operazione di trasposizione consiste nel ribaltamento dei valori all'interno della matrice rispetto alla sua diagonale. Questo significa che, data una matrice $A \in \reals^{n \times n}, \trans{a}_{ij} = a_{ji}$, ovviamente l'operazione di trasposizione non produce alcun cambiamento per i valori lungo la diagonale.
+Data la matrice di tipo $(m, n): A = (a_{ij}\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m})$, la sua trasposta, denotata come $\trans{A}$ è la matrice di tipo $(n, m)$ ottenuta dallo scambio delle righe e delle colonne di $A$.
 
-Per noi la trasposizione è particolarmente interessante perchè trasforma un vettore riga in un vettore colonna e viceversa.
+Per noi la traspozione è particolarmente interessante perchè trasforma un vettore riga in un vettore colonna.
 \section{Prodotto tra matrici}
-Date due matrici $A \in \reals^{n \times m}, B \in \reals^{m \times n}$ il prodotto riga per colonna tra loro è valido se e solo se il numero di elementi per riga della prima è equivalente al numero di elementi per colonna della seconda. Questo significa, per intenderci, che il prodotto tra matrici è valido solamente se la seconda dimensione della prima matrice è uguale alla prima dimensione dell'altra.
+Date due matrici $A \in M_{n \times m}(\field), B \in M_{m \times n}(\field)$ il prodotto riga per colonna è valido se e solo se il numero di colonne della prima è uguale al numero di righe della seconda. Questo significa, per intenderci, che il prodotto tra matrici è valido solamente se la seconda dimensione della prima matrice è uguale alla prima dimensione dell'altra.
 Il risultato dell'operazione di moltiplicazione sarà una matrice di dimensioni $n \times n$.
 
-L'elemento in posizione $ij$ all'interno della matrice prodotto può essere calcolato come segue:
+Dunque, note $A$ e $B$ matrici come sopra, sia $C = AB$ con $C = (c_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}$ allora l'elemento $c_{ij}$ può essere calcolato come segue:
 \begin{equation*}
     c_{ij} = \sum_{k \in m}a_{ik}b_{kj}
 \end{equation*}
 Il prodotto tra matrici, in generale, non gode della proprietà commutativa.
-
- (oltre a quelle ereditate dalle matrici che abbiamo appena definito sopra).
 \section{Prodotto scalare}
-Si definisce prdotto scalare sullo spazio vettoriale $V$ un'operazione che associa a due vettori $\vec{u}, \vec{v} \in V$ uno scalare nel campo $F$ su cui è definito lo spazio vettoriale $V$, generalmente indicato come $\scalar{\vec{v}}{\vec{u}}$.
+Si definisce prdotto scalare sullo spazio vettoriale $V$ un'operazione che associa a due vettori $\vec{u}, \vec{v} \in V$ uno scalare nel campo $\field$ su cui è definito lo spazio vettoriale $V$, generalmente indicato come $\scalar{\vec{v}}{\vec{u}}$.
 
-Dati tre vettori $\vec{u}, \vec{v}, \vec{w}$, l'operatore di prodotto scalare deve godere delle seguenti proprietà:
-\begin{itemize}
-    \item $\scalar{\vec{v}}{\vec{w}} = \scalar{\vec{w}}{\vec{v}}$
-    \item $\scalar{\vec{v} + \vec{w}}{\vec{u}} = \scalar{\vec{v}}{\vec{u}} + \scalar{\vec{w}}{\vec{u}}$
-    \item $\scalar{k\vec{v}}{\vec{w}} = k\scalar{\vec{v}}{\vec{w}}$
-\end{itemize}
+Dati tre vettori $\vec{u}, \vec{v}, \vec{w} \in V$ e $k \in \field$, l'operatore di prodotto scalare deve godere delle seguenti proprietà:
+\begin{enumerate}
+    \renewcommand{\labelenumi}{(P\arabic{enumi})}
+    \item Proprietà di simmetria: $\scalar{\vec{v}}{\vec{w}} = \scalar{\vec{w}}{\vec{v}}$
+    \item 
+    \begin{align*}
+        \scalar{\vec{v} + \vec{w}}{\vec{u}} &= \scalar{\vec{v}}{\vec{u}} + \scalar{\vec{w}}{\vec{u}} \\ 
+        \scalar{k\vec{v}}{\vec{w}} &= k\scalar{\vec{v}}{\vec{w}}
+    \end{align*}
+\end{enumerate}
 Un esempio classico di prodotto scalare è quello nello spazio euclideo, che viene calcolato nel modo seguente:
 \begin{equation*}
     \scalar{\vec{v}}{\vec{u}} = |\vec{a}| |\vec{b}| \cos{\theta}
 \end{equation*}
+Più in generale, il prodotto scalare tra due vettori qualunque $\vec{v}, \vec{u} \in V$, con $V$ $\field$-spazio vettoriale viene calcolato come:
+\begin{equation*}
+    \scantokens{\vec{v}}{\vec{u}} = \sum_{i \in \{1, \dots, n\}} v_iu_i
+\end{equation*}
 \section{Prodotto vettoriale}
 In generale il prodotto vettoriale è un'operazione interna allo spazio vettoriale che restituisce un altro vettore in direzione normale al piano formato dai vettori di partenza.
 
-Probabilmente il concetto più importante che andremo ad affrontare in questo recap è sicuramente quello di autovalore e autovettore. Il loro valore nella seconda parte del corso è incredibilmente grande e quindi si cercherà di dare la spiegazione più dettagliata possibile.
+\bigbreak
+Probabilmente il concetto più importante che andremo ad affrontare in questo recap è sicuramente quello di autovalore e autovettore. La loro rilevanza nella seconda parte del corso è difficilmente misurabile, quindi si cercherà di dare la spiegazione più dettagliata possibile.
 \section{Autovalori, Autovettori, Autospazi}
-Si consideri una matrice $A \in F^{n \times n}$, la matrice deve essere necessariamente quadrata, chiameremo autovalore $\lambda_0 \in F$ associato alla matrice $A$ uno scalare tale per cui esiste un vettore colonna $\vec{v} \in F^n \setminus {0^n}$ tale per cui
+Si consideri una matrice $A \in M_{n \times n}(\field)$ e uno spazio vettoriale $V$ definito sul campo $\field$, la matrice deve essere necessariamente quadrata, chiameremo autovalore $\lambda_0 \in \field$ associato alla matrice $A$ uno scalare tale per cui esiste un vettore $\vec{v} \in V$ tale per cui $\vec{v} \neq \vec{0}$
 \begin{equation}
     A\vec{v} = \lambda_0\vec{v}
 \end{equation}
-Questo vettore è noto come vettore destro associato alla matrice $A$, relativo all'autovalore $\lambda_0$.
+Detto autovettore destro associato alla matrice $A$ relativo all'autovalore $\lambda_0$.
 
-È utile osservare che se $\vec{v}$ è autovettore relativo all'autovalore $\lambda_0$, allora anche $\alpha\vec{v}$ è autovettore relativo all'autovalore $\lambda_0$ indipendentemente dalla scelta dello scalare $\alpha \in F$.
+È utile osservare che se $\vec{v}$ è autovettore relativo all'autovalore $\lambda_0$ allora anche $\alpha\vec{v}$ è autovettore relativo all'autovalore $\lambda_0$ indipendentemente dalla scelta dello scalare $\alpha \in \field$ con $\alpha \neq 0$.
 
 Oltre all'autovettore destro possiamo definire anche l'autovettore sinistro per $A$ rispetto all'autovalore $\lambda_0$ che avrà definizione analoga rispetto alla controparte destra.
 \begin{equation}
@@ -99,5 +139,5 @@ Oltre all'autovettore destro possiamo definire anche l'autovettore sinistro per 
 
 Per concludere andiamo a definire il cosiddetto autospazio relativo ad un autovalore.
 \begin{definition}
-    Data una matrice $A \in F^{n \times n}$, siano $\vec{v_0}, \dots, \vec{v_k}$ gli autovettori associati all'autovalore $\lambda_0$, questi autovettori formano un sottospazio vettoriale di $F^n$. Questo sottospazio viene definito autospazio relativo all'autovalore $\lambda_0$.
+    Data una matrice $A \in M_{n \times n}(\field)$ e un $\field$-spazio vettoriale $V$, siano $\vec{v_0}, \dots, \vec{v_k} \in V$ gli autovettori linearmente indipendenti associati all'autovalore $\lambda_0$, questi autovettori generano un sottospazio vettoriale di $\field^n$. Questo sottospazio viene definito autospazio relativo all'autovalore $\lambda_0$, spesso indicato come $V_{\lambda_0}$.
 \end{definition}
