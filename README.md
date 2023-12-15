@@ -23,7 +23,7 @@ Prendete tutto cum grano salis!
   - [ ] Correzioni per la bibliografia
   
   - [x] Aggiungere un'appendice per l'algebra lineare<br>
-        Appendice aggiunto, adesso bisogna solo controllare che abbia senso.
+        Appendice aggiunto e corretto.
   
   - [x] Aggiungere un artwork per la copertina<br>
         Courtesy of ChatGPT e prova e riprova fino a quando non esce qualcosa di carino.
