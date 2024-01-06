@@ -16,11 +16,25 @@ Alcune importanti correzioni sono necessarie per renderlo migliore. Nel caso in 
 <br>
 Prendete tutto cum grano salis!
 
+## Come lavorare sul vostro fork
+Se volete fare una pull request per proporre dei cambiamenti, ampliare o modificare il contenuto di queste dispense vi chiedo cortesemente di seguire poche semplici linee guida:
+
+  - Niente pull request per cose inutili che possono essere risolte direttamente da me (per i typo potete semplicemente aprire una issue o scrivermi una mail in cui mi dite che a pagina x c'è un errore di questo tipo etc...)
+  - Il codice deve essere pulito e descrittivo, se definite nuove macro si deve capire che cosa la macro faccia e se la macro può essere utilizzata in modo standard all'interno del codice aggiornate dovunque, altrimenti la macro non ha senso di esistere
+  - Niente \\\ per andare a capo please!
+  - Se dovete aggiungere capitoli andate ad inserirli nella cartella <code>./Algoweb/src</code>, se dovete aggiungere immagini / grafici / grafi inserite un file a parte nella cartella <code>./Algoweb/img</code>
+  - Dichiarate in modo chiaro che cosa avete cambiato se fate una pull request!
+
+Vuoi collaborare ma non sai dove mettere le mani?
+Comincia a guardare nei TODO qui sotto!
+
 ## Aggiornamenti futuri 👷
   
   - [ ] Aggiungere alcuni grafi utili
   
   - [ ] Correzioni per la bibliografia
+
+  - [ ] Controllare l'ortografia!
   
   - [x] Aggiungere un'appendice per l'algebra lineare<br>
         Appendice aggiunto e corretto.
