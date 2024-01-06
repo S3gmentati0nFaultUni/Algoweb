@@ -17,11 +17,11 @@ Come accennato, al posto di $l$ è possibile utilizzare il massimo conteggio di 
 
 Tornando all'esempio precedente, il termine "e" comparirà in quasi tutti i documenti, e verrà quindi pressoché ignorato dallo schema TF/IDF, dato che $N / f \approx 1$. La normalizzazione sulla lunghezza del documento, per contro, cerca di tenere conto del fatto che in documenti lunghi è naturale che un termine compaia più volte. Si noti che, comunque, il termine di conteggio compare in maniera lineare, ed è quindi facilmente soggetto a manipolazione.
 
-Lo studio degli schemi di pesatura è parte arte, parte scienza e parte magia. Numerosi schemi sono stati inventati in maniera puramente euristica, e si sono dimostrati efficaci alla prova dei fatti. Uno degli schemi più celebri è BM25 (stando agli autori, il 25-esimo tentativo), uno schema di pesatura basato sul \textit{modello probabilistico}. BM25 pesa un termine come segue
+Lo studio degli schemi di pesatura è parte arte, parte scienza e parte magia. Numerosi schemi sono stati inventati in maniera puramente euristica, e si sono dimostrati efficaci alla prova dei fatti. Uno degli schemi più celebri è BM25 (stando agli autori, il 25-esimo tentativo), uno schema di pesatura basato sul \textit{modello probabilistico}. Supponiamo di voler calcolare il punteggio associato a un documento $D$ la cui lunghezza è $l$, rispetto a una collezione documentale contenente documenti di lunghezza media $L$; BM25 pesa un termine come segue
 \begin{equation*}
-    \frac{(1 + k_1)c_{t, d}}{k_1((1 - b) + bl / L) + c_{t, d}}\log\bigb{\frac{N - f + 0.5}{f + 0.5}}
+    \texttt{score}(D) = \frac{(1 + k_1)c_{t, d}}{k_1((1 - b) + bl / L) + c_{t, d}}\log\bigb{\frac{N - f + 0.5}{f + 0.5}}
 \end{equation*}
-dove $b$ e $k_1$ sono dei parametri liberi che devono essere tarati sulla collezione documentale, e $l$ è la lunghezza media di un documento nella collezione. La parte dentro al logaritmo è una versione del punteggio IDF. Si noti che la formula non è più lineare in $c$. In effetti, la formula cresce monotonicamente in $c$, ma ha limite asintotico $k_1 + 1$ (quindi un numero eccessivo di ripetizioni del termine non influisce più di tanto).
+dove $b$ e $k_1$ sono dei parametri liberi che devono essere tarati sulla collezione documentale. La parte dentro al logaritmo è una versione del punteggio IDF. Si noti che la formula non è più lineare in $c$. In effetti, la formula cresce monotonicamente in $c$, ma ha limite asintotico $k_1 + 1$ (quindi un numero eccessivo di ripetizioni del termine non influisce più di tanto).
 
 Si noti che se $k_1 = 0$ la forma si riduce alla parte IDF, mentre per $k_1$ molto grande la formula è approssimativamente lineare in $c$ (nelle applicazioni reali $k_1$ è in genere tra 1 e 3).
 
