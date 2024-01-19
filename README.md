@@ -1,4 +1,4 @@
-# Nozioni per il corso di Algoritmica per il Web 
+# Nozioni per il corso di Algoritmica per il Web
 ## Introduzione
 Questa repository raccoglie tutte le informazioni disponibili per il corso di Algoritmica per il Web tenuto dal professor Sebastiano Vigna presso l'università degli Studi di Milano.
 
@@ -6,7 +6,7 @@ Il compendio è pensato per evitare a chi studia per questo esame, il più possi
 
 Per avere il file pdf potete scaricare l'ultima release disponibile <a href="https://github.com/S3gmentati0nFault/Algoweb/releases">qui</a> oppure potete clonare il codice sulla vostra macchina, andare nella directory `./Algoweb` e lanciare `latexmk` nel modo seguente:
 ```
-$ latexmk -lualatex main.tex
+$ latexmk -lualatex Algoweb.tex
 ```
 
 ## Correzioni e revisioni
@@ -29,16 +29,16 @@ Vuoi collaborare ma non sai dove mettere le mani?
 Comincia a guardare nei TODO qui sotto!
 
 ## Aggiornamenti futuri 👷
-  
+
   - [ ] Aggiungere alcuni grafi utili
-  
+
   - [ ] Correzioni per la bibliografia
 
   - [ ] Controllare l'ortografia!
-  
+
   - [x] Aggiungere un'appendice per l'algebra lineare<br>
         Appendice aggiunto e corretto.
-  
+
   - [x] Aggiungere un artwork per la copertina<br>
         Courtesy of ChatGPT e prova e riprova fino a quando non esce qualcosa di carino.
 
@@ -48,4 +48,4 @@ Se il corso è tenuto anche in inglese provvederò a fare una traduzione integra
 
 ## Link utili
   - Link alla pagina ufficiale del corso: <a href="https://vigna.di.unimi.it/algoweb/">vigna.di.unimi.it</a>
-  
+
