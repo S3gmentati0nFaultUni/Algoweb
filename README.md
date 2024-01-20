@@ -10,23 +10,27 @@ $ latexmk -lualatex Algoweb.tex
 ```
 
 ## Correzioni e revisioni
-Potete trovare la prima revisione del progetto come release, il progetto non è finito, inoltre le revisioni sono parzialmente ad opera mia e parzialmente ad opera di altri ragazzi che hanno studiato con me (trovate i crediti all'inizio del pdf), ma non sono ufficiali, quindi non sono esenti da errori. Comunque si tratta di una rielaborazione, dove necessario, dei materiali del professore, non sono una riscrittura completa.
+Potete trovare la prima revisione del progetto come release, il progetto non è finito, inoltre le revisioni sono parzialmente ad opera mia e parzialmente ad opera di altri ragazzi che hanno studiato con me (trovate i crediti all'inizio del pdf), ma non sono ufficiali, quindi non sono esenti da errori (in un futuro prossimo mi piacerebbe coinvolgere anche il professor Vigna di modo che possa mettere mano lui alle dispense e fare eventuali correzioni importanti). Comunque si tratta di una rielaborazione, dove necessario, dei materiali del professore, non sono una riscrittura completa.
 <br>
-Alcune importanti correzioni sono necessarie per renderlo migliore. Nel caso in cui doveste trovare errori all'interno del progetto, dai più stupidi (e.g. typo, italiano correggiuto), ai più importanti (e.g. ci sono errori di contenuto), potete forkare il progetto e poi fare una pull request oppure aprire una issue così da poterne discutere insieme. Alternativamente a questi due metodi potete anche scrivere una mail a <a href="mailto:alessandro.biagiotti@studenti.unimi.it">alessandro.biagiotti@studenti.unimi.it</a>.
+Apprezzo molto qualsiasi collaborazione migliorativa per il progetto, a questo riguardo date un'occhiata alla sezione successiva. Alternativamente a questi due metodi potete anche scrivere una mail a <a href="mailto:alessandro.biagiotti@studenti.unimi.it">alessandro.biagiotti@studenti.unimi.it</a> oppure scrivermi su Telegram <a href="http://t.me/AlexBgtt">@AlexBgtt</a>.
 <br>
 Prendete tutto cum grano salis!
 
 ## Come lavorare sul vostro fork
-Se volete fare una pull request per proporre dei cambiamenti, ampliare o modificare il contenuto di queste dispense vi chiedo cortesemente di seguire poche semplici linee guida:
+Per farla semplice chiedo a chiunque voglia cooperare di seguire 3 semplici regole:
+1. Se la modifica è semplice (alcune correzioni di typo + ortografia) non aprite una pull request, contattatemi in qualsiasi modo (issue, email, telegram) e ditemi quali sono i problemi da risolvere, al resto penso io.
+2. Se sono modifiche più consistenti (e.g. correzioni ortografiche su tutte le dispense) aprite una pull request, arrivati a questo punto le modifiche sono abbastanza onerose da rendere questo processo molto più facile e veloce.
+3. Se volete aggiungere contenuti alla repository che non sono strettamente legati ai materiali del corso (e.g. la vostra implementazione delle strutture succinte, altre appendici utili, etc...) vi chiederei, prima di partire al lavoro, di contattarmi via email o telegram per parlarmi di quello che volete aggiungere così da decidere se valga la pena aggiornare il branch "ufficioso".
 
-  - Niente pull request per cose inutili che possono essere risolte direttamente da me (per i typo potete semplicemente aprire una issue o scrivermi una mail in cui mi dite che a pagina x c'è un errore di questo tipo etc...)
+A questo punto chiederei a coloro che volessero procedere a fare una pull request di seguire queste poche e semplici linee guida:
+
   - Il codice deve essere pulito e descrittivo, se definite nuove macro si deve capire che cosa la macro faccia e se la macro può essere utilizzata in modo standard all'interno del codice aggiornate dovunque, altrimenti la macro non ha senso di esistere
   - Niente \\\ per andare a capo please!
   - Se dovete aggiungere capitoli andate ad inserirli nella cartella <code>./Algoweb/src</code>, se dovete aggiungere immagini / grafici / grafi inserite un file a parte nella cartella <code>./Algoweb/img</code>
-  - Dichiarate in modo chiaro che cosa avete cambiato se fate una pull request!
+  - Dichiarate in modo chiaro che cosa avete cambiato di modo da rendere più facile il controllo delle vostre modifiche!
 
 Vuoi collaborare ma non sai dove mettere le mani?
-Comincia a guardare nei TODO qui sotto!
+Dai un'occhiata ai problemi ancora aperti!
 
 ## Aggiornamenti futuri 👷
   
