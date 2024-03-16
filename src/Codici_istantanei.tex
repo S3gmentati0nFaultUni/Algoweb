@@ -90,13 +90,13 @@ La lunghezza di una parola di binario minimale è $s + [n < 2^s - k]$
 \end{table}
 \noindent La base di tutti i codici istantanei per gli interi è il codice \textit{unario}. Il codice unario rappresenta il naturale $n$ tramite $n$ uno seguiti da uno 0\footnote{Nelle note originali il professore definisce l'unario all'incontrario e mette in una nota quello che ho definito io, ma è evidente che questa definizione è più importante all'atto pratico per il semplice fatto che fa coincidere ordine lessicografico e l'ordine dei valori rappresentati}. Le prime parole del codice sono 0, 10, 110, \dots. La lunghezza di una parola in unario è banalmente $n + 1$. Il codice è sia istantaneo e completo.
 
-Il codice $\gamma$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione ridotta in unario, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 1, 010, 011, 00100, 00101, \dots. La lunghezza della parola di codice è quindi $2\lambda(n + 1) + 1$ e il codice è sia istantaneo che completo, questo si deve al fatto che l'unario è istantaneo e completo.
+Il codice $\gamma$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione ridotta in unario, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 0, 100, 101, 11000, 11001, \dots. La lunghezza della parola di codice è quindi $2\lambda(n + 1) + 1$ e il codice è sia istantaneo che completo, questo si deve al fatto che l'unario è istantaneo e completo.
 
-Analogamente, il codice $\delta$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione binaria ridotta di $n$ in $\gamma$, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 1, 0100, 0101, 01100, 01101, \dots. La lunghezza della parola di codice per $n$ è quindi $2\lambda(\lambda(n + 1) + 1) + 1 + \lambda(n + 1)$ e il fatto che il codice sia istantaneo e completo deriva dal fatto che il $\gamma$ lo sia.
+Analogamente, il codice $\delta$ \cite{elias} codifica un intero $n$ scrivendo il numero di bit della rappresentazione binaria ridotta di $n$ in $\gamma$, seguito dalla rappresentazione binaria ridotta di $n$. Le prime parole del codice sono 0, 1000, 1001, 10100, 10101, \dots. La lunghezza della parola di codice per $n$ è quindi $2\lambda(\lambda(n + 1) + 1) + 1 + \lambda(n + 1)$ e il fatto che il codice sia istantaneo e completo deriva dal fatto che il $\gamma$ lo sia.
 
 Si potrebbe provare a continuare in questa direzione, ma come vedremo, senza vantaggi significativi.
 
-Il \textit{Codice di Golomb di modulo $k$} \cite{golomb} codifica un numero intero $n$ scrivendo il quoziente della divisione di $n$ per $k$ in unario, seguito dal resto in binario minimale. Le prime parole del codice per $k = 3$ sono 10, 110, 111, 010, \dots. La lunghezza della parola di codice per $n$ è quindi $\flr{n/k} + 1 + \lambda(x\mod(k)) + [x\mod(k) \geq 2^{\ceil{\log(k)}} - k]$ e il fatto che sia istantaneo e completo deriva dal fatto che lo sono sia il codice unario che il codice binario minimale.
+Il \textit{Codice di Golomb di modulo $k$} \cite{golomb} codifica un numero intero $n$ scrivendo il quoziente della divisione di $n$ per $k$ in unario, seguito dal resto in binario minimale. Le prime parole del codice per $k = 3$ sono 0, 10, 11, 100, \dots. La lunghezza della parola di codice per $n$ è quindi $\flr{n/k} + 1 + \lambda(x\mod(k)) + [x\mod(k) \geq 2^{\ceil{\log(k)}} - k]$ e il fatto che sia istantaneo e completo deriva dal fatto che lo sono sia il codice unario che il codice binario minimale.
 
 Infine conviene ricordare i \textit{codici a blocchi di lunghezza variabile}, come il codice variabile a nibble o a byte. L'idea è che ogni parola è formata da un numero variabile di blocchi di $k$ bit (4 nel caso di nibble e 8 nel caso di byte). Il primo bit non è codificante ed è noto come \textit{bit di continuazione}, se posto a 1 il blocco che stiamo considerando non è quello finale, se posto a 0 abbiamo raggiunto il blocco terminale.
 
@@ -107,22 +107,22 @@ In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato 
       \hline
       &$\gamma$ &$\delta$ &Golomb ($b$ = 3) &nibble \\
       \hline
-      0 &1 &1 &10 &1000 \\
-      1 &010 &0100 &110 &1001 \\
-      2 &011 &0101 &111 &1010 \\
-      3 &00100 &01100 &010 &1011 \\
-      4 &00101 &01101 &0110 &1100 \\
-      5 &00110 &01110 &0111 &1101 \\
-      6 &00111 &01111 &0010 &1110 \\
-      7 &0001000 &00100000 & 00110 &1111 \\
-      8 &0001001 &00100001 &00111 &00011000 \\
-      9 &0001010 &00100010 &00010 &00011001 \\
-      10 &0001011 &00100011 &000110 &00011010 \\
-      11 &0001100 &00100100 &000111 &00011011 \\
-      12 &0001101 &00100101 &000010 &00011100 \\
-      13 &0001110 &00100110 &0000110 &00011101 \\
-      14 &0001111 &00100111 &0000111 &00011110 \\
-      15 &000010000 &001010000 &0000010 &00011111 \\
+      0 &0 &0 &0 &1000 \\
+      1 &100 &1000 &10 &1001 \\
+      2 &101 &1001 &11 &1010 \\
+      3 &11000 &10100 &100 &1011 \\
+      4 &11001 &10101 &1010 &1100 \\
+      5 &11010 &10110 &1011 &1101 \\
+      6 &11011 &10111 &1100 &1110 \\
+      7 &1110000 &11000000 &11010 &1111 \\
+      8 &1110001 &11000001 &11011 &00011000 \\
+      9 &1110010 &11000010 &11100 &00011001 \\
+      10 &1110011 &11000011 &111010 &00011010 \\
+      11 &1110100 &11000100 &111011 &00011011 \\
+      12 &1110101 &11000101 &111100 &00011100 \\
+      13 &1110110 &11000110 &1111010 &00011101 \\
+      14 &1110111 &11000111 &1111011 &00011110 \\
+      15 &111100000 &110010000 &1111000 &00011111 \\
       \hline
     \end{tabular}
 \end{table}
