@@ -71,4 +71,4 @@ Possiamo utilizzare la tecnica generale di rappresentazione delle funzioni per s
 \end{enumerate}
 Si noti che, se $x \in X$, $f(x)$ è la sua firma $s(x)$, e quindi restituiremo "appartiene a \set{X}". Se invece $x \notin X$, $f(x)$ sarà un valore arbitrario, e quindi restituiremo "non appartiene a \set{X}", tranne nel caso in cui ci sia una collisione tra firme, il che avviene con probabilità $2^{-r}$. Tarando il numero $r$ di bit delle firme è quindi possibile bilanciare spazio occupato e precisione della struttura.
 
-Rispetto a un filtro di Bloom, un dizionario di questo tipo è molto più compatto (un filtro di Bloom, per avere una precisione di $2^{-r}$ richiede 1.44 bit per elemento) e molto più veloce (le funzioni sono valutabili con al più tre fallimenti di cache, contro gli $r$ del filtro di Bloom). Per contro, non è modificabile.
+Rispetto a un filtro di Bloom, un dizionario di questo tipo è molto più compatto (un filtro di Bloom, per avere una precisione di $2^{-r}$ richiede 1.44r bit per elemento) e molto più veloce (le funzioni sono valutabili con al più tre fallimenti di cache, contro gli $r$ del filtro di Bloom). Per contro, non è modificabile.
