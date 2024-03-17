@@ -151,20 +151,19 @@ La lista dei puntatori documentali associati a un determinato token in una lista
 
 La codifica di Elias Fano consente di rappresentare sequenze monotone in maniera quasi succinta\footnote{Una struttura dati è quasi-succinta quando lo spazio occupato dalla struttura si avvicina molto al lower bound teorico. Si tratta di un termine impiegato dal professor Vigna nelle dispense di cui non sono riuscito a trovare ulteriore evidenza in rete.}.
 
-Supponiamo di avere la seguente successione monotona non decrescente, di lunghezza $n$, $x_0, \dots, x_{n - 1}$. Supponiamo che il limite superiore della successione sia un valore $u$.
+Supponiamo di avere la seguente successione monotona non decrescente, di lunghezza $n$: $x_0, \dots, x_{n - 1}$. Supponiamo che il limite superiore della successione sia un valore $u$.
 
-Elias Fano consiste nella memorizzazione degli $l = \flr{\log(u / n)}$ bit meno significativi di ogni valore in maniera esplicita (avremo un vettore $L$); i bit più significativi di ogni valore verranno memorizzati come una lista di scarti in unario dove $0^k1$ rappresenta $k$ (avremo quindi anche un vettore $H$). Questa struttura ci consente di memorizzare $n$ valori utilizzando solamente $\log(u / n) + 2$ bit al più per elemento, affermazione che dimostreremo al termine di questa sottosezione.
+Elias Fano consiste nella memorizzazione degli $l = \flr{\log(u / n)}$ bit meno significativi di ogni valore in maniera esplicita (avremo un vettore $L$); i bit più significativi di ogni valore verranno memorizzati come una lista di scarti in unario dove $0^k1$ rappresenta $k$\footnote{Nella trattazione di questo caso specifico utilizzeremo la notazione $0^k1$ impiegata dal professore per l'unario, anzichè la $1^k0$ che ho utilizzato per gli altri codici per facilitare la comprensione} (avremo quindi anche un vettore $H$). Questa struttura ci consente di memorizzare $n$ valori utilizzando solamente $\log(u / n) + 2$ bit al più per elemento, affermazione che dimostreremo al termine di questa sottosezione.
 
 Consideriamo il seguente esempio: Abbiamo la seguente successione di valori
 \begin{equation*}
-    \label{eq:sequenza-fano}
     5\hspace{5mm}8\hspace{5mm}8\hspace{5mm}15\hspace{5mm}32
 \end{equation*}
-vogliamo memorizzarla con Elias Fano usando $u = 36$. Siccome $n = 5$ $l = 2$, dunque il vettore contenente i bit meno significativi avrà la seguente struttura
+vogliamo memorizzarla con Elias Fano usando $u = 36$ $n = 5$ $l = 2$, dunque il vettore contenente i bit meno significativi avrà la seguente struttura
 \begin{equation*}
     01\hspace{5mm}00\hspace{5mm}00\hspace{5mm}11\hspace{5mm}00
 \end{equation*}
-il vettore di valori in unario sarà il seguente
+Si noti che il vettore $L$ è indicizzato a blocchi e non a singole cifre; il vettore di valori in unario sarà il seguente
 \begin{equation*}
     0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}1
 \end{equation*}
@@ -182,18 +181,18 @@ I vantaggi di Elias Fano sono i seguenti:
 \end{itemize}
 Ora che abbiamo introdotto il funzionamento della struttura dati possiamo considerare il funzionamento delle operazioni di rango e selezione. Ricordiamo che l'operazione di selezione ci restituisce la posizione nella sequenza dove l'$i$-esima occorrenza di $0$ o $1$ appare, l'operazione di rango invece ci restituisce il minimo valore $x \geq v$, dove $v$ è un valore a piacere.
 
-Per avere il $k$-esimo elemento recuperiamo gli $l$ bit meno significativi usando $L[k - 1]$\footnote{Uso $k - 1$ supponendo che la numerazione parta da 0 e che quindi si voglia ottenere il terzo valore secondo un conteggio ordinale} mentre i bit più significativi corrispondono al numero di zeri prima del $k$-esimo 1. Se, per esempio, volessi recuperare il terzo valore all'interno della sequenza \ref{eq:sequenza-fano}:
+Per avere il $k$-esimo elemento recuperiamo gli $l$ bit meno significativi usando $L[k - 1]$\footnote{Uso $k - 1$ supponendo che la numerazione parta da 0 e che quindi si voglia ottenere il terzo valore secondo un conteggio ordinale} mentre i bit più significativi corrispondono al numero di zeri prima del $k$-esimo 1. Se, per esempio, volessi recuperare il terzo valore all'interno della sequenza:
 
 I bit meno significativi sono quelli in posizione $L[2] = 00$, i bit più significativi sono il numero di 0 prima del $k$-esimo 1, quindi $2 = 10$. Il terzo valore è 1000 cioè $8$.
 
-Il processo di rango è un po'meno intuitivo ma comunque in tutto simile a quello di selezione. Volendo trovare il minimo valore $x \geq b$ facciamo quanto segue
+Il processo di rango è un po'meno intuitivo, l'obiettivo è trovare il minimo valore $x \geq b$ facciamo quindi quanto segue
 \begin{itemize}
     \item $b >> l$ per capire quanti bit a 0 devo saltare dentro $H$.
     \item Calcolo la posizione di blocco in cui sono dentro $L$ calcolando la differenza tra la posizione in cui mi trovo e il numero di bit che ho saltato per arrivarci.
-    \item Gli upper bits sono la somma di tutti i valori in unario che incontro fino a quando non trovo l'$(b >> l)$-esimo bit a 0.
+    \item Gli upper bits sono la somma di tutti i valori in unario che incontro fino a quando non trovo l'$(b >> l)$-esimo bit a 0, se il numero successivo alla mia posizione è un 1 allora faccio semplicemente il conto, altrimenti salto direttamente all'1 successivo.
     \item Prendo il valore di blocco dentro l'array dei lower bits nella posizione che ho trovato prima.
 \end{itemize}
-Proviamo a chiarire il concetto con un esempio (rimanendo sempre sui valori definiti prima). Il minimo valore maggiore di 11011 (27) è:
+Proviamo a chiarire il concetto con un esempio considerando la sequenza usata finora. Il minimo valore maggiore di 11011 (27) è:
 \begin{itemize}
     \item So di dover saltare 110 bit a 0, quindi 6.
     \item La posizione del blocco in cui sono è 4 (partendo da 0).
@@ -207,11 +206,11 @@ Fin qui tutto facile, proviamo a considerare però un caso diverso, prendiamo ad
     \item La parte alta del numero è data da 01 + 01 = 001 (2), 10 in binario.
     \item I lower bits sono quelli in posizione 1 all'interno di $L$, quindi 00. Il risultato finale è 1000, cioè 8.
 \end{itemize}
-Ma $8 \ngeq 9$, il problema sta nel fatto che al primo passo non siamo andati a confrontare i bit alti del nostro valore $v$ con quelli che stavamo calcolando passo passo utilizzando la sequenza $H$. L'idea è la seguente: Se il bit successivo alla posizione in cui mi trovo è un 1 vado a controllare all'interno dell'array dei bit bassi se il valore che otterrei è $\geq v$, se il bit successivo alla posizione in cui mi trovo è 0 allora ritorno l'elemento della sequenza associato al primo 1 successivo allo 0 incontrato. Rivediamo l'esempio velocemente per capire come funziona il procedimento:
+Ma $8 \ngeq 9$, il problema sta nel fatto che al primo passo non siamo andati a confrontare i bit alti del nostro valore $v$ con quelli che stavamo calcolando utilizzando la sequenza $H$. L'idea è la seguente: Se il bit successivo alla posizione in cui mi trovo è un 1 vado a controllare all'interno dell'array dei bit bassi se il valore che otterrei è $\geq v$, se il bit successivo alla posizione in cui mi trovo è 0 allora ritorno l'elemento della sequenza associato al primo 1 successivo allo 0 incontrato. Rivediamo l'esempio velocemente per capire come funziona il procedimento:
 \begin{itemize}
     \item Salto 10 bit a 0 in H, quindi 2. Attualmente gli upper bits del valore della sequenza sono 10, così come quelli del valore che voglio superare. Il bit successivo in $H$ è 1, quindi vado a controllare il vettore $L$ e scopro che, mettendo insieme i pezzi, il numero che otterrei è 1000, cioè 8. Non un risultato soddisfacente, quindi saltiamo al bit ancora successivo e scopriamo che si tratta di uno 0.
 
-    Trattandosi di uno 0 saltiamo direttamente all'1 che lo segue e, ricapitolando, siamo all'1 in posizione 6 dentro l'array $H$ avendo saltato 3 zeri. I miei upper bits sono ora 11 (siccome siamo evidentemente sopra 10 non c'è bisogno di andare a controllare $L$).
+    Trattandosi di uno 0 saltiamo direttamente all'1 che lo segue e, ricapitolando, siamo all'1 in posizione 6 dentro l'array $H$ avendo saltato 3 zeri. I miei upper bits sono ora 11.
     \item La posizione del blocco in cui sono è 6 - 3 = 3.
     \item I lower bits sono quelli in posizione 3 all'interno di $L$, quindi 11. Il risultato finale è 1111, cioè 15.
 \end{itemize}
