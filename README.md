@@ -34,9 +34,9 @@ Dai un'occhiata ai problemi ancora aperti!
 
 ## Aggiornamenti futuri 👷
   
-  - [ ] Aggiungere alcuni grafi utili
+  - [x] Aggiungere alcuni grafi utili<br>
+        Finalmente non ci sono più i punti all'interno della dispensa che dicono "come si può vedere dal grafico" ma non c'è nessun grafico da vedere
   - [ ] Correzioni per la bibliografia
-  - [ ] Controllare l'ortografia!
   - [x] Aggiungere un'appendice per l'algebra lineare<br>
         Appendice aggiunto e corretto.
   - [x] Aggiungere un artwork per la copertina<br>
