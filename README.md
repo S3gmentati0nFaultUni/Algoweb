@@ -26,7 +26,7 @@ A questo punto chiederei a coloro che volessero procedere a fare una pull reques
 
   - Il codice deve essere pulito e descrittivo, se definite nuove macro si deve capire che cosa la macro faccia e se la macro può essere utilizzata in modo standard all'interno del codice aggiornate dovunque, altrimenti la macro non ha senso di esistere
   - Niente \\\ per andare a capo please!
-  - Se dovete aggiungere capitoli andate ad inserirli nella cartella <code>./Algoweb/src</code>, se dovete aggiungere immagini / grafici / grafi inserite un file a parte nella cartella <code>./Algoweb/img</code>
+  - Se dovete aggiungere capitoli andate ad inserirli nella cartella `./Algoweb/src`, se dovete aggiungere immagini / grafici / grafi inserite un file a parte nella cartella `./Algoweb/img`
   - Dichiarate in modo chiaro che cosa avete cambiato di modo da rendere più facile il controllo delle vostre modifiche!
 
 Vuoi collaborare ma non sai dove mettere le mani?
@@ -41,6 +41,9 @@ Dai un'occhiata ai problemi ancora aperti!
         Appendice aggiunto e corretto.
   - [x] Aggiungere un artwork per la copertina<br>
         Courtesy of ChatGPT e prova e riprova fino a quando non esce qualcosa di carino.
+  - [ ] Aggiungere delle labels a tutte le equazioni più importanti e sistemare i ref all'interno del capitolo sulla centralità
+  - [ ] Controllare che gli esempi sui codici istantanei siano corretti
+  - [ ] Mettere ordine nelle definizioni delle macro nel file `preamble.sty`
 
 Se il corso è tenuto anche in inglese provvederò a fare una traduzione integrale delle dispense (anche se, da quel che so, la versione inglese delle dispense ufficiali è più completa, non so se sia effettivamente migliore).
 
