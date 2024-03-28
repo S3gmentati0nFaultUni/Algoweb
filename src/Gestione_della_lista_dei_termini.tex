@@ -3,9 +3,9 @@ La lista dei termini di un indice può essere molto ingombrante. Esistono divers
 
 Una funzione di hash per un insieme di chiavi \set{X} $\subseteq$ \set{U}, dove \set{U} è l'universo di tutte le chiavi possibili, è una funzione \fun{f}{X}{m} detta:
 \begin{itemize}
-    \item \textit{perfetta} se la funzione è iniettiva\footnote{Ricordo: una funzione è iniettiva se per ogni elemento nel codominio esiste al più un elemento nel dominio, tale che $x R y$. In questo caso significa che la funzione di hash non presenta collisioni.}.
-    \item \textit{minimale} se $|X| = m$.
-    \item \textit{preserva l'ordine} se esiste un ordine lineare su \set{X} e si ha $x \leq y \iff f(x) \leq f(y)$.
+	\item \textit{perfetta} se la funzione è iniettiva\footnote{Si ricorda che: una funzione è iniettiva se per ogni elemento nel codominio esiste al più un elemento nel dominio, tale che $x R y$. In questo caso significa che la funzione di hash non presenta collisioni.}.
+	\item \textit{minimale} se $|X| = m$.
+	\item \textit{preserva l'ordine} se esiste un ordine lineare su \set{X} e si ha $x \leq y \iff f(x) \leq f(y)$.
 \end{itemize}
 Il nostro scopo è quello di costruire, per un insieme di stringhe arbitrario, una funzione di hash minimale, perfetta, e che preservi l'ordine. (si noti che di per sè non stiamo chiedendo qual è il risultato di $f$ su $U \smallsetminus X$: questo problema verrà risolto a parte).
 
@@ -15,8 +15,10 @@ Quello che andiamo a descrivere è basato sulla teoria dei grafi casuali, e util
 
 L'idea della costruzione è la seguente: prendiamo due funzioni di hash aleatorie \fun{h}{U}{m} e \fun{g}{U}{m}, dove $m \geq n$ e $n$ è la cardinalità di \set{X}, e consideriamo un vettore $\vec{w}$ di interi a $b$ bit che sia soluzione del sistema
 \begin{equation*}
-    w_{h(x)} \oplus w_{g(x)} = f(x) \hspace{5mm} x \in X
+	w_{h(x)} \oplus w_{g(x)} = f(x) \hspace{5mm} x \in X
 \end{equation*}
+Dove $\oplus$ è l'operazione di XOR logico.
+
 Chiaramente, memorizzando $h$, $g$ e il vettore $\vec{w}$ abbiamo memorizzato $f$: per calcolare $f(x)$ basta semplicemente risolvere il sistema, che è di $n$ equazioni con $w_i$ incognite, che, però, potrebbe non avere soluzione. Il sistema deve essere risolto una sola volta, in fase di inizializzazione della struttura, e poi potremo accedere a tutti i valori associati alla funzione $f(x)$ in tempo lineare nel numero di funzioni di hash (calcolo le funzioni di hash, accedo alle posizioni del vettore e calcolo lo XOR dei valori). Possiamo rappresentare i vincoli imposti dal sistema come segue: costruiamo un grafo G non orientato con $m$ vertici e $n$ lati in cui, per ogni $x \in X$, abbiamo che $h(x)$ è adiacente a $g(x)$ tramite un lato etichettato da $x$.
 
 Andiamo ora a eseguire l'operazione di \textit{esfoliazione} dell grafo così costruito: partendo da una qualunque foglia $v$ (un vertice di grado 0 o 1), la rimuoviamo dal grafo. Se questa è adiacente a un altro vertice, rimuoviamo anche il lato $l$ che li connette, a questo punto mettiamo la coppia $\langle v, l \rangle$ dentro uno stack.
@@ -31,15 +33,15 @@ Alla fine, per memorizzare la funzione statica \fun{f}{X}{2^b} dovremo utilizzar
 La funzione così costruita, per quanto sia minimale, perfetta e preservi l'ordine non permette di riconoscere se un elemento fa parte di \set{X} o no. Per ovviare all'inconveniente utilizziamo un insieme di \textit{firme} associato all'insieme \set{X} delle chiavi. Consideriamo cioè una funzione \fun{s}{U}{2^r} che associ a ogni chiave possibile una sequenza di $r$ bit "casuale", nel senso che la probabilità che $s(x) = s(y)$ se $x$ e $y$ sono presi uniformemente a caso da \set{U} è \set{2^{-r}} (per esempio una buona funzione di hash). Consideriamo l'enumerazione ordinata $x_0 \leq x_1 \leq \dots \leq x_{n - 1}$ degli elementi di \set{X}. Oltre a $f$, memorizziamo
 un vettore di dimensione $n$ in cui i valori di \set{X} sono mappati nelle posizioni $f(x)$, che è il rango lessicografico di $x$, affinché, preso $x \in X$, calcolati $f(x)$ ed $s(x)$ avrò che
 \begin{equation*}
-    S_{f(x)} = s(x)
+	S_{f(x)} = s(x)
 \end{equation*}
 mentre se $x \notin X$ il valore di $f(x)$ sarà arbitrario, quindi $S_{f(x)} = -1$ e il valore di $s(x)$ sarà a sua volta arbitrario.
 
 Per interrogare la struttura risultante su input $x \in U$, agiamo come segue:
 \begin{enumerate}
-    \item Calcoliamo $f(x)$ (che è un numero in $n$).
-    \item Recuperiamo $S_{f(x)}$.
-    \item Se $S_{f(x)} = s(x)$, restituiamo $f(x)$; altrimenti restituiamo -1 (a indicare che $x$ non fa parte di \set{X}).
+	\item Calcoliamo $f(x)$ (che è un numero in $n$).
+	\item Recuperiamo $S_{f(x)}$.
+	\item Se $S_{f(x)} = s(x)$, restituiamo $f(x)$; altrimenti restituiamo -1 (a indicare che $x$ non fa parte di \set{X}).
 \end{enumerate}
 Si noti che se $x \in X$, $f(x)$ è il suo rango in \set{X}, e quindi $S_{f(x)}$ conterrà, per definizione, $s(x)$.
 Se invece $x \notin X$, $S_{f(x)}$ sarà una firma arbitraria, e quindi restituiremo quasi sempre -1, tranne nel caso ci sia una collisione tra firme, il che avviene, come detto, con probabilità $2^{-r}$. Tarando il numero $r$ di bit delle firme, è quindi possibile bilanciare spazio occupato e precisione della struttura.
@@ -49,15 +51,15 @@ Se invece $x \notin X$, $S_{f(x)}$ sarà una firma arbitraria, e quindi restitui
 
 Per farlo consideriamo un vettore di bit $\vec{b}$ che contiene in posizione $i$ un uno se la variabile corrispondente $w_i$ è diversa da zero, e zero altrimenti. Definiamo l'operazione \textit{rank}
 \begin{equation*}
-    rank(\vec{b}, i) = |\{j < i \st b_j \neq 0\}|
+	rank(\vec{b}, i) = |\{j < i \st b_j \neq 0\}|
 \end{equation*}
 che conta il numero di uno che compaiono a sinistra della posizione corrente. Chiaramente se mettiamo in un vettore $\vec{c}$ i valori delle variabili $w_i$ diversi da zero avremo che:
 \begin{equation*}
-    w_i =
-    \begin{cases}
-        0 \hspace{7mm} &\textnormal{se } b_i = 0\\
-        \vec{c}[rank(\vec{b}, i)] \hspace{7mm} &\textnormal{se } b_i \neq 0\\
-    \end{cases}
+	w_i =
+	\begin{cases}
+		0 \hspace{7mm}                         & \textnormal{se } b_i = 0    \\
+		\vec{c}[rank(\vec{b}, i)] \hspace{7mm} & \textnormal{se } b_i \neq 0 \\
+	\end{cases}
 \end{equation*}
 Quanto spazio occorre per calcolare rapidamente il rango? Esistono soluzioni molto sofisticate che occupano spazio $o(n)$\footnote{Un esempio non banale di strutture efficienti per la memorizzazione del rango è la struttura di Jacobson.}, ma qui proporremo un metodo molto semplice: scelto un quanto $q$, memorizziamo in una tabella $R$ i valori $rank(\vec{b}, kq)$. Per calcolare il rango in posizione $p$, basta recuperare $R[\flr{p / q}]$ e completare il calcolo contando gli uno dalla posizione $q\flr{p / q}$ alla posizione $p$ (utilizzando le istruzioni di conteggio efficiente per le CPU moderne). Per $q$ fissato, il tempo del calcolo è costante. Lo spazio occupato dipende anch'esso da $q$, che permette quindi di bilanciare lo spazio occupato e la velocità.
 
@@ -66,8 +68,8 @@ Alla fine, la funzione occuperà $nb + 1.23n$ bit, più il necessario per la str
 Un utilizzo interessante delle funzioni che abbiamo descritto è quello di memorizzare efficientemente un dizionario statico approssimato. Per farlo, consideriamo un insieme $X \subseteq U$ che vogliamo rappresentare, e una funzione di firma \fun{s}{U}{2^r}.
 Possiamo utilizzare la tecnica generale di rappresentazione delle funzioni per scrivere in $nr + 1.23n$ bit la funzione \fun{f}{X}{2^r} data da $f(x) = s(x)$. La funzione $f$, cioè, mappa ogni chiave nella propria firma. Il dizionario viene a questo punto interrogato come segue:
 \begin{enumerate}
-    \item Calcoliamo $f(x)$
-    \item Se $f(x) = s(x)$, restituiamo "appartiene a \set{X}"; altrimenti, restituiamo "non appartiene a \set{X}".
+	\item Calcoliamo $f(x)$
+	\item Se $f(x) = s(x)$, restituiamo "appartiene a \set{X}"; altrimenti, restituiamo "non appartiene a \set{X}".
 \end{enumerate}
 Si noti che, se $x \in X$, $f(x)$ è la sua firma $s(x)$, e quindi restituiremo "appartiene a \set{X}". Se invece $x \notin X$, $f(x)$ sarà un valore arbitrario, e quindi restituiremo "non appartiene a \set{X}", tranne nel caso in cui ci sia una collisione tra firme, il che avviene con probabilità $2^{-r}$. Tarando il numero $r$ di bit delle firme è quindi possibile bilanciare spazio occupato e precisione della struttura.
 

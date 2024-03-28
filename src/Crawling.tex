@@ -3,9 +3,9 @@ Il \textit{crawling} è l'attività di scaricamento delle pagine web. Un \textit
 
 Le pagine web durante il processo di crawl si dividono in tre:
 \begin{itemize}
-    \item L'insieme delle pagine \textit{visitate}, \set{V}, che sono già state scaricate e analizzate;
-    \item La \textit{frontiera}, \set{F}, che è l'insieme delle pagine conosciute ma che non sono ancora state visitate;
-    \item L'insieme \set{U} degli URL sconosciuti.
+	\item L'insieme delle pagine \textit{visitate}, \set{V}, che sono già state scaricate e analizzate;
+	\item La \textit{frontiera}, \set{F}, che è l'insieme delle pagine conosciute ma che non sono ancora state visitate;
+	\item L'insieme \set{U} degli URL sconosciuti.
 \end{itemize}
 Le differenze tra l'attività di crawling e una banale visita all'interno di un grafo sono molto importanti, prima di tutto c'è il fatto che un crawl ha una dimensione ignota, non conosciamo $|V_G|$; secondariamente la frontiera è un enorme problema, in quanto la sua dimensione tende a crescere molto più velocemente dell'insieme dei visitati.
 
@@ -17,8 +17,8 @@ Il crivello è la struttura dati di base di un crawler, questo accetta in ingres
 
 Una prima osservazione è che spesso, per mantenere l'informazione di quali URL sono stati già visitati (\set{V \cup F}) è preferibile sostituire gli URL con delle \textit{firme}, cioè con il risultato del calcolo di $h(u)$, dove h è una funzione di hash definita sulle stringhe e restituisce una stringa di bit di dimensione arbitraria, per esempio 64 bit. Questo ha due grandi benefici:
 \begin{itemize}
-    \item Molti URL possono essere di grandi dimensioni, mantenerli salvati in memoria con un numero di bit scelto a priori (per esempio 64 bit), indipendentemente dalla loro reale dimensione, si rivela un risparmio di spazio affatto trascurabile.
-    \item Uniformiamo le lunghezze degli URL a un valore standard.
+	\item Molti URL possono essere di grandi dimensioni, mantenerli salvati in memoria con un numero di bit scelto a priori (per esempio 64 bit), indipendentemente dalla loro reale dimensione, si rivela un risparmio di spazio affatto trascurabile.
+	\item Uniformiamo le lunghezze degli URL a un valore standard.
 \end{itemize}
 Il drawback di una soluzione del genere è che accettiamo il fatto che vi siano delle collisioni, è dunque possibile che due URL diversi vengano mappati sullo stesso valore di hash. Questo fenomeno è inevitabile, però se abbiamo una funzione di hash che lavora su un numero di bit abbastanza grande, la probabilità d'incontrare una collisione sarà così bassa da essere trascurabile.
 
@@ -48,58 +48,58 @@ Andiamo ora a vedere qual è la probabilità di un falso positivo. Con un'analis
 Per calcolare l'efficacia dei filtri di Bloom, come detto in precedenza, si considererà la probabilità di osservare un falso positivo. Una prima semplificazione lecita (seguendo l'analisi di \cite{Bloom}) è quella di andare a calcolare la probabilità di un positivo qualunque dopo $n$ inserimenti, che è ovviamente una maggiorazione del caso dei falsi positivi.
 Supponiamo di avere un vettore di $m$ posizioni e $d$ funzioni di hash uniformemente distribuite e indipendenti. Dopo l'$n$-esimo inserimento, la probabilità che un bit sia 0 è data da:
 \begin{equation*}
-    P[\vec{b}[i] = 0 \st N = n] = 1 - P[\vec{b}[i] = 1 \st N = n] = \bigb{1 - \frac{1}{m}}^{dn}
+	P[\vec{b}[i] = 0 \st N = n] = \bigb{\frac{m - 1}{m}}^{dn} = \bigb{1 - \frac{1}{m}}^{dn}
 \end{equation*}
 Si ottiene un positivo quando tutte le posizioni controllate sono a 1, ciò avviene con probabilità
 \begin{equation*}
-    \varphi = \bigb{1 - \bigb{1 - \frac{1}{m}}^{dn}}^d
+	\varphi = \bigb{1 - \bigb{1 - \frac{1}{m}}^{dn}}^d
 \end{equation*}
 siccome $\bigb{1 + \alpha/n}^n \rightarrow e^{\alpha}$ per $n \rightarrow \infty$
 \begin{equation*}
-    \varphi = \bigb{1 - \bigb{1 - \frac{1}{m}}^{-m \frac{-dn}{m}}}^d \sim \bigb{1 - e^{-\frac{dn}{m}}}^d
+	\varphi = \bigb{1 - \bigb{1 - \frac{1}{m}}^{-m \frac{-dn}{m}}}^d \sim \bigb{1 - e^{-\frac{dn}{m}}}^d
 \end{equation*}
 Sia ora $p = e^{-\frac{dn}{m}}$, allora
 \begin{align*}
-    &\ln(p) = -\frac{dn}{m}\\
-    &m\ln(p) = dn\\
-    &d = -\frac{m\ln(p)}{n}
+	 & \ln(p) = -\frac{dn}{m} \\
+	 & m\ln(p) = -dn          \\
+	 & d = -\frac{m\ln(p)}{n}
 \end{align*}
-Voglio ora minimizzare la probabilità di ottenere un positivo $\varphi$, quindi prendo $\bigb{1 - e^{-\frac{dn}{m}}}^d$ e sostituisco $p$, quindi $(1 - p)^{m/n \cdot \ln(p)}$.\\
+Voglio ora minimizzare la probabilità di ottenere un positivo $\varphi$, quindi prendo $\bigb{1 - e^{-\frac{dn}{m}}}^d$ e sostituisco $p$, quindi $(1 - p)^{-m/n \cdot \ln(p)}$.\\
 Riscrivo come esponenziale:
 \begin{equation*}
-    e^{\ln(1 - p)^{m/n \cdot \ln(p)}} = e^{m/n \cdot \ln(1 - p)\ln(p)}
+	e^{\ln(1 - p)^{-m/n \cdot \ln(p)}} = e^{-m/n \cdot \ln(1 - p)\ln(p)}
 \end{equation*}
 Faccio la derivata rispetto a $p$ che viene:
 \begin{equation*}
-    -\frac{m}{n} \cdot \bigb{\frac{1}{p}\ln(1 - p) - \frac{1}{1 - p} \cdot \ln(p)} \cdot e^{m/n \cdot \ln(1 - p)\ln(p)}
+	-\frac{m}{n} \cdot \bigb{\frac{1}{p}\ln(1 - p) - \frac{1}{1 - p} \cdot \ln(p)} \cdot e^{-m/n \cdot \ln(1 - p)\ln(p)}
 \end{equation*}
 Il punto stazionario è quello per cui la parte tra parentesi si annulla, l'esponenziale è sempre $> 0$ quindi:
 \begin{align*}
-    \frac{1}{p}\ln(1 - p) - \frac{1}{1 - p} \cdot \ln(p) &= 0\\
-    (1 - p) \cdot \ln(1 - p) &= p \cdot \ln(p)
+	\frac{1}{p}\ln(1 - p) - \frac{1}{1 - p} \cdot \ln(p) & = 0              \\
+	(1 - p) \cdot \ln(1 - p)                             & = p \cdot \ln(p)
 \end{align*}
 Se $1 - p = p$ allora $p = 1/2$, questa è l'unica soluzione, come prova del 9 si studi $g(p) = p\ln(p) - (1 - p)\ln(1 - p)$ e risulterà che agli estremi la funzione vale 0 dato che:
 \begin{equation*}
-    \lim_{p \to 0}p \ln(p) = \lim_{p \to 0} \frac{\ln(p)}{1/p} = \lim_{p \to 0} \frac{1/p}{-1/p^2} = \lim_{p \to 0} -p = 0
+	\lim_{p \to 0}p \ln(p) = \lim_{p \to 0} \frac{\ln(p)}{1/p} = \lim_{p \to 0} \frac{1/p}{-1/p^2} = \lim_{p \to 0} -p = 0
 \end{equation*}
 la derivata invece è $\dot{g(p)} = \ln(1 - p) + \ln(p) + 2$.
 
 Chiaramente va a meno infinito in 0  e 1, ma in $p = 1/2$ è positiva, ed è l'unico punto di massimo (dato che la derivata seconda ha un solo zero in $p = 1/2$). Concludiamo che $g(p)$ ha esattamente un massimo e un minimo in $[0, 1)$, e quindi esattamente uno zero in $(0, 1)$.
 Per concludere, se $p = 1/2$ allora $d = - \frac{m\ln(p)}{n} = \frac{m\ln2}{n}$ per quanto riguarda la probabilità di avere uno in tutti i punti che andiamo a controllare all'interno del vettore:
 \begin{equation*}
-    \varphi = \bigb{1 - e^{-\frac{dn}{m}}}^d = \bigb{1 - e^{-\ln2}}^d = \bigb{1 - \frac{1}{2}}^d = 2^{-d}
+	\varphi = \bigb{1 - e^{-\frac{dn}{m}}}^d = \bigb{1 - e^{-\ln2}}^d = \bigb{1 - \frac{1}{2}}^d = 2^{-d}
 \end{equation*}
 Alla fine, la probabilità di (falsi) positivi è minimizzata da $d \approx \frac{m\ln2}{n}$, e in tal caso la probabilità di un (falso) positivo è $2^{-d}$. Vale a dire che aumentando linearmente il numero delle funzioni di hash impiegate e il numero di bit della struttura a $m \approx dn/\ln2 \approx 1.44dn$, si ha una riduzione esponenziale del numero di (falsi) positivi che possono essere incontrati.
 Passiamo ora a fare alcune osservazioni tecniche:
 \begin{itemize}
-    \item È abbastanza intuitivo, ed è possibile dimostrare, che per avere falsi positivi con probabililtà $2^{-d}$ occorre utilizzare almeno $d$ bit per elemento. Quindi un filtro di Bloom perde 44\% in spazio rispetto al minimo possibile.
-    \item In linea di principio il filtro di Bloom ha una modalità di accesso alla memoria pessima, a causa dei $d$ accessi casuali al vettore, che possono causare $d$ fallimenti in cache.
-    \item Ciononostante, il dimensionamento ottimo di un filtro di Bloom è lineare nel numero di chiavi attese. Questo fa sì che se dividiamo le chiavi in $k$ segmenti utilizzando una funzione di hash e costruiamo un filtro per segmento, l'occupazione in spazio non aumenta.
+	\item È abbastanza intuitivo, ed è possibile dimostrare, che per avere falsi positivi con probabililtà $2^{k}$ occorre utilizzare almeno $k$ bit per elemento. Quindi un filtro di Bloom perde 44\% in spazio rispetto al minimo possibile.
+	\item In linea di principio il filtro di Bloom ha una modalità di accesso alla memoria pessima, a causa dei $d$ accessi casuali al vettore, che possono causare $d$ fallimenti in cache.
+	\item Ciononostante, il dimensionamento ottimo di un filtro di Bloom è lineare nel numero di chiavi attese. Questo fa sì che se dividiamo le chiavi in $k$ segmenti utilizzando una funzione di hash e costruiamo un filtro per segmento, l'occupazione in spazio non aumenta.
 
-    Dimensionando $k$ in modo che i segmenti abbiano la dimensione di una o due linee di cache si può abbattere il numero di cache failures (questa implementazione è detta \textit{block}). In questo caso però l'approssimazione che abbiamo utilizzato perde di precisione; inoltre, la divisione delle chiavi in segmenti non è mai uniforme ma ha una distribuzione binomiale negativa. Questi fattori peggiorano la probabilità di errore \cite{Putze}.
-    \item Dall'analisi che abbiamo effettuato, $1/2$ è anche la probabililtà di un bit a 0, quindi, come si diceva all'inizio del paragrafo, un filtro di Bloom è molto più efficace nel riportare il fatto che un elemento non è presente nel filtro piuttosto che a riportarne la presenza.
-    \item In teoria per utilizzare un filtro di Bloom dobbiamo calcolare $d$ funzioni di hash diverse, il che può essere molto costoso in termini di tempo. In realtà Kirsch e Mitzenmacher hanno dimostrato che estraendo due numeri interi a 64 bit $a$ e $b$ tramite una funzione di hash, i numeri $ai + b$, $0 \leq i < d$ sono $d$ hash sufficienti a replicare l'analisi condotta utilizzando funzioni indipendenti e pienamente casuali.
-    \item Se un filtro di Bloom viene utilizzato per rappresentare gli URL già visti, soddisfa pienamente le nostre richieste: utilizza una quantità di memoria centrale costante, è relativamente veloce e affidabile e degrada graziosamente, man mano che il vettore si riempie la probabilità di falsi positivi aumenterà fino a diventare 1.
+	      Dimensionando $k$ in modo che i segmenti abbiano la dimensione di una o due linee di cache si può abbattere il numero di cache failures (questa implementazione è detta \textit{block}). In questo caso però l'approssimazione che abbiamo utilizzato perde di precisione; inoltre, la divisione delle chiavi in segmenti non è mai uniforme ma ha una distribuzione binomiale negativa. Questi fattori peggiorano la probabilità di errore \cite{Putze}.
+	\item Dall'analisi che abbiamo effettuato, $1/2$ è anche la probabililtà di un bit a 0, quindi, come si diceva all'inizio del paragrafo, un filtro di Bloom è molto più efficace nel riportare il fatto che un elemento non è presente nel filtro piuttosto che a riportarne la presenza.
+	\item In teoria per utilizzare un filtro di Bloom dobbiamo calcolare $d$ funzioni di hash diverse, il che può essere molto costoso in termini di tempo. In realtà Kirsch e Mitzenmacher hanno dimostrato che estraendo due numeri interi a 64 bit $a$ e $b$ tramite una funzione di hash, i numeri $ai + b$, $0 \leq i < d$ sono $d$ hash sufficienti a replicare l'analisi condotta utilizzando funzioni indipendenti e pienamente casuali.
+	\item Se un filtro di Bloom viene utilizzato per rappresentare gli URL già visti, soddisfa pienamente le nostre richieste: utilizza una quantità di memoria centrale costante, è relativamente veloce e affidabile e degrada graziosamente, man mano che il vettore si riempie la probabilità di falsi positivi aumenterà fino a diventare 1.
 \end{itemize}
 \section{Crivelli basati su database NoSQL}
 Un modo più sofisticato e con degrado più grazioso di implementare un crivello è quello di utilizzare un cosiddetto \textit{database NoSQL}, che consiste semplicemente in una struttura parzialmente su disco che permette di memorizzare coppie chiave/valore utilizzando una quantità limitata di memoria centrale.
@@ -128,34 +128,34 @@ Per cancellare un'associazione chiave valore viene inserita una coppia con la st
 
 Ci sono a questo punto numerose e importanti questioni ingegneristiche e implementative da considerare:
 \begin{itemize}
-    \item Il formato in cui vengono memorizzati i livelli può non essere uniforme, dipende dal tipo di supporti di memorizzazione utilizzati; salvare dati efficacemente ed efficientemente su nastri richiede tecniche diverse rispetto a un processo di salvataggio su disco magnetico.
-    \item Ogni livello può essere frammentato in file più piccoli per permettere di selezionare più liberamente le chiavi da fondere, e per rendere più semplice operare le fusioni in parallelo. In questo caso ogni chiave compare in un solo frammento.
-    \item Ogni frammento può essere arricchito con un dizionario approssimato a falsi positivi a bassa precisione (come un filtro di Bloom) che evita l'accesso al file nel caso in cui la chiave che stiamo cercando non sia all'interno del file. La bassa precisione fa sì che l'occupazione in memoria del filtro non sia particolarmente rilevante.
-    \item Ogni frammento può contenere un indice sparso che memorizza le posizioni di un sottoinsieme di chiavi campionate a intervalli regolari; in questo modo, in fase di ricerca è possibile identificare rapidamente la zona del frammento che potenzialmente contiene la chiave, per poi procedere con una ricerca binaria o lineare. La scelta della frequenza di campionamento consente di bilanciare lo spazio occupato dalla struttura e l'efficacia del processo di ricerca.
-    \item Anche in assenza di fusioni di livelli, in generale in un LSM-tree vengono lasciati in esecuzione dei thread che si occupano di fare il \textit{compattamento} della struttura:
-    \begin{itemize}
-        \item Controllano che il numero di copie per chiave non sia eccessivo
-        \item Rimuovono eventuali lapidi in eccesso
-    \end{itemize}
-    \item Infine, tutte le operazioni di fusione non vengono effettuate veramente durante gli inserimenti, ma piuttosto vengono svolte con continuità da processi concorrenti.
+	\item Il formato in cui vengono memorizzati i livelli può non essere uniforme, dipende dal tipo di supporti di memorizzazione utilizzati; salvare dati efficacemente ed efficientemente su nastri richiede tecniche diverse rispetto a un processo di salvataggio su disco magnetico.
+	\item Ogni livello può essere frammentato in file più piccoli per permettere di selezionare più liberamente le chiavi da fondere, e per rendere più semplice operare le fusioni in parallelo. In questo caso ogni chiave compare in un solo frammento.
+	\item Ogni frammento può essere arricchito con un dizionario approssimato a falsi positivi a bassa precisione (come un filtro di Bloom) che evita l'accesso al file nel caso in cui la chiave che stiamo cercando non sia all'interno del file. La bassa precisione fa sì che l'occupazione in memoria del filtro non sia particolarmente rilevante.
+	\item Ogni frammento può contenere un indice sparso che memorizza le posizioni di un sottoinsieme di chiavi campionate a intervalli regolari; in questo modo, in fase di ricerca è possibile identificare rapidamente la zona del frammento che potenzialmente contiene la chiave, per poi procedere con una ricerca binaria o lineare. La scelta della frequenza di campionamento consente di bilanciare lo spazio occupato dalla struttura e l'efficacia del processo di ricerca.
+	\item Anche in assenza di fusioni di livelli, in generale in un LSM-tree vengono lasciati in esecuzione dei thread che si occupano di fare il \textit{compattamento} della struttura:
+	      \begin{itemize}
+		      \item Controllano che il numero di copie per chiave non sia eccessivo
+		      \item Rimuovono eventuali lapidi in eccesso
+	      \end{itemize}
+	\item Infine, tutte le operazioni di fusione non vengono effettuate veramente durante gli inserimenti, ma piuttosto vengono svolte con continuità da processi concorrenti.
 \end{itemize}
-Ci sono anche soluzioni ibride, che reinseriscono parzialmente gli alberi bilanciati negli LSM tree. Questo tipo di tecnologia è in continua evoluzione, anche perché diverse implementazioni o politiche di aggiornamento possono essere adatte a diversi carichi di lavoro.
+Ci sono anche soluzioni ibride, che reinseriscono parzialmente gli alberi bilanciati negli LSM tree per consentire di velocizzare le operazioni di ricerca. Questo tipo di tecnologia è in continua evoluzione, anche perché diverse implementazioni o politiche di aggiornamento possono essere adatte a diversi carichi di lavoro.
 
 Si noti che al crescere della frontiera l'LSM-tree continua a occupare la stessa quantità di memoria centrale e non ha decrementi di precisione, però il crivello rallenta e occupa più memoria di massa.
 \section{Un crivello offline}
 Un modo meno \textit{responsive} ma molto più semplice di implementare il crivello che effettua una visita in ampiezza e richiede memoria centrale costante senza utilizzare strutture dati, consiste nel tenere traccia, in ogni istante, di tre file:
 \begin{itemize}
-    \item Un file Z di URL già visitati (\set{V \cup F}), in ordine lessicografico.
-    \item Un file F di URL ancora dia visitare, quindi la frontiera, in ordine di scoperta.
-    \item Un file A, di lunghezza limitata a priori, che accumula temporaneamente gli URL incontrati durante la visita.
+	\item Un file Z di URL già visitati (\set{V \cup F}), in ordine lessicografico.
+	\item Un file F di URL ancora da visitare, quindi la frontiera, in ordine di scoperta.
+	\item Un file A, di lunghezza limitata a priori, che accumula temporaneamente gli URL incontrati durante la visita.
 \end{itemize}
 All'inizio dell'attività di crawl, Z e F sono inizializzati utilizzando il seme, e A è vuoto. Durante il crawl, gli URL da visitare vengono estratti da F (eventualmente alterandone l'ordine secondo qualche politica), e i nuovi URL che vengono incontrati vengono accumulati in A.
 
 Quando F è vuoto o quando A raggiunge la dimensione massima si procede a eseguire l'operazione di \textit{fusione}:
 \begin{itemize}
-    \item A viene ordinato (lessicograficamente) e deduplicato, il risultato è A'.
-    \item Z e A' vengono fusi per ottenere un file Z' che andrà a rimpiazzare Z.
-    \item Durante la fusione, gli URL che sono in A' ma non Z vengono accodati a F.
+	\item A viene ordinato (lessicograficamente) e deduplicato, il risultato è A'.
+	\item Z e A' vengono fusi per ottenere un file Z' che andrà a rimpiazzare Z.
+	\item Durante la fusione, gli URL che sono in A' ma non Z vengono accodati a F.
 \end{itemize}
 La fusione di Z e A' può procedere in maniera sequenziale perché i due file sono ordinati. È evidente che ogni URL che viene incontrato dal crawler viene accodato a F esattamente una volta, e cioè durante la fusione che avviene dopo la prima volta che compare in A.
 Questo tipo di organizzazione non è particolarmente performante se viene effettuata sulla macchina che sta eseguendo l'attività di crawling, sebbene l'ordinamento di A si possa effettuare in memoria costante. Se però è possibile ordinare e fondere file utilizzando un framework di ordinamento distribuito, come MapReduce \cite{MapReduce}, o la sua implementazione open-source, Hadoop, le prestazioni possono essere molto migliorate, e la semplicità del codice può giocare a favore di questa scelta.
@@ -172,11 +172,11 @@ Il crivello è formato da un vettore $\vec{S}$, di dimensione fissata $n$, in me
 
 Ogni volta che un URL $u$ viene inserito nel crivello, aggiungiamo $h(u)$ a $\vec{S}$ e $u$ al file A. Il punto chiave è che cosa succede quando $\vec{S}$ raggiunge la massima dimensione; operiamo allora uno \textit{scarico} nel seguente modo:
 \begin{enumerate}
-    \item Ordino $\vec{S}$ indirettamente, cioè creo il vettore $\vec{V}$ contenente gli indici $i$ associati ai valori $\vec{S}$[i], ordino stabilmente $\vec{V}$ utilizzando come chiave le firme in $\vec{S}$. Al termine del processo, le firme $\vec{S}$[$\vec{V}$[i]] sono in ordine crescente al crescere di i\footnote{Si supponga per esempio che $\vec{S}$=\{C, F, B, A, A, E, D\}, allora il vettore associato a $\vec{S}$ sarà banalmente $\vec{V}$=\{0, 1, 2, 3, 4, 5, 6\}. Eseguendo l'ordinamento di $\vec{V}$ con le firme in $\vec{S}$ come chiave darà il seguente risultato (provare per credere) $\vec{V}$=\{3, 4, 2, 0, 6, 5, 1\}, che risulta effettivamente essere un ordinamento \textit{stabile} delle posizioni associate alle firme in $\vec{S}$.}.
-    \item Deduplico $\vec{S}$, quindi elimino le occorrenze successive alla prima per ogni firma.
-    \item Z' = Z $\cup$ $\vec{S}$ marchiamo utili le firme in $\vec{S}$ che non compaiono in Z.
-    \item Scandiamo ogni entry di $\vec{S}$ e A in parallelo (sono entrambi ordinati) e diamo in output gli URL in A corrispondenti alle entry marcate come utili al passo precedente.
-    \item $\vec{S}$ e A vengono svuotati e Z viene sostituito da Z'.
+	\item Ordino $\vec{S}$ indirettamente, cioè creo il vettore $\vec{V}$ contenente gli indici $i$ associati ai valori $\vec{S}$[i], ordino stabilmente $\vec{V}$ utilizzando come chiave le firme in $\vec{S}$. Al termine del processo, le firme $\vec{S}$[$\vec{V}$[i]] sono in ordine crescente al crescere di i\footnote{Si supponga per esempio che $\vec{S}$=\{C, F, B, A, A, E, D\}, allora il vettore associato a $\vec{S}$ sarà banalmente $\vec{V}$=\{0, 1, 2, 3, 4, 5, 6\}. Eseguendo l'ordinamento di $\vec{V}$ con le firme in $\vec{S}$ come chiave darà il seguente risultato (provare per credere) $\vec{V}$=\{3, 4, 2, 0, 6, 5, 1\}, che risulta effettivamente essere un ordinamento \textit{stabile} delle posizioni associate alle firme in $\vec{S}$.}.
+	\item Deduplico $\vec{S}$, quindi elimino le occorrenze successive alla prima per ogni firma.
+	\item Z' = Z $\cup$ $\vec{S}$ marchiamo utili le firme in $\vec{S}$ che non compaiono in Z.
+	\item Scandiamo ogni entry di $\vec{S}$ e A in parallelo (sono entrambi ordinati) e diamo in output gli URL in A corrispondenti alle entry marcate come utili al passo precedente.
+	\item $\vec{S}$ e A vengono svuotati e Z viene sostituito da Z'.
 \end{enumerate}
 Innanzitutto, si noti che Z, alla fine di uno scarico, contiene di nuovo le firme di tutti gli URL mai incontrati. Inoltre in output abbiamo dato tutti e soli gli URL la cui firma non era parte di Z, dunque si trattava di URL che non erano ancora stati visitati. Infine, gli URL in output sono stati ovviamente emessi nell'ordine di accodamento in A.
 \section{Gestione dei quasi duplicati}
@@ -192,7 +192,7 @@ Per calcolare SimHash dobbiamo prima di tutto stabilire il numero $b$ di bit del
 
 A ogni segnale $s \in$ \set{S} associamo ora uno hash $h(s)$. Il SimHash del testo ha il bit $i$ ($0 \leq i < b$) impostato a 1 se e solo se:
 \begin{equation*}
-    |\{s \in S \st h(s)[i] = 1\}| > |\{s \in S \st h(s)[i] = 0\}
+	|\{s \in S \st h(s)[i] = 1\}| > |\{s \in S \st h(s)[i] = 0\}
 \end{equation*}
 Due documenti che hanno lo stesso SimHash sono molto simili, e la somiglianza diventa sempre meno significativa se si permettono distanze di Hamming superiori. Si noti che è banale \textit{pesare} i segnali in modo che alcuni siano più importanti di altri.
 
@@ -203,8 +203,8 @@ Un altro dei problemi pratici che rende l'attività di crawling diversa da una s
 
 Ci sono due modi fondamentali di operare questa limitazione:
 \begin{itemize}
-    \item Limitare il tempo tra una richiesta e l'altra.
-    \item Limitare il rapporto tra il tempo di scaricamento e quello di non scaricamento.
+	\item Limitare il tempo tra una richiesta e l'altra.
+	\item Limitare il rapporto tra il tempo di scaricamento e quello di non scaricamento.
 \end{itemize}
 Nel primo caso, dato un intervallo di tempo $t$, diciamo, quattro secondi, siamo costretti ad aspettare $t$ tra la fine di una richiesta e l'inizio della successiva per lo stesso sito. Nel secondo caso, data una frazione $p$ e un tempo di scaricamento massimo $s$ (diciamo, di un secondo) dobbiamo fare in modo che la proporzione tra il tempo di scaricamento e quello di non-scaricamento sia $p$. Si noti che questa condizione contempla anche una misurazione effettiva del tempo di scaricamento, dato che risorse particolarmente lente potrebbero richiedere un tempo maggiore di $s$.
 
@@ -219,9 +219,9 @@ Per ogni sito manteniamo una coda (FIFO nel caso della visita in ampiezza). Quan
 
 Ogni flusso del crawler procede iterativamente nel seguente modo:
 \begin{enumerate}
-    \item Estrae il sito in cima alla coda (eventualmente aspettando il tempo necessario a far sì che questo sia scaricabile).
-    \item Procede a scaricare una o più risorse.
-    \item Riaccoda il sito aggiustando il timestamp di "readiness" secondo la politica di gestione della politeness.
+	\item Estrae il sito in cima alla coda (eventualmente aspettando il tempo necessario a far sì che questo sia scaricabile).
+	\item Procede a scaricare una o più risorse.
+	\item Riaccoda il sito aggiustando il timestamp di "readiness" secondo la politica di gestione della politeness.
 \end{enumerate}
 Se c'è un URL disponibile allo scaricamento, il sito deve essere già stato reso pronto per lo scaricamento prima del tempo corrente. Quindi o è in cima alla coda, o in cima alla coda c'è un sito che era pronto per lo scaricamento ancora prima. Il punto è che la cima della coda è sempre scaricabile.
 
@@ -239,13 +239,13 @@ Per dare un'idea delle tecniche lock-free, l'algoritmo 1 mostra come aggiungere 
 
 La correttezza dell'algoritmo è banale, ma si noti anche che se l'istruzione CAS fallisce, un altro flusso ha eseguito l'inserimento: quindi, per ogni ciclo eseguito da uno dei flussi concorrenti c'è stato \textit{progresso} nell'aggiornamento della struttura. Detto altrimenti: non è possibile dire quante volte uno specifico flusso debba eseguire il ciclo prima di avere successo nell'inserimento, ma a ogni fallimento corrisponde un successo di un altro flusso.
 \begin{algorithm}
-\caption{Algoritmo lock-free per aggiungere un nodo (n) a una lista (dopo p)}
-\begin{algorithmic}
-\Do
-\State $t \gets p.next$
-\State $n.next \gets t$
-\doWhile{!CAS(\&p.next, t, n)}
-\end{algorithmic}
+	\caption{Algoritmo lock-free per aggiungere un nodo (n) a una lista (dopo p)}
+	\begin{algorithmic}
+		\Do
+		\State $t \gets p.next$
+		\State $n.next \gets t$
+		\doWhile{!CAS(\&p.next, t, n)}
+	\end{algorithmic}
 \end{algorithm}
 L'algoritmo per la cancellazione è più complesso: l'idea di utilizzare la stessa tecnica non funziona perché è possibile cancellare un nodo mentre sta venendo inserito un successore, cancellando così l'effetto dell'inserimento.
 
