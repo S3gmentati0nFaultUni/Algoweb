@@ -3,44 +3,44 @@ Si consiglia fortemente, qualora non doveste essere ferrati in materia di algebr
 
 Il prodotto cartesiano degli insiemi \set{X} e \set{Y} è l'insieme \set{X\times Y} = $\{\langle x, y \rangle \st x \in \set{X} \land y \in \set{Y}\}$ delle coppie ordinate degli elementi \set{X} e \set{Y}. La definizione si estende per ricorsione a \textit{n} insiemi. Al prodotto cartesiano \set{X_1 \times X_2 \times \dots \times X_n} sono naturalmente associate le \textit{proiezioni} $\pi_1, \pi_2, \dots, \pi_n$ definite da
 \begin{equation}
-    \pi_i(\langle x_1, x_2, \dots, x_n \rangle) = x_i
+	\pi_i(\langle x_1, x_2, \dots, x_n \rangle) = x_i
 \end{equation}
 poniamo
 \begin{equation}
-    X^n = \overbrace{X \times X \times \dots \times X}^{\textnormal{$n$ volte}}
+	X^n = \overbrace{X \times X \times \dots \times X}^{\textnormal{$n$ volte}}
 \end{equation}
 e \set{X}$^0 = \{*\}$ (qualunque insieme con un solo elemento). La \textit{somma disgiunta} degli insiemi \set{X} e \set{Y} è, intuitivamente, un'unione di \set{X} e \set{Y} che però tiene separati gli elementi comuni, quindi evita i conflitti. Formalmente:
 \begin{equation}
-    X + Y = X \times \{0\} \cup Y \times \{1\}
+	X + Y = X \times \{0\} \cup Y \times \{1\}
 \end{equation}
 Di solito ometteremo, con un piccolo abuso di notazione, la seconda coordinata.
 Una \textit{relazione} tra gli insiemi \set{X_1}, \set{X_2}, \dots, \set{X_n} è un sottoinsieme \set{R} del prodotto cartesiano \caProd{X}{n}. Se $n = 2$ si tende a scrivere $x \hspace{1mm} R \hspace{1mm} y$ per $\langle x, y \rangle \in \reals$. Una relazione tra due insiemi è detta \textit{binaria}. Se \set{R} è una relazione binaria tra \set{X} e \set{Y}, \set{X} è detto \textit{dominio} di \set{R}, ed è denotato da dom(\set{R}), mentre \set{Y} è detto \textit{codominio} di \set{R}, ed è denotato da cod(\set{R}). Il \textit{rango} o \textit{insieme di definizione} di \set{R} è l'insieme ran(\set{R}) $ = \{x \in X \st \exists y \in Y, x \hspace{1mm} R \hspace{1mm} y\}$, e in generale può non coincidere con il dominio di \set{R}. L'\textit{immagine} di \set{R} è l'insieme imm(\set{R}) $= \{y \in Y \st \exists x \in X, x \hspace{1mm} R \hspace{1mm} y\}$, e in generale può non coincidere con il codominio di \set{R}. Una relazione binaria \set{R} tra \set{X} e \set{Y} è \textit{monodroma} se per ogni $x \in$ \set{X} esiste al più un $y \in$ \set{Y} tale che $x \hspace{1mm} R \hspace{1mm} y$. È \textit{totale} se per ogni $x \in$ \set{X} esiste un $y \in$ \set{Y} tale che $x \hspace{1mm} R \hspace{1mm}$, cioè se ran(\set{R}) = dom(\set{R}). È \textit{iniettiva} se per ogni $y \in$ \set{Y} esiste al più un $x \in$ \set{X} tale che $x \hspace{1mm} R \hspace{1mm} y$. È \textit{suriettiva} se per ogni $y \in$ \set{Y} esiste un $x \in$ \set{X} tale che $x \hspace{1mm} R \hspace{1mm} y$, cioè se imm(\set{R}) = cod(\set{R}). È \textit{biiettiva} se la relazione è sia iniettiva che suriettiva.
 Una \textit{funzione} da \set{X} a \set{Y} è una relazione monodroma e totale tra \set{X} e \set{Y} (notate che l'ordine è rilevante\footnote{Secondo la mia interpretazione, una funzione è monodroma e totale perché una funzione è definita come una relazione in cui ogni elemento del dominio è mappato in uno e un solo elemento del codominio, dunque:
-\begin{itemize}
-    \item monodroma garantisce che ogni elemento dell'insieme di definizione ha un'unica immagine.
-    \item Totale garantisce che dom(\set{R}) = ran(\set{R}).
-\end{itemize}}); in tal caso scriviamo \fun{f}{\set{X}}{\set{Y}} per dire che $f$ "va da \set{X} a \set{Y}". Se $f$ è una funzione da \set{X} a \set{Y} è uso scrivere $f(x)$ per l'unico $y \in$ \set{Y} tale che $x \hspace{1mm} f \hspace{1mm} y$, diremo che $f$ \textit{mappa} $x$ in $f(x)$ o, in simboli, $x \mapsto f(x)$. Le nozioni di dominio, codominio, iniettività, suriettività e biiettività vengono ereditate dalle relazioni. Se una funzione \fun{f}{\set{X}}{\set{Y}} è biiettiva, è facile verificare che esiste una funzione inversa $f^{-1}$, che soddisfa le equazioni $f(f^{-1}(y)) = y$ e $f^{-1}(f(x)) = x$ per ogni $x \in$ \set{X} e $y \in$ \set{Y}. Una \textit{funzione parziale} (che tecnicamente non è una funzione perché non è definita sull'interezza del suo dominio) da \set{X} a \set{Y} è una relazione monodroma tra \set{X} e \set{Y}; una funzione parziale può non essere definita su elementi del suo dominio, fatto che denotiamo con la scrittura $f(x) = \bot$ ("$f(x)$ è indefinito" o "$f$ è indefinita su $x$"), che significa che $x \notin$ ran($f$). Date funzioni parziali \fun{f}{\set{X}}{\set{Y}} e \fun{g}{Y}{Z}, la \textit{composizione} $g \circ f$ di $f$ con $g$ è la funzione definita da $(g \circ f)(x) = g(f(x))$. Si noti che, per convenzione, $f(\bot) = \bot$ per ogni funzione parziale $f$. Dati gli insiemi \set{X} e \set{Y}, denotiamo con $Y^X = \{f | f : X \rightarrow Y\}$ l'insieme delle funzioni da \set{X} a \set{Y}. Si noti che per insiemi finiti\footnote{Si noti che l'uguaglianza è vera in generale, utilizzando i cardinali cantoriani}$|Y^X| = |Y|^{|X|}$.
+	\begin{itemize}
+		\item monodroma garantisce che ogni elemento dell'insieme di definizione ha un'unica immagine.
+		\item Totale garantisce che dom(\set{R}) = ran(\set{R}).
+	\end{itemize}}); in tal caso scriviamo \fun{f}{\set{X}}{\set{Y}} per dire che $f$ "va da \set{X} a \set{Y}". Se $f$ è una funzione da \set{X} a \set{Y} è uso scrivere $f(x)$ per l'unico $y \in$ \set{Y} tale che $x \hspace{1mm} f \hspace{1mm} y$, diremo che $f$ \textit{mappa} $x$ in $f(x)$ o, in simboli, $x \mapsto f(x)$. Le nozioni di dominio, codominio, iniettività, suriettività e biiettività vengono ereditate dalle relazioni. Se una funzione \fun{f}{\set{X}}{\set{Y}} è biiettiva, è facile verificare che esiste una funzione inversa $f^{-1}$, che soddisfa le equazioni $f(f^{-1}(y)) = y$ e $f^{-1}(f(x)) = x$ per ogni $x \in$ \set{X} e $y \in$ \set{Y}. Una \textit{funzione parziale} (che tecnicamente non è una funzione perché non è definita sull'interezza del suo dominio) da \set{X} a \set{Y} è una relazione monodroma tra \set{X} e \set{Y}; una funzione parziale può non essere definita su elementi del suo dominio, fatto che denotiamo con la scrittura $f(x) = \bot$ ("$f(x)$ è indefinito" o "$f$ è indefinita su $x$"), che significa che $x \notin$ ran($f$). Date funzioni parziali \fun{f}{\set{X}}{\set{Y}} e \fun{g}{Y}{Z}, la \textit{composizione} $g \circ f$ di $f$ con $g$ è la funzione definita da $(g \circ f)(x) = g(f(x))$. Si noti che, per convenzione, $f(\bot) = \bot$ per ogni funzione parziale $f$. Dati gli insiemi \set{X} e \set{Y}, denotiamo con $Y^X = \{f | f : X \rightarrow Y\}$ l'insieme delle funzioni da \set{X} a \set{Y}. Si noti che per insiemi finiti\footnote{Si noti che l'uguaglianza è vera in generale, utilizzando i cardinali cantoriani}$|Y^X| = |Y|^{|X|}$.
 
 Denoteremo con $n$ l'insieme \set{\{0, 1, \dots, n - 1\}}.
 
 Dato un insieme \set{X}, il \textit{monoide libero} su \set{X}, denotato da \set{X^*}, è l'insieme di tutte le sequenze finite, (inclusa quella vuota, normalmente denotata da $\varepsilon$) di elementi di \set{X}, dette \textit{parole} su \set{X}, dotate dell'operazione di concatenazione, di cui la parola vuota è l'elemento neutro. Denoteremo con $|w|$ il numero di elementi di \set{X} della parola $w \in$ \set{X}.
 Dato un sottoinsieme \set{A} di \set{X}, possiamo associargli la sua \textit{funzione caratteristica} \fun{\chi_A}{\set{X}}{2} definita da:
 \begin{equation}
-    \chi_A =
-    \begin{cases}
-        0, \hspace{3mm} \textnormal{se } x \notin A \\
-        1, \hspace{3mm} \textnormal{se } x \in A \\
-    \end{cases}
+	\chi_A =
+	\begin{cases}
+		0, \hspace{3mm} \textnormal{se } x \notin A \\
+		1, \hspace{3mm} \textnormal{se } x \in A    \\
+	\end{cases}
 \end{equation}
 Per contro, a ogni funzione \fun{f}{\set{X}}{2} possiamo associare il sottoinsieme di \set{X} dato dagli elementi mappati da $f$ in $1$, cioè l'insieme \set{\{x \in X \st f(x) = 1}\}; tale corrispondenza è inversa alla precedente, ed è quindi naturalmente equivalente considerare sottoinsiemi di \set{X} o funzioni di \set{X} in $2$.
 Date due funzioni $f$, \fun{g}{\nat}{\reals}, diremo che $f$ è di \textit{ordine non superiore} a $g$, e scriveremo che $f \in$ \bigo{g} ("$f$ è $\mathcal{O}$-grande di $g$") se esiste una costante $a \in \reals$ tale che $|f(n_0)| \leq |a g(n_0)|$ definitivamente. Diremo che $f$ è di \textit{ordine non inferiore} a $g$, e scriveremo che $f \in$ \bigz{g} se $g \in$ \bigo{f}. Diremo che $f$ è \textit{dello stesso ordine di g} e scriveremo $f \in$ \bigt{g}, se $f \in$ \bigo{g} e $g \in$ \bigz{f}.
 
 Un \textit{grafo semplice} G è dato da un insieme finito di vertici \set{V_G} e da un insieme di lati \set{E_g} $\subseteq$ \set{\{\{x, y\} \st x, y \in V_G \land x \neq y\}}; ogni lato è cioè una coppia non ordinata di vertici distinti. Se \set{\{x, y\}} $\in$ \set{E_G}, diremo che $x$ e $y$ sono vertici \textit{adiacenti} in G. Un grafo può essere rappresentato graficamente disegnando i suoi vertici come punti sul piano, e rappresentato i lati come segmenti che congiungono vertici adiacenti. Per esempio, il grafo con insieme di vertici 4 e insieme di lati \set{\{\set{\{0, 1\}}, \set{\{1, 2\}}, \set{\{2, 0\}}, \set{\{2, 3\}}\}} può essere rappresentato come in Figura \ref{fig:simple-graph}.
 \begin{figure}[h]
-    \centering
-    \input{img/graph.tikz}
-    \caption{Semplice esempio di grafo}
-    \label{fig:simple-graph}
+	\centering
+	\input{img/graph.tikz}
+	\caption{Semplice esempio di grafo}
+	\label{fig:simple-graph}
 \end{figure}
 L'\textit{ordine} di G è il numero naturale $|$\set{V_G}$|$. Una \textit{cricca} o una \textit{clique} di G è un insieme di vertici \set{C} $\subseteq$ \set{V_G} mutualmente adiacenti (nell'esempio in figura \set{\{0, 1, 2\}} è una cricca). Dualmente, un \textit{insieme indipendente} di G è un insieme di vertici \set{I} $\subseteq$ \set{V_G} mutualmente non adiacenti. Un \textit{cammino} di lunghezza $n$ in G è una sequenza di vertici $x_0, \dots, x_{n}$ tale che $x_i$ è adiacente a $x_{i + 1}$ con ($0 \leq i < n$). Diremo che il cammino va da $x_0$ a $x_{n}$. Nell'esempio in figura, 0, 1, 2 è un cammino, 1, 3 non lo è.
 

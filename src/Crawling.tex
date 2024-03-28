@@ -47,17 +47,17 @@ Andiamo ora a vedere qual è la probabilità di un falso positivo. Con un'analis
 \subsection{Dimostrazione dell'efficacia dei filtri di Bloom}
 Per calcolare l'efficacia dei filtri di Bloom, come detto in precedenza, si considererà la probabilità di osservare un falso positivo. Una prima semplificazione lecita (seguendo l'analisi di \cite{Bloom}) è quella di andare a calcolare la probabilità di un positivo qualunque dopo $n$ inserimenti, che è ovviamente una maggiorazione del caso dei falsi positivi.
 Supponiamo di avere un vettore di $m$ posizioni e $d$ funzioni di hash uniformemente distribuite e indipendenti. Dopo l'$n$-esimo inserimento, la probabilità che un bit sia 0 è data da:
-\begin{equation*}
+\begin{equation}
 	P[\vec{b}[i] = 0 \st N = n] = \bigb{\frac{m - 1}{m}}^{dn} = \bigb{1 - \frac{1}{m}}^{dn}
-\end{equation*}
+\end{equation}
 Si ottiene un positivo quando tutte le posizioni controllate sono a 1, ciò avviene con probabilità
-\begin{equation*}
+\begin{equation}
 	\varphi = \bigb{1 - \bigb{1 - \frac{1}{m}}^{dn}}^d
-\end{equation*}
+\end{equation}
 siccome $\bigb{1 + \alpha/n}^n \rightarrow e^{\alpha}$ per $n \rightarrow \infty$
-\begin{equation*}
+\begin{equation}
 	\varphi = \bigb{1 - \bigb{1 - \frac{1}{m}}^{-m \frac{-dn}{m}}}^d \sim \bigb{1 - e^{-\frac{dn}{m}}}^d
-\end{equation*}
+\end{equation}
 Sia ora $p = e^{-\frac{dn}{m}}$, allora
 \begin{align*}
 	 & \ln(p) = -\frac{dn}{m} \\
@@ -66,29 +66,29 @@ Sia ora $p = e^{-\frac{dn}{m}}$, allora
 \end{align*}
 Voglio ora minimizzare la probabilità di ottenere un positivo $\varphi$, quindi prendo $\bigb{1 - e^{-\frac{dn}{m}}}^d$ e sostituisco $p$, quindi $(1 - p)^{-m/n \cdot \ln(p)}$.\\
 Riscrivo come esponenziale:
-\begin{equation*}
+\begin{equation}
 	e^{\ln(1 - p)^{-m/n \cdot \ln(p)}} = e^{-m/n \cdot \ln(1 - p)\ln(p)}
-\end{equation*}
+\end{equation}
 Faccio la derivata rispetto a $p$ che viene:
-\begin{equation*}
+\begin{equation}
 	-\frac{m}{n} \cdot \bigb{\frac{1}{p}\ln(1 - p) - \frac{1}{1 - p} \cdot \ln(p)} \cdot e^{-m/n \cdot \ln(1 - p)\ln(p)}
-\end{equation*}
+\end{equation}
 Il punto stazionario è quello per cui la parte tra parentesi si annulla, l'esponenziale è sempre $> 0$ quindi:
 \begin{align*}
 	\frac{1}{p}\ln(1 - p) - \frac{1}{1 - p} \cdot \ln(p) & = 0              \\
 	(1 - p) \cdot \ln(1 - p)                             & = p \cdot \ln(p)
 \end{align*}
 Se $1 - p = p$ allora $p = 1/2$, questa è l'unica soluzione, come prova del 9 si studi $g(p) = p\ln(p) - (1 - p)\ln(1 - p)$ e risulterà che agli estremi la funzione vale 0 dato che:
-\begin{equation*}
+\begin{equation}
 	\lim_{p \to 0}p \ln(p) = \lim_{p \to 0} \frac{\ln(p)}{1/p} = \lim_{p \to 0} \frac{1/p}{-1/p^2} = \lim_{p \to 0} -p = 0
-\end{equation*}
+\end{equation}
 la derivata invece è $\dot{g(p)} = \ln(1 - p) + \ln(p) + 2$.
 
 Chiaramente va a meno infinito in 0  e 1, ma in $p = 1/2$ è positiva, ed è l'unico punto di massimo (dato che la derivata seconda ha un solo zero in $p = 1/2$). Concludiamo che $g(p)$ ha esattamente un massimo e un minimo in $[0, 1)$, e quindi esattamente uno zero in $(0, 1)$.
 Per concludere, se $p = 1/2$ allora $d = - \frac{m\ln(p)}{n} = \frac{m\ln2}{n}$ per quanto riguarda la probabilità di avere uno in tutti i punti che andiamo a controllare all'interno del vettore:
-\begin{equation*}
+\begin{equation}
 	\varphi = \bigb{1 - e^{-\frac{dn}{m}}}^d = \bigb{1 - e^{-\ln2}}^d = \bigb{1 - \frac{1}{2}}^d = 2^{-d}
-\end{equation*}
+\end{equation}
 Alla fine, la probabilità di (falsi) positivi è minimizzata da $d \approx \frac{m\ln2}{n}$, e in tal caso la probabilità di un (falso) positivo è $2^{-d}$. Vale a dire che aumentando linearmente il numero delle funzioni di hash impiegate e il numero di bit della struttura a $m \approx dn/\ln2 \approx 1.44dn$, si ha una riduzione esponenziale del numero di (falsi) positivi che possono essere incontrati.
 Passiamo ora a fare alcune osservazioni tecniche:
 \begin{itemize}
@@ -191,9 +191,9 @@ Un metodo efficace di gestione online del problema, che è stato utilizzato per 
 Per calcolare SimHash dobbiamo prima di tutto stabilire il numero $b$ di bit dello hash, e fissare una buona funzione di hash $h$ che mappa stringhe in hash di $b$ bit. A un maggiore numero di bit corrisponderà una nozione più accurata di somiglianza. A questo punto il testo della pagina, in forma normalizzata, viene trasformato in un insieme di segnali \set{S}: un modo banale è utilizzare le parole del testo come segnali, ma è più accurato considerare i cosiddetti \textit{shingles} (segmenti di testo di 3-5 caratteri).
 
 A ogni segnale $s \in$ \set{S} associamo ora uno hash $h(s)$. Il SimHash del testo ha il bit $i$ ($0 \leq i < b$) impostato a 1 se e solo se:
-\begin{equation*}
+\begin{equation}
 	|\{s \in S \st h(s)[i] = 1\}| > |\{s \in S \st h(s)[i] = 0\}
-\end{equation*}
+\end{equation}
 Due documenti che hanno lo stesso SimHash sono molto simili, e la somiglianza diventa sempre meno significativa se si permettono distanze di Hamming superiori. Si noti che è banale \textit{pesare} i segnali in modo che alcuni siano più importanti di altri.
 
 Trovare elementi a breve distanza di Hamming è un problema interessante una cui soluzione pratica per distanze piccole è descritta è \cite{google}.

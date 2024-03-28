@@ -1,18 +1,18 @@
 \chapter{Risoluzione delle interrogazioni}
 La risoluzione di un'interrogazione dipende fondamentalmente da due fattori:
 \begin{itemize}
-    \item Il linguaggio di interrogazione e la corrispondente semantica.
-    \item Il tipo di dati contenuti nelle affissioni dell'indice.
+	\item Il linguaggio di interrogazione e la corrispondente semantica.
+	\item Il tipo di dati contenuti nelle affissioni dell'indice.
 \end{itemize}
 Per il momento, ci concentreremo sulla risoluzione di interrogazioni \textit{booleane}, cioè in cui gli unici operatori sono la congiunzione, la disgiunzione e la negazione logica. Una formula del linguaggio di interrogazione è: un termine oppure la congiunzione, disgiunzione o negazione di formule.
 
 Per quanto riguarda la semantica:
 \begin{itemize}
-    \item La semantica di una formula è una lista di documenti.
-    \item La semantica di un termine è data dalla lista di documenti in cui il termine compare.
-    \item La semantica della congiunzione è data dall'intersezione delle liste.
-    \item La semantica della disgiunzione è data dalla fusione delle liste.
-    \item La semantica della negazione è data dalla complementazione rispetto all'intera collezione documentale.
+	\item La semantica di una formula è una lista di documenti.
+	\item La semantica di un termine è data dalla lista di documenti in cui il termine compare.
+	\item La semantica della congiunzione è data dall'intersezione delle liste.
+	\item La semantica della disgiunzione è data dalla fusione delle liste.
+	\item La semantica della negazione è data dalla complementazione rispetto all'intera collezione documentale.
 \end{itemize}
 Chiaramente, per risolvere un'interrogazione Booleana è sufficiente che le affissioni contengano i puntatori documentali. Inoltre, se l'indice contiene i puntatori in ordine crescente, è possibile ottenere intersezione e unione di liste in tempo lineare nel numero di puntatori.
 

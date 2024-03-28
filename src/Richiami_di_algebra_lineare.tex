@@ -4,65 +4,65 @@ In questa sezione rivedremo alcuni dei più importanti concetti di algebra linea
 Andiamo con ordine
 
 \begin{definition} [Campo]
-    Un campo è un insieme $\field$ dotato di una operazione di somma $\field \times \field \rightarrow \field$, $(x, y) \mapsto x + y$ e di una operazione prodotto $\field \times \field \rightarrow \field$, $(x, y) \mapsto xy$ tali che:
-    \begin{enumerate}
-        \renewcommand{\labelenumi}{\roman{enumi}.}
-        \item La somma e il prodotto godano delle proprietà associativa, commutativa e distributiva;
-        \item La somma ammetta un elemento neutro, cioè un elemento, denotato $0$, tale che $x + 0 = x$ per ogni $x \in \field$;
-        \item Il prodotto ammetta un elemento neutro denotato $1$;
-        \item Ogni elemento $x \in field$ ammetta un inverso additivo $-x$, cioè un elemento tale che $x + (-x) = 0$;
-        \item Ogni elemento $x \in \field$, con $x \neq 0$, ammetta un inverso moltiplicativo $x^{-1}$, cioze un elemento tale che $xx^{-1} = 1$.
-      \end{enumerate}
+	Un campo è un insieme $\field$ dotato di una operazione di somma $\field \times \field \rightarrow \field$, $(x, y) \mapsto x + y$ e di una operazione prodotto $\field \times \field \rightarrow \field$, $(x, y) \mapsto xy$ tali che:
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{\roman{enumi}.}
+		\item La somma e il prodotto godano delle proprietà associativa, commutativa e distributiva;
+		\item La somma ammetta un elemento neutro, cioè un elemento, denotato $0$, tale che $x + 0 = x$ per ogni $x \in \field$;
+		\item Il prodotto ammetta un elemento neutro denotato $1$;
+		\item Ogni elemento $x \in field$ ammetta un inverso additivo $-x$, cioè un elemento tale che $x + (-x) = 0$;
+		\item Ogni elemento $x \in \field$, con $x \neq 0$, ammetta un inverso moltiplicativo $x^{-1}$, cioze un elemento tale che $xx^{-1} = 1$.
+	\end{enumerate}
 \end{definition}
-Un esempio di operazione binaria interna è la somma tra numeri naturali. 
+Un esempio di operazione binaria interna è la somma tra numeri naturali.
 \begin{definition}[$\field$-spazio vettoriale]
-    Definiamo $\field$-spazio vettoriale (o spazio vettoriale sul campo $\field$) un insieme $V$ dotato delle due seguenti applicazioni:
-    \begin{enumerate}
-        \item Somma:
-        \begin{align*}
-            +: &V \times V \rightarrow V \\
-                &(\vec{v}, \vec{w}) \mapsto \vec{v} + \vec{w}
-        \end{align*}
-        \item Prodotto per scalare
-        \begin{align*}
-            \cdot: &\field \times V \rightarrow V \\
-                    &(\alpha, \vec{v}) \mapsto \alpha \cdot \vec{v}
-        \end{align*}
-    \end{enumerate}
-    tali che valgano le seguenti proprietà:
-    \begin{enumerate}
-        \renewcommand{\labelenumi}{(P\arabic{enumi})}
-        \item Proprietà associativa di $+: \fa \vec{v}, \vec{w}, \vec{z} \in V$ si ha $(\vec{v} + \vec{w}) + \vec{z} = \vec{v} + (\vec{w} + \vec{z})$;
-        \item Proprietà commutativa di $+: \fa \vec{v}, \vec{w} \in V$ si ha $\vec{v} + \vec{w} = \vec{w} + \vec{v}$;
-        \item Esistenza dell'elemento neutro di $+: $ esiste un elemento $\vec{0} \in V$ tale che $\fa \vec{v} \in V$ si ha $\vec{v} + \vec{0} = \vec{v}$;
-        \item Esistenza dell'elemento opposto, o inverso, relativamente a $+: \fa \vec{v} \in V$ esiste $\vec{w} \in V$ tale che $\vec{v} + \vec{w} = 0$, useremo la notazione $\vec{v} = -\vec{w}$;
-        \item Proprietà distributiva di $\cdot$ rispetto a $+: \fa \alpha \in \field, \fa \vec{v}, \vec{w} \in V$ si ha
-        \begin{equation*}
-            \alpha \cdot (\vec{v} + \vec{w}) = \alpha \cdot \vec{v} + \alpha \cdot \vec{w};
-        \end{equation*}
-        \item Proprietà distributiva di $\cdot$ rispetto a $+$ in $\field: \fa \alpha, \beta \in \field, \fa \vec{v} \in V$ si ha
-        \begin{equation*}
-            (\alpha + \beta) \cdot \vec{v} = \alpha \cdot \vec{v} + \beta \cdot \vec{v};
-        \end{equation*}
-        \item Proprietà associativa di $\cdot: \fa \alpha, \beta \in \field, \fa \vec{v} \in V$ si ha $(\alpha\beta) \cdot \vec{v} = \alpha \cdot (\beta \cdot \vec{v})$
-        \item Proprietà di $1: \fa \vec{v} \in V$ si ha $1 \cdot \vec{v} = \vec{v}$.
-    \end{enumerate}
+	Definiamo $\field$-spazio vettoriale (o spazio vettoriale sul campo $\field$) un insieme $V$ dotato delle due seguenti applicazioni:
+	\begin{enumerate}
+		\item Somma:
+		      \begin{align*}
+			      +: & V \times V \rightarrow V                     \\
+			         & (\vec{v}, \vec{w}) \mapsto \vec{v} + \vec{w}
+		      \end{align*}
+		\item Prodotto per scalare
+		      \begin{align*}
+			      \cdot: & \field \times V \rightarrow V                  \\
+			             & (\alpha, \vec{v}) \mapsto \alpha \cdot \vec{v}
+		      \end{align*}
+	\end{enumerate}
+	tali che valgano le seguenti proprietà:
+	\begin{enumerate}
+		\renewcommand{\labelenumi}{(P\arabic{enumi})}
+		\item Proprietà associativa di $+: \fa \vec{v}, \vec{w}, \vec{z} \in V$ si ha $(\vec{v} + \vec{w}) + \vec{z} = \vec{v} + (\vec{w} + \vec{z})$;
+		\item Proprietà commutativa di $+: \fa \vec{v}, \vec{w} \in V$ si ha $\vec{v} + \vec{w} = \vec{w} + \vec{v}$;
+		\item Esistenza dell'elemento neutro di $+: $ esiste un elemento $\vec{0} \in V$ tale che $\fa \vec{v} \in V$ si ha $\vec{v} + \vec{0} = \vec{v}$;
+		\item Esistenza dell'elemento opposto, o inverso, relativamente a $+: \fa \vec{v} \in V$ esiste $\vec{w} \in V$ tale che $\vec{v} + \vec{w} = 0$, useremo la notazione $\vec{v} = -\vec{w}$;
+		\item Proprietà distributiva di $\cdot$ rispetto a $+: \fa \alpha \in \field, \fa \vec{v}, \vec{w} \in V$ si ha
+		      \begin{equation}
+			      \alpha \cdot (\vec{v} + \vec{w}) = \alpha \cdot \vec{v} + \alpha \cdot \vec{w};
+		      \end{equation}
+		\item Proprietà distributiva di $\cdot$ rispetto a $+$ in $\field: \fa \alpha, \beta \in \field, \fa \vec{v} \in V$ si ha
+		      \begin{equation}
+			      (\alpha + \beta) \cdot \vec{v} = \alpha \cdot \vec{v} + \beta \cdot \vec{v};
+		      \end{equation}
+		\item Proprietà associativa di $\cdot: \fa \alpha, \beta \in \field, \fa \vec{v} \in V$ si ha $(\alpha\beta) \cdot \vec{v} = \alpha \cdot (\beta \cdot \vec{v})$
+		\item Proprietà di $1: \fa \vec{v} \in V$ si ha $1 \cdot \vec{v} = \vec{v}$.
+	\end{enumerate}
 \end{definition}
 Sia $V$ un $\field$-spazio vettoriale. Gli elementi $\vec{v} \in V$ sono chiamati vettori e gli elementi $\alpha \in \field$ sono chiamati scalari.
 
 Ora che abbiamo la definizione di campo e di spazio vettoriale, possiamo passare alla definizione di
 \begin{definition} [Matrice]
-    Sia $\field$ un campo. Siano dati $h$ ed $n \in \nat$ con $h, n \geq 1$. Definiamo matrice $h \times n$ a coefficienti in $\field$ una tabella della forma 
-    \begin{equation*}
-        A =
-        \begin{bmatrix}
-            a_{11} &\dots &a_{1n} \\
-            \vdots &\ddots &\vdots \\
-            a_{h1} &\dots &a_{hn}
-        \end{bmatrix}
-        = (a_{ij})_{(1 \leq i \leq h, 1 \leq j \leq n)}
-    \end{equation*}
-    con $a_{ij} \in \field$ per ogni $1 \leq i \leq h$ ed ogni $1 \leq j \leq n$. Denotiamo $M_{h \times n}(\field)$ l'insieme delle matrici $h \times n$ ($h$ righe, $n$ colonne) a coefficienti in $\field$. Introduciamo le due operazioni
+	Sia $\field$ un campo. Siano dati $h$ ed $n \in \nat$ con $h, n \geq 1$. Definiamo matrice $h \times n$ a coefficienti in $\field$ una tabella della forma
+	\begin{equation}
+		A =
+		\begin{bmatrix}
+			a_{11} & \dots  & a_{1n} \\
+			\vdots & \ddots & \vdots \\
+			a_{h1} & \dots  & a_{hn}
+		\end{bmatrix}
+		= (a_{ij})_{(1 \leq i \leq h, 1 \leq j \leq n)}
+	\end{equation}
+	con $a_{ij} \in \field$ per ogni $1 \leq i \leq h$ ed ogni $1 \leq j \leq n$. Denotiamo $M_{h \times n}(\field)$ l'insieme delle matrici $h \times n$ ($h$ righe, $n$ colonne) a coefficienti in $\field$. Introduciamo le due operazioni
 \end{definition}
 I vettori, che abbiamo nominato prima, sono difatto matrici che hanno una delle due dimensioni pari a $1$, chiamiamo vettore riga un vettore $\vec{v} \in M_{1 \times n}(\field)$, chiamiamo vettore colonna un vettore $\vec{v} \in M_{n \times 1}(\field)$.
 
@@ -73,17 +73,17 @@ Passiamo ora a considerare le operazioni che possiamo eseguire su matrici e vett
 L'addizione tra due matrici $A$ ed $B$ può essere eseguita se e solo se le loro dimensioni sono le stesse, quindi se $A$ è una matrice $n \times n$ e $N$ è un vettore $n \times 1$ l'operazione non potrà essere eseguita.
 
 Se le dimensioni delle matrici combaciano l'operazione di somma può essere eseguita sommando elementi corrispondenti, dunque l'operazione può essere tradotta (supponendo di sommare due matrici $m \times n$) come segue:
-\begin{equation*}
-    A + B = (a_{ij} + b_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}
-\end{equation*}
+\begin{equation}
+	A + B = (a_{ij} + b_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}
+\end{equation}
 Discorso duale può essere fatto per la sottrazione tra due matrici.
 \section{Moltiplicazione per uno scalare}
 In generale, quando parliamo di vettori e matrici, ci riferiamo a qualunque elemento $c \in \field$, dove $\field$ è il campo sul quale abbiamo definito il nostro spazio vettoriale, come scalare.
 
 Quando eseguiamo la moltiplicazione di una matrice $A \in M_{m \times n}(\field)$ per uno scalare $c \in \field$, moltiplichiamo tutti gli elementi della matrice per suddetto scalare, dunque l'operazione può essere tradotta come segue:
-\begin{equation*}
-    c \cdot A = (c \cdot a_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}
-\end{equation*}
+\begin{equation}
+	c \cdot A = (c \cdot a_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}
+\end{equation}
 \section{Trasposizione}
 Data la matrice di tipo $(m, n): A = (a_{ij}\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m})$, la sua trasposta, denotata come $\trans{A}$ è la matrice di tipo $(n, m)$ ottenuta dallo scambio delle righe e delle colonne di $A$.
 
@@ -93,31 +93,31 @@ Date due matrici $A \in M_{n \times m}(\field), B \in M_{m \times n}(\field)$ il
 Il risultato dell'operazione di moltiplicazione sarà una matrice di dimensioni $n \times n$.
 
 Dunque, note $A$ e $B$ matrici come sopra, sia $C = AB$ con $C = (c_{ij})\substack{\scriptstyle j = 1 \dots n \\ \scriptstyle i = 1 \dots m}$ allora l'elemento $c_{ij}$ può essere calcolato come segue:
-\begin{equation*}
-    c_{ij} = \sum_{k \in m}a_{ik}b_{kj}
-\end{equation*}
+\begin{equation}
+	c_{ij} = \sum_{k \in m}a_{ik}b_{kj}
+\end{equation}
 Il prodotto tra matrici, in generale, non gode della proprietà commutativa.
 \section{Prodotto scalare}
 Si definisce prdotto scalare sullo spazio vettoriale $V$ un'operazione che associa a due vettori $\vec{u}, \vec{v} \in V$ uno scalare nel campo $\field$ su cui è definito lo spazio vettoriale $V$, generalmente indicato come $\scalar{\vec{v}}{\vec{u}}$.
 
 Dati tre vettori $\vec{u}, \vec{v}, \vec{w} \in V$ e $k \in \field$, l'operatore di prodotto scalare deve godere delle seguenti proprietà:
 \begin{enumerate}
-    \renewcommand{\labelenumi}{(P\arabic{enumi})}
-    \item Proprietà di simmetria: $\scalar{\vec{v}}{\vec{w}} = \scalar{\vec{w}}{\vec{v}}$
-    \item 
-    \begin{align*}
-        \scalar{\vec{v} + \vec{w}}{\vec{u}} &= \scalar{\vec{v}}{\vec{u}} + \scalar{\vec{w}}{\vec{u}} \\ 
-        \scalar{k\vec{v}}{\vec{w}} &= k\scalar{\vec{v}}{\vec{w}}
-    \end{align*}
+	\renewcommand{\labelenumi}{(P\arabic{enumi})}
+	\item Proprietà di simmetria: $\scalar{\vec{v}}{\vec{w}} = \scalar{\vec{w}}{\vec{v}}$
+	\item
+	      \begin{align*}
+		      \scalar{\vec{v} + \vec{w}}{\vec{u}} & = \scalar{\vec{v}}{\vec{u}} + \scalar{\vec{w}}{\vec{u}} \\
+		      \scalar{k\vec{v}}{\vec{w}}          & = k\scalar{\vec{v}}{\vec{w}}
+	      \end{align*}
 \end{enumerate}
 Un esempio classico di prodotto scalare è quello nello spazio euclideo, che viene calcolato nel modo seguente:
-\begin{equation*}
-    \scalar{\vec{v}}{\vec{u}} = |\vec{a}| |\vec{b}| \cos{\theta}
-\end{equation*}
+\begin{equation}
+	\scalar{\vec{v}}{\vec{u}} = |\vec{a}| |\vec{b}| \cos{\theta}
+\end{equation}
 Più in generale, il prodotto scalare tra due vettori qualunque $\vec{v}, \vec{u} \in V$, con $V$ $\field$-spazio vettoriale viene calcolato come:
-\begin{equation*}
-    \scantokens{\vec{v}}{\vec{u}} = \sum_{i \in \{1, \dots, n\}} v_iu_i
-\end{equation*}
+\begin{equation}
+	\scantokens{\vec{v}}{\vec{u}} = \sum_{i \in \{1, \dots, n\}} v_iu_i
+\end{equation}
 \section{Prodotto vettoriale}
 In generale il prodotto vettoriale è un'operazione interna allo spazio vettoriale che restituisce un altro vettore in direzione normale al piano formato dai vettori di partenza.
 
@@ -126,7 +126,7 @@ Probabilmente il concetto più importante che andremo ad affrontare in questo re
 \section{Autovalori, Autovettori, Autospazi}
 Si consideri una matrice $A \in M_{n \times n}(\field)$ e uno spazio vettoriale $V$ definito sul campo $\field$, la matrice deve essere necessariamente quadrata, chiameremo autovalore $\lambda_0 \in \field$ associato alla matrice $A$ uno scalare tale per cui esiste un vettore $\vec{v} \in V$ tale per cui $\vec{v} \neq \vec{0}$
 \begin{equation}
-    A\vec{v} = \lambda_0\vec{v}
+	A\vec{v} = \lambda_0\vec{v}
 \end{equation}
 Detto autovettore destro associato alla matrice $A$ relativo all'autovalore $\lambda_0$.
 
@@ -134,10 +134,10 @@ Detto autovettore destro associato alla matrice $A$ relativo all'autovalore $\la
 
 Oltre all'autovettore destro possiamo definire anche l'autovettore sinistro per $A$ rispetto all'autovalore $\lambda_0$ che avrà definizione analoga rispetto alla controparte destra.
 \begin{equation}
-    \trans{\vec{v}}A = \lambda_0\trans{\vec{v}}
+	\trans{\vec{v}}A = \lambda_0\trans{\vec{v}}
 \end{equation}
 
 Per concludere andiamo a definire il cosiddetto autospazio relativo ad un autovalore.
 \begin{definition}
-    Data una matrice $A \in M_{n \times n}(\field)$ e un $\field$-spazio vettoriale $V$, siano $\vec{v_0}, \dots, \vec{v_k} \in V$ gli autovettori linearmente indipendenti associati all'autovalore $\lambda_0$, questi autovettori generano un sottospazio vettoriale di $\field^n$. Questo sottospazio viene definito autospazio relativo all'autovalore $\lambda_0$, spesso indicato come $V_{\lambda_0}$.
+	Data una matrice $A \in M_{n \times n}(\field)$ e un $\field$-spazio vettoriale $V$, siano $\vec{v_0}, \dots, \vec{v_k} \in V$ gli autovettori linearmente indipendenti associati all'autovalore $\lambda_0$, questi autovettori generano un sottospazio vettoriale di $\field^n$. Questo sottospazio viene definito autospazio relativo all'autovalore $\lambda_0$, spesso indicato come $V_{\lambda_0}$.
 \end{definition}

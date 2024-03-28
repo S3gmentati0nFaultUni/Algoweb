@@ -2,9 +2,9 @@
 Per coordinare un insieme \set{A} di agenti indipendenti che effettuano attività di crawling è necessario assegnare in qualche modo ciascun URL a uno specifico agente: denoteremo con $\delta_A(-): U \rightarrow A$ la funzione che, dati l'insieme dei agenti \set{A} e l'universo degli URL \set{U}, assegna a ciascun URL l'agente che ne è responsabile. Assumiamo qui che gli agenti in \set{A} siano identici, in particolare che abbiano a disposizione le stesse risorse.
 
 Una richiesta banale ma necessaria è che la funzione sia \textit{bilanciata}, ovvero che:
-\begin{equation*}
-    |\delta_A(-)^{-1}| \approx \frac{|U|}{|A|}
-\end{equation*}
+\begin{equation}
+	|\delta_A(-)^{-1}| \approx \frac{|U|}{|A|}
+\end{equation}
 Quindi ogni agente deve gestire, all'incirca, lo stesso numero di URL.
 
 Nel caso in cui l'insieme degli agenti sia statico, basta ad esempio numerare gli agenti a partire da zero, fissare una funzione di hash $h$ applicabile agli URL, e dato un URL $u$ assegnargli l'agente $h(u)\mod|A|$.
@@ -12,9 +12,9 @@ Nel caso in cui l'insieme degli agenti sia statico, basta ad esempio numerare gl
 La questione è più interessante quando l'insieme degli agenti varia nel tempo. In questo frangente non vogliamo solo che la funzione di assegnamento sia bilanciata, deve anche essere \textit{controvariante}.
 
 Una funzione si dice controvariante quando, dato un insieme $B \supseteq A$ e $a \in A$
-\begin{equation*}
-    |\delta_B(a)^{-1}| \subseteq |\delta_A(a)^{-1}|
-\end{equation*}
+\begin{equation}
+	|\delta_B(a)^{-1}| \subseteq |\delta_A(a)^{-1}|
+\end{equation}
 Questo significa che se \set{B} è un insieme di agenti più grande (al più uguale) di \set{A}, l'insieme di URL associato a ciascuno degli agenti in \set{B} sarà più piccolo (al più uguale) dell'insieme di URL associato al corrispettivo agente in \set{A}. In particolare, se si aggiunge un agente, nessuno degli agenti preesistenti si vede assegnare nuovi URL.
 
 Questo problema è comune ad altri contesti, come il caching nelle \textit{content delivery network} e i sistemi di calcolo distribuito \textit{peer-to-peer}. È facile convincersi che una strategia come quella proposta per l'ambito statico risulterà disastrosa. Vedremo adesso tre modi diversi per gestire la questione.
@@ -31,14 +31,14 @@ Si noti che è possibile generare una tale permutazione in tempo e spazio linear
 
 A questo punto si eseguono $|P|$ iterazioni: all'iterazione di indice $i$ (a partire da zero) si scambia l'elemento i-esimo con uno delle seguenti $|P| - i$ scelto a caso uniformemente (si noti che $i$ stesso è una scelta possibile). Alla fine dell'algoritmo, il vettore contiene una permutazione aleatoria scelta in maniera uniforme.
 \begin{algorithm}
-\caption{Fisher-Yates shuffle}
-\begin{algorithmic}
-    \Require{vettore di $n$ posizioni \texttt{array}}
-    \For{$i \in$ \set{\{0, \dots, n - 2\}}}
-    \State $j \gets i + \texttt{UNIFORM}(n - i)$
-    \State \texttt{SWAP}(\texttt{array}$[i]$, \texttt{array}$[j]$)
-    \EndFor
-\end{algorithmic}
+	\caption{Fisher-Yates shuffle}
+	\begin{algorithmic}
+		\Require{vettore di $n$ posizioni \texttt{array}}
+		\For{$i \in$ \set{\{0, \dots, n - 2\}}}
+		\State $j \gets i + \texttt{UNIFORM}(n - i)$
+		\State \texttt{SWAP}(\texttt{array}$[i]$, \texttt{array}$[j]$)
+		\EndFor
+	\end{algorithmic}
 \end{algorithm}
 In realtà non è necessario generare l'intera permutazione: non appena completiamo l'iterazione $i$, se troviamo in posizione $i$ un elemento di \set{A} possiamo restituirlo, dato che nei passi successivi non verrà più spostato. Inoltre, tutte le modifiche ad \set{A} avvengono in tempo costante (dato che non c'è nulla da fare).
 \section{Min hashing}

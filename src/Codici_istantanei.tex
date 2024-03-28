@@ -18,13 +18,13 @@ Quando un codice istantaneo è completo, non è possibile aggiungere parole al c
 Ora enunciamo la disequazione di \textit{Kraft-McMillan}, che dimostreremo successivamente.
 \begin{theorem}
 	Sia $C \subseteq 2^*$ un codice, se \set{C} è istantaneo, allora
-	\begin{equation*}
+	\begin{equation}
 		\sum_{w \in C}{2^{-|w|}} \leq 1
-	\end{equation*}
+	\end{equation}
 	\set{C} è completo se e solo se l'uguaglianza vale. Inoltre, data una sequenza, eventualmente infinita, $t_0, \dots, t_{n - 1}, \dots$ che soddisfa:
-	\begin{equation*}
+	\begin{equation}
 		\sum_{i \in n}{2^{-t_i}} \leq 1
-	\end{equation*}
+	\end{equation}
 	esiste un codice istantaneo formato da parole $w_0, \dots, w_{n - 1}, \dots$ tali che $|w_i| = t_i$
 \end{theorem}
 \noindent Prima di cominciare la dimostrazione facciamo un preambolo utile a eseguirla in modo veloce.
@@ -128,9 +128,9 @@ In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato 
 \end{table}
 \section{Caratteristiche matematiche dei codici}
 Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice è \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$) il valore atteso della lunghezza di una parola rispetto a $p$ è minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ciò significa che se $l(n)$ è la lunghezza della parola di codice per $n$ e $H(p)$ è l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
-\begin{equation*}
+\begin{equation}
 	\sum_{x \in \nat}{l(n)p(n)} \leq cH(p) + d
-\end{equation*}
+\end{equation}
 Un codice è detto \textit{asintoticamente ottimo} quando a destra il limite superiore è della forma $f(H(p))$ con $\lim_{n \to \infty} f(n) = 1$.
 
 Il codice unario e i codici di Golomb non sono universali, mentre lo sono $\gamma$ e $\delta$ inoltre, quest'ultimo, è anche asintoticamente ottimo.
@@ -156,17 +156,17 @@ Supponiamo di avere la seguente successione monotona non decrescente, di lunghez
 Elias Fano consiste nella memorizzazione degli $l = \flr{\log(u / n)}$ bit meno significativi di ogni valore in maniera esplicita (avremo un vettore $L$); i bit più significativi di ogni valore verranno memorizzati come una lista di scarti in unario dove $0^k1$ rappresenta $k$\footnote{Nella trattazione di questo caso specifico utilizzeremo la notazione $0^k1$ impiegata dal professore per l'unario, anzichè la $1^k0$ che ho utilizzato per gli altri codici per facilitare la comprensione} (avremo quindi anche un vettore $H$). Questa struttura ci consente di memorizzare $n$ valori utilizzando solamente $\log(u / n) + 3$ bit al più per elemento\footnote{Tecnicamente dovrebbe essere $\log(u / n) + 2$ ma l'approssimazione viene fatto per difetto quando andiamo a fare lo shift di $\log(u / n)$ bit se $u / l$ non è potenza di 2.}, affermazione che dimostreremo al termine di questa sottosezione.
 
 Consideriamo il seguente esempio: Abbiamo la seguente successione di valori
-\begin{equation*}
+\begin{equation}
 	5\hspace{5mm}8\hspace{5mm}8\hspace{5mm}15\hspace{5mm}32
-\end{equation*}
+\end{equation}
 vogliamo memorizzarla con Elias Fano usando $u = 36$ $n = 5$ $l = 2$, dunque il vettore contenente i bit meno significativi avrà la seguente struttura
-\begin{equation*}
+\begin{equation}
 	01\hspace{5mm}00\hspace{5mm}00\hspace{5mm}11\hspace{5mm}00
-\end{equation*}
+\end{equation}
 Si noti che il vettore $L$ è indicizzato a blocchi e non a singole cifre; il vettore di valori in unario sarà il seguente
-\begin{equation*}
+\begin{equation}
 	0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}1
-\end{equation*}
+\end{equation}
 Prendiamo qualche valore per capire come funziona il processo di memorizzazione:
 per il valore 5 (101) prendo gli $l$ bit meno significativi (01), li metto nel vettore $L$, prendo i bit rimanenti (1) e li memorizzo in unario (01) all'interno del vettore $H$.
 
@@ -244,42 +244,42 @@ siano inoltre $n$ la dimensione della successione $X$, $l$ il numero dei bit men
 		\item I bit meno significativi in binario con $\log(u/n)$ elementi.
 	\end{itemize}
 	Quindi lo spazio occupato dal vettore $U$ è
-	\begin{equation*}
+	\begin{equation}
 		\sum_{i = 0}^{n - 1}{u_i + 1}
-	\end{equation*}
+	\end{equation}
 	Ricordo che i valori più significativi $u_i$ sono salvati come scarti in $U$, quindi posso scrivere la somma qui sopra come:
-	\begin{equation*}
+	\begin{equation}
 		\sum_{i = 0}^{n - 1}{\flr{\frac{x_i}{2^l}} - \flr{\frac{x_{i - 1}}{2^l}} + 1}
-	\end{equation*}
+	\end{equation}
 	A questo punto se consideriamo $\flr{\frac{x_i}{2^l}} - \flr{\frac{x_{i - 1}}{2^l}}$ e calcoliamo l'espressione per tutti i valori di $i$ quello che scopriremo è che viene una somma finita di questo tipo:
-	\begin{equation*}
+	\begin{equation}
 		\flr{\frac{x_0}{2^l}} - \flr{\frac{x_{- 1}}{2^l}} + \flr{\frac{x_1}{2^l}} - \flr{\frac{x_{0}}{2^l}} + \dots + \flr{\frac{x_{n - 1}}{2^l}} - \flr{\frac{x_{n - 2}}{2^l}}
-	\end{equation*}
+	\end{equation}
 	È intuitivo notare quanto segue:
-	\begin{equation*}
+	\begin{equation}
 		\cancel{\flr{\frac{x_0}{2^l}}} - \flr{\frac{x_{- 1}}{2^l}} + \cancel{\flr{\frac{x_1}{2^l}}} - \cancel{\flr{\frac{x_{0}}{2^l}}} + \dots + \flr{\frac{x_{n - 1}}{2^l}} - \cancel{\flr{\frac{x_{n - 2}}{2^l}}}
-	\end{equation*}
+	\end{equation}
 	Quindi rimangono solamente i termini $- \flr{\frac{x_{- 1}}{2^l}}$ e $\flr{\frac{x_{n - 1}}{2^l}}$. Facendo la supposizione che $x_{- 1} = 0$\footnote{Supposizione fatta durante le lezioni del professor Paolo Boldi, non ho guardato dimostrazioni alternative quindi non so se sia standard o una semplificazione introdotta per far tornare i conti.} possiamo dire quanto segue
-	\begin{equation*}
+	\begin{equation}
 		\sum_{i = 0}^{n - 1}{\flr{\frac{x_i}{2^l}} - \flr{\frac{x_{i - 1}}{2^l}} + 1} = n + \flr{\frac{x_{n - 1}}{2^l}} \leq n + \frac{u}{2^l}
-	\end{equation*}
+	\end{equation}
 	Siccome $l = \flr{\log(u/n)}$ possono succedere due cose sulla base del valore di $u/n$
 	Se $u/n \mod(2) = 0$ allora
-	\begin{equation*}
+	\begin{equation}
 		n + \frac{u}{\frac{u}{n}} = 2n
-	\end{equation*}
+	\end{equation}
 	Altrimenti
-	\begin{equation*}
+	\begin{equation}
 		n + \frac{u}{2^{\flr{\log(u/n)}}} \leq  n + \frac{u}{2^{\log(u/n) - 1}} = n + \frac{u}{\frac{u}{2n}} = 3n
-	\end{equation*}
+	\end{equation}
 	Quindi la struttura dati occupa lo spazio necessario a memorizzare il vettore $U$, cioè $ln$ e poi $2n$ o $3n$ bit sulla base di $u/n$. Per poter uniformare la formula ricordo che:
-	\begin{equation*}
+	\begin{equation}
 		\ceil{\log(u/n)} =
 		\begin{cases}
 			l \hspace{1cm}\textnormal{Se $u/n$ è potenza di 2} \\
 			l + 1
 		\end{cases}
-	\end{equation*}
+	\end{equation}
 	Quindi facendo una banale sostituzione, si ricava la seguente formula unificata:
 	\begin{equation}
 		D_n = 2n + \ceil{\log\bigb{\frac{u}{n}}}n
@@ -308,9 +308,9 @@ Sia $\Sigma = [0 \dots k)$ l'insieme dei simboli, per ogni $s \in \Sigma$ sia $p
 Dunque per ogni $s$, abbiamo che $p_s = f_s / 2^d$. Definiamo $f_n = 2^d$, più grande è $d$, maggiore sarà la precisione con cui rappresentiamo le probabilità iniziali (quindi migliore sarà la compressione).
 
 Prendiamo ora i primi $2^d$ interi e dividiamoli in $n$ segmenti contigui di lunghezza $f_s$. A simboli più frequenti corrisponderanno segmenti di lunghezza maggiore, definiamo la cumulata degli $f_s$ come segue
-\begin{equation*}
+\begin{equation}
 	\sum_{t < s}f_t \hspace{5mm} \textnormal{per $s$} \in [0 \dots n]
-\end{equation*}
+\end{equation}
 Notiamo che ogni elemento $x$ di $2^d$ sta in uno dei segmenti, e quindi a ogni simbolo è associato esattamente un simbolo $s$. Più precisamente, esiste un solo $s$ tale per cui $c_s \leq x \leq c_{s + 1}$. Poniamo $sym(x) = s$ e $sym(f_s) = s$, questo ci permette di fare in modo che, prendendo un elemento $x$ di $2^d$ uniformemente a caso, $sym(x) \in \Sigma$ ha esattamente distribuzione $p$.
 
 Procediamo ora a dare la definizione delle operazioni di cui si parlava prima:
@@ -333,9 +333,9 @@ L'entropia di Shannon, che viene calcolata come $\sum_{x \in X}p(x) \log(p(x))$ 
 	\item $68 / 1024$ per 2
 \end{itemize}
 Consideriamo la sequenza
-\begin{equation*}
+\begin{equation}
 	0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0
-\end{equation*}
+\end{equation}
 Partiamo ora da $x = 0$, ora
 \begin{align*}
 	\texttt{push(0, 0)}     & = (\flr{0 / 922} << 10) + 0 + 0 = 0 \qquad (1 \textnormal{bit})                 \\
@@ -356,34 +356,34 @@ Nelle implementazioni pratiche viene eseguito un processo di \textit{rinormalizz
 Ogni codice istantaneo completo per gli interi definisce implicitamente una \textit{distribuzione intesa} sugli interi, che assegna a $w$ la probabilità $2^{-|w|}$. Il codice, in effetti, risulta \textit{ottimo} per la distribuzione associata. La scelta di un codice istantaneo può quindi essere ricondotta a considerazioni sulla distribuzione statistica degli interi che si intendo rappresentare.
 
 Al codice unario è associata una distribuzione geometrica.
-\begin{equation*}
+\begin{equation}
 	\frac{1}{2^{x + 1}}
-\end{equation*}
+\end{equation}
 mentre la distribuzione associata a $\gamma$ è
-\begin{equation*}
+\begin{equation}
 	\frac{1}{2^{2\flr{\log(x + 1)} + 1}} \approx \frac{1}{2(x + 1)^2}
-\end{equation*}
+\end{equation}
 e quella associata a $\delta$ è
-\begin{equation*}
+\begin{equation}
 	\frac{1}{2^{\flr{\log(\flr{\log(x + 1)}) + 1} + 1 + \flr{\log(x + 1)}}} \approx \frac{1}{2(x + 1)(\log(x + 1) + 1)^2}
-\end{equation*}
+\end{equation}
 Il codice di Golomb ha, naturalmente, una distribuzione dipendente dal modulo, che però è geometrica:
-\begin{equation*}
+\begin{equation}
 	\frac{1}{2^{\flr{x / k} + \log(k) + [x\mod(k) \geq 2^{\ceil{\log(k)}} - k]}} \approx \frac{1}{k\bigb{\sqrt[k]{2}}^x}
-\end{equation*}
+\end{equation}
 Infine, sebbene i codici a lunghezza variabile non siano completi, a meno di un fattore di normalizzazione è comunque possibile osservarne la distribuzione intesa:
-\begin{equation*}
+\begin{equation}
 	\frac{1}{2^{\ceil{\log(x) / k}(k + 1)}} \approx \frac{1}{(x + 1)^{1 + 1/k}}
-\end{equation*}
+\end{equation}
 \section{Struttura di un indice}
 Dai documenti crawlati si costruisce un indice inverso, cioè una relazione che mappa ogni termine nei documenti in cui compare. Partendo dalla lista di termini, costituita da elementi della forma $\langle documento, termine, posizione \rangle$, posso fare ordinamento rispetto alla colonna centrale e a partire da questo costruire l'indice inverso, ovvero l'indice che contiene, per ogni termine, l'insieme dei documenti (e delle posizioni nel documento) in cui il termine compare, in ordine crescente per valore del puntatore documentale.
 
 Una lista di affissione è la lista dei puntatori a documenti associati a un unico termine, spesso, all'informazione essenziale dei puntatori documentali, sono associate una serie d'informazioni accessorie quali la frequenza con cui il token compare nei documenti associati e le posizioni occupate.
 
 La struttura di un elemento di una lista di affissione potrebbe essere il seguente
-\begin{equation*}
+\begin{equation}
 	\langle p, c, \langle p_1, \dots, p_n \rangle \rangle
-\end{equation*}
+\end{equation}
 dove $p$ è il puntatore al documento, $c$ è il conteggio, ovvero il numero di volte in cui $t$ compare in $p$, la $n$-pla ordinata (in ordine crescente) $\langle p_1, \dots, p_n \rangle$ indica le posizioni che il token occupa nel file.
 \section{Codici per gli indici}
 Nella scelta dei codici istantanei da utilizzare per la compressione di un indice è fondamentale la conoscenza della distribuzione degli interi da comprimere. In alcuni casi è possibile creare un modello statistico che spiega la distribuzione empirica riscontrata.

@@ -14,9 +14,9 @@ Esistono numerose tecniche per la costruzione di hash perfetti \cite{mwhc}.
 Quello che andiamo a descrivere è basato sulla teoria dei grafi casuali, e utilizza la randomizzazione per la costruzione della struttura dati. Quella che descriveremo è in effetti una tecnica completamente generale per memorizzare una funzione statica (immutabile) \fun{f}{X}{2^b} dall'insieme \set{X} all'insieme dei valori $2^b$. Scegliendo $b = \ceil{\log(n)}$ e mappando ogni termine in un indice al suo rango lessicografico, otterremo il risultato richiesto.
 
 L'idea della costruzione è la seguente: prendiamo due funzioni di hash aleatorie \fun{h}{U}{m} e \fun{g}{U}{m}, dove $m \geq n$ e $n$ è la cardinalità di \set{X}, e consideriamo un vettore $\vec{w}$ di interi a $b$ bit che sia soluzione del sistema
-\begin{equation*}
+\begin{equation}
 	w_{h(x)} \oplus w_{g(x)} = f(x) \hspace{5mm} x \in X
-\end{equation*}
+\end{equation}
 Dove $\oplus$ è l'operazione di XOR logico.
 
 Chiaramente, memorizzando $h$, $g$ e il vettore $\vec{w}$ abbiamo memorizzato $f$: per calcolare $f(x)$ basta semplicemente risolvere il sistema, che è di $n$ equazioni con $w_i$ incognite, che, però, potrebbe non avere soluzione. Il sistema deve essere risolto una sola volta, in fase di inizializzazione della struttura, e poi potremo accedere a tutti i valori associati alla funzione $f(x)$ in tempo lineare nel numero di funzioni di hash (calcolo le funzioni di hash, accedo alle posizioni del vettore e calcolo lo XOR dei valori). Possiamo rappresentare i vincoli imposti dal sistema come segue: costruiamo un grafo G non orientato con $m$ vertici e $n$ lati in cui, per ogni $x \in X$, abbiamo che $h(x)$ è adiacente a $g(x)$ tramite un lato etichettato da $x$.
@@ -32,9 +32,9 @@ Alla fine, per memorizzare la funzione statica \fun{f}{X}{2^b} dovremo utilizzar
 \section{Firme}
 La funzione così costruita, per quanto sia minimale, perfetta e preservi l'ordine non permette di riconoscere se un elemento fa parte di \set{X} o no. Per ovviare all'inconveniente utilizziamo un insieme di \textit{firme} associato all'insieme \set{X} delle chiavi. Consideriamo cioè una funzione \fun{s}{U}{2^r} che associ a ogni chiave possibile una sequenza di $r$ bit "casuale", nel senso che la probabilità che $s(x) = s(y)$ se $x$ e $y$ sono presi uniformemente a caso da \set{U} è \set{2^{-r}} (per esempio una buona funzione di hash). Consideriamo l'enumerazione ordinata $x_0 \leq x_1 \leq \dots \leq x_{n - 1}$ degli elementi di \set{X}. Oltre a $f$, memorizziamo
 un vettore di dimensione $n$ in cui i valori di \set{X} sono mappati nelle posizioni $f(x)$, che è il rango lessicografico di $x$, affinché, preso $x \in X$, calcolati $f(x)$ ed $s(x)$ avrò che
-\begin{equation*}
+\begin{equation}
 	S_{f(x)} = s(x)
-\end{equation*}
+\end{equation}
 mentre se $x \notin X$ il valore di $f(x)$ sarà arbitrario, quindi $S_{f(x)} = -1$ e il valore di $s(x)$ sarà a sua volta arbitrario.
 
 Per interrogare la struttura risultante su input $x \in U$, agiamo come segue:
@@ -50,17 +50,17 @@ Se invece $x \notin X$, $S_{f(x)}$ sarà una firma arbitraria, e quindi restitui
 È possibile migliorare ulteriormente l'occupazione in spazio, quando $b$ non è troppo piccolo, utilizzando un \textit{vettore compatto} per memorizzare i valori della soluzione del sistema. In effetti, per come abbiamo descritto il processo di risoluzione, non è possibile che vengano poste a valori diversi da 0 più di $n$ variabili. Se potessimo memorizzare, con una piccola perdita di spazio, \textit{solo i valori diversi da zero} potremmo ridurre l'occupazione di memoria a quasi $nb$ bit.
 
 Per farlo consideriamo un vettore di bit $\vec{b}$ che contiene in posizione $i$ un uno se la variabile corrispondente $w_i$ è diversa da zero, e zero altrimenti. Definiamo l'operazione \textit{rank}
-\begin{equation*}
+\begin{equation}
 	rank(\vec{b}, i) = |\{j < i \st b_j \neq 0\}|
-\end{equation*}
+\end{equation}
 che conta il numero di uno che compaiono a sinistra della posizione corrente. Chiaramente se mettiamo in un vettore $\vec{c}$ i valori delle variabili $w_i$ diversi da zero avremo che:
-\begin{equation*}
+\begin{equation}
 	w_i =
 	\begin{cases}
 		0 \hspace{7mm}                         & \textnormal{se } b_i = 0    \\
 		\vec{c}[rank(\vec{b}, i)] \hspace{7mm} & \textnormal{se } b_i \neq 0 \\
 	\end{cases}
-\end{equation*}
+\end{equation}
 Quanto spazio occorre per calcolare rapidamente il rango? Esistono soluzioni molto sofisticate che occupano spazio $o(n)$\footnote{Un esempio non banale di strutture efficienti per la memorizzazione del rango è la struttura di Jacobson.}, ma qui proporremo un metodo molto semplice: scelto un quanto $q$, memorizziamo in una tabella $R$ i valori $rank(\vec{b}, kq)$. Per calcolare il rango in posizione $p$, basta recuperare $R[\flr{p / q}]$ e completare il calcolo contando gli uno dalla posizione $q\flr{p / q}$ alla posizione $p$ (utilizzando le istruzioni di conteggio efficiente per le CPU moderne). Per $q$ fissato, il tempo del calcolo è costante. Lo spazio occupato dipende anch'esso da $q$, che permette quindi di bilanciare lo spazio occupato e la velocità.
 
 Alla fine, la funzione occuperà $nb + 1.23n$ bit, più il necessario per la struttura di rango (supponendo $q = 512$ saranno necessari altri $0.125n$ bit). Si noti che è impossibile scrivere una funzione in meno di $n^2$ bit, dato che esistono $(2^b)^n$ funzioni da un insieme di $n$ a un insieme di $2^b$ elementi.

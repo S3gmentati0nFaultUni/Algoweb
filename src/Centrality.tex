@@ -18,15 +18,15 @@ Bavelas ha introdotto il concetto di closeness alla fine degli anni quaranta in 
 L'intuizione che sta dietro al concetto di closeness è che nodi più centrali dovranno avere distanze più piccole da tutti gli altri nodi, avendo pertanto un denominatore più piccolo e quindi una centralità più grande. È importante notare che, affinchè la notazione abbia senso, il grafo deve essere fortemente connesso. In mancanza di questa condizione, alcuni dei denominatori andranno a infinito, risultando in una definizione di closeness nulla per tutti quei nodi che non possono raggiungere tutti i nodi del grafo.
 
 Non era probabilmente nelle intenzioni di Bavelas di applicare la misura ai grafi direzionati, e ancora meno di applicarla a grafi con distanze infinite, ma spesso la closeness viene patchata rimuovendo i nodi che non possono essere raggiunti nel modo seguente
-\begin{equation*}
+\begin{equation}
 	\frac{1}{\sum_{d(y, x) < \infty}d(y, x)}
-\end{equation*}
+\end{equation}
 e assumendo che i nodi con un insieme di nodi raggiungibili banale (nodi con outdegree e indegree 0) abbiano centralità 0 per definizione: questa è, in realtà, la definizione che useremo nel resto delle dispense. Questi aggiustamenti, apparentemente innocui, inducono una forte polarizzazione nella rete verso quei nodi che hanno un insieme di nodi raggiungibili di piccole dimensioni. Nel 2016 un gruppo di scienziati a Facebook ha calcolato l'inverso della closeness per tutti gli utenti\footnote{\texttt{\href{https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separation/}{https://research.fb.com/blog/2016/02/three-and-a-half-degrees-of-separation/}}}
 \subsection{Centralità armonica}
 Come abbiamo notato il problema della closeness sta nel fatto che vi sono coppie di nodi non raggiungibili. Prendiamo quindi ispirazione da Marchiori e Latora \cite{armonica}: presentatogli il problema di offrire una nozione sensata di "lunghezza media del percorso più breve" per un grafo direzionato generico, hanno proposto di rimpiazzare la media delle distanze con la \textit{media armonica di tutte le distanze}\footnote{Definiamo media armonica per un gruppo di valori $a_0, \dots, a_{n - 1}$ il seguente valore
-	\begin{equation*}
+	\begin{equation}
 		\bigb{\frac{\sum_i^n{a_i^{-1}}}{n}}^{-1}
-	\end{equation*}
+	\end{equation}
 }.
 
 In generale, per ogni nozione teorica sui grafi basata sulla media aritmetica o la massimizzazione
@@ -37,9 +37,9 @@ v'è una definizione alternativa basata sulla variante armonica dell'operatore. 
 la differenza tra quest'ultima equazione e (7) potrebbe apparire minima, però si tratta di un cambiamento radicale. La centralità armonica è fortemente legata alla closeness in reti semplici, ma la prima è in grado di tenere da conto automaticamente anche dei nodi $y$ che non sono in grado di raggiungere $x$. Quindi può essere applicata a grafi che non sono fortemente connessi.
 \subsection{Betweenness}
 La \textit{betweenness} è stata introdotta da Anthonisse \cite{ant} per gli archi, ed è stata poi ripresa da Freeman per i nodi \cite{morgan}. L'idea è quella di misurare la probabilità che un cammino brave a caso passi attraverso un determinato nodo: sia $\sigma_{xy}$ il numero di cammini brevi che vanno da $x$ a $y$ e $\sigma_{xy}(z)$ il numero di cammini brevi che vanno da $x$ a $y$ e passano per $z$, definiamo la \textit{betweenness} di $x$ come
-\begin{equation*}
+\begin{equation}
 	\sum_{x, y \neq z, \sigma_{xy} \neq 0}{\frac{\sigma_{xy}(z)}{\sigma_{xy}}}
-\end{equation*}
+\end{equation}
 L'intuizione che sta dietro la betweenness, è che se una grande parte dei cammini minimi passa da $z$, allora $z$ deve essere un punto di articolazione importante all'interno del grafo.
 \section{Misure di centralità spettrale}
 Verso la metà del XIX secolo i risultati di un torneo di scacchi furono rappresentati tramite una matrice $M$ popolata di 0, 1 e 1/2, rappresentando sconfitta, vittoria e pareggio. La diagonale di tali matrici doveva per forza essere zero, e la somma di entry simmetriche avrebbe fatto sempre 1. Le somme sulle righe, ovvero $M\vec{1}$, erano un modo facile di fornire un punteggio globale per un giocatore, dal quale il suo rank poteva essere calcolato, in modo tale da poter assegnare premi o dividere i soldi in maniera proporzionale.
@@ -65,25 +65,25 @@ Il teorema di Perron Frobenius ci dà qualche garanzia a riguardo.
 	Se $A$ è una matrice irriducibile\footnote{Una matrice $M \in \reals^{k \times k}$ si dice irriducibile quando $\fa i, j \in k, \exists n \in \nat \st a_{i, j}^n > 0$}, quindi il grafo associato ad $A$ è fortemente connesso, esiste un unico autovalore di modulo massimo, detto autovalore di Perron Frobenius, o dominante, a cui è associato un autovettore positivo. Se la matrice è stocastica (ha quindi somma di ogni riga pari a 1 $\implies$ è associata a un grafo i cui pesi sono normalizzati) l'autovalore dominante ha modulo 1.
 \end{theorem}
 \noindent La prima ovvia misura spettrale è l'autovettore dominante sinistro della matrice di adiacenza associata al grafo. L'idea realizza l'intuizione di Landau: assumiamo $\vec{e}_0, \dots, \vec{e}_{n - 1}$ siano una base di autovettori per la matrice $M$ con autovalori $\lambda_i$ tali che $|\lambda_0| > |\lambda_1| > \dots$. Se consideriamo un vettore $\vec{x}$ e lo vediamo come combinazione lineare dei vettori dell'autobase
-\begin{equation*}
+\begin{equation}
 	\vec{x} = \sum_i{\alpha_i\vec{e}_i}
-\end{equation*}
+\end{equation}
 possiamo scrivere $x_k = M^k\vec{x}$ come segue
-\begin{equation*}
+\begin{equation}
 	x_k = M^k\vec{x} = M^k\sum_i{\alpha_i\vec{e}_i} = \sum_i{\alpha_i \lambda_i^k \vec{e}_i}
-\end{equation*}
+\end{equation}
 posso portare la potenza $k$-esima della matrice dentro la sommatoria perché è indipendente dalla variabile di somma, inoltre:
-\begin{equation*}
+\begin{equation}
 	M\vec{e_i} = \lambda \vec{e_i} \fa i
-\end{equation*}
+\end{equation}
 continuando
-\begin{equation*}
+\begin{equation}
 	\sum_i{\alpha_i \lambda_i^k \vec{e}_i} = \lambda_0^k\bigb{\alpha_0\vec{e}_0 + \sum_{i > 0}{\alpha_i\bigb{\frac{\lambda_i}{\lambda_0}}^k\vec{e}_i}}
-\end{equation*}
+\end{equation}
 È chiaro che per $k \to \infty$ tutti i termini $\frac{\lambda_i}{\lambda_0}$ tenderanno a 0 perchè $|\lambda_0| > |\lambda_1| > \dots$, quindi fintanto che $\alpha_0 \neq 0$ il risultato dell'iterazione tenderà verso l'autovettore dominante $\vec{e}_0$:
-\begin{equation*}
+\begin{equation}
 	\frac{M^k\vec{x}}{\norm{M^k\vec{x}}} \to \vec{e}_0
-\end{equation*}
+\end{equation}
 Abbiamo dunque provato che il \textit{metodo della potenza} per calcolare l'autovettore dominante funziona sotto le ipotesi fatte in precedenza.
 
 Gli autovettori dominanti non si comportano come ci aspetteremmo quando il grafo in questione non è fortemente connesso. In base all'autovalore dominante della componente fortemente connessa, l'autovettore dominante potrebbe o potrebbe non essere diverso da zero per componenti non terminali (un discorso più completo può essere trovato in \cite{autovalori}).
@@ -91,9 +91,9 @@ Un esempio recente di applicazione di centralità basata su autovettori dominant
 \subsection{Indice di Seeley}
 Un altro passo fondamentale verso il ranking spettrale fu fatto mezzo secolo dopo da John R. Seeley \cite{seeley}
 , il quale non era al corrente del lavoro fatto da Landau: notò che gli indici basati su somme di righe o colonne non avevano chissà quale significato a causa del fatto che non prendevano in considerazione l'importante fatto che bisogna piacere a chi piace a molti, e così via. In altre parole, un indice di importanza, di centralità o di autorità, dovrebbe essere definito in maniera \textit{ricorsiva}, così che il mio punteggio sia uguale alla somma dei punteggi di tutti quelli che mi sostengono. In notazione matriciale
-\begin{equation*}
+\begin{equation}
 	\trans{\vec{r}} = \trans{\vec{r}}M
-\end{equation*}
+\end{equation}
 Ovviamente, ciò non è sempre possibile. A ogni modo, Seeley, considera una matrice non negativa senza entry nulle e normalizza le righe così che abbiamo norma $l_1$ unitaria (e.g. dividi ogni entry per la somma sulla riga cui appartiene); le sue righe hanno sempre entry diverse da 0, quindi è sempre possibile, e l'equazione indicata sopra ha soluzione, questo perché $M\vec{1} = \vec{1}$. Dunque 1 è autovalore di $M$, e il suo autovettore(i) \textbf{sinistro} fornisce soluzioni per l'equazione. L'unicità è una questione più complicata che Seeley non discute e che può essere facilmente analizzata impiegando la teoria di Perron-Frobenius, che mostra anche che 1 è il raggio spettrale, quindi $\vec{r}$ è  un autovettore dominante, e vi sono soluzioni positive\footnote{In realtà, Seeley espone l'intera questione in termini di equazioni lineari. Il calcolo matriciale viene impiegato solamente per risolvere un sistema lineare tramite la regola di Cramer}.
 
 L'indice di Seeley può essere espresso tramite la seguente equazione
@@ -136,16 +136,34 @@ L'equazione \ref{eq:pagerank} può essere risolta anche senza patch, infatti
 	\vec{p} = (1 - \alpha)\vec{v}(1 - \alpha\overline{A})^{-1}
 \end{equation}
 dunque
-\begin{equation*}
+\begin{equation}
 	\vec{p} = (1 - \alpha)\vec{v}\sum_{i = 0}^{\infty}{\alpha^i\overline{A}^i}
-\end{equation*}
+\end{equation}
 Il che mostra immediatamente che PageRank e l'indice di Katz differiscono semplicemente per il fattore $1 - \alpha$ che, tra l'altro, è costante e per la $l_1$-normalizzazione applicata alla matrice $A$, similmente alla differenza tra l'autovettore dominante e l'indice di Seeley.
 
 Se $A$ non ha righe nulle, o $\overline{A}$ è stata patchata di modo da essere stocastica, PageRank può essere definito in modo equivalente alla distribuzione stazionaria (i.e. l'autovettore dominante) della catena di Markov con matrice di transizione
-\begin{equation*}
+\begin{equation}
 	\alpha\overline{A} + (1 - \alpha)\trans{\vec{1}}\vec{v}
-\end{equation*}
+\end{equation}
 Nel caso delle catene di Markov possiamo pensare alla situazione nel modo seguente: tutti i cammini che vanno verso $x$ ci danno l'importanza di $x$, più lungo è il cammino che porta da un nodo a $x$, più valore viene dissipato.
 che è analoga all'equazione (11). Del Corso, Gullì e Romani \cite{fastprank} hanno mostrato che i punteggi risultanti (che hanno sempre norma $l_1$ unitaria) differiscono dal vettore PageRank definito in \ref{eq:pagerank} solo per un fattore di normalizzazione, a patto che le righe nulle della matrice di transizione della catena di Markov siano state rimpiazzate con $\vec{v}$. Se $A$ non avesse righe nulle, i punteggi sarebbero, ovviamente, identici in quanto l'equazione (13) può essere facilmente derivata dalla matrice di transizione di cui sopra.
 
 Entrambe le definizioni sono state utilizzate in letteratura: la ricorrenza lineare mostrata in \ref{eq:pagerank} è particolarmente utile qualora vi sia bisogno di dipendenza lineare da $\vec{v}$ come in \cite{boldivigni}. La definizione basata su catene di Markov non è meno comune, nonostante il problema di dover patchare le righe nulle.
+\section{Metodo di Gauss-Seidel}
+Una visione alternativa al problema di PageRank (e, più in generale, del calcolo dell'autovettore dominante) è data dalla riscrittura dell'equazione di PageRank sotto forma di sistema lineare. Per quanto già notato, l'equazione che deinisce l'autovettore dominante è, nel caso di una matrice stocastica:
+\begin{equation}
+	\trans{\vec{x}} = \alpha\trans{\vec{x}}G + \alpha\trans{\vec{x}}\vec{d}\trans{\vec{v}} + (1 - \alpha)\trans{\vec{v}}
+\end{equation}
+che riscritta raccogliendo $\vec{x}$ ci dà:
+\begin{equation}
+	\trans{\vec{x}}(I - \alpha(G + \vec{d}\trans{\vec{x}}) = (1 - \alpha)\trans{\vec{x}}
+\end{equation}
+Questa equazione può ora essere risolta tramite l'algoritmo di Gauss-Seidel\footnote{Utilizzare l'algoritmo di Gauss-Seidel richiede la verifica di una serie di condizioni sul sistema che garantiscono la convergenza e la stabilità numerica; in questo contesto daremo per assodato che tali condizioni siano verificate.}, che fornisce approssimazioni per le soluzioni di un'equazione nella forma $M\vec{x} = \vec{b}$ partendo da un vettore $x^{(0)}$ e calcolando:
+\begin{equation}
+	\vec{x_i^{t + 1}} = \frac{\bigb{b_i - \sum_{j < i}m_{ij}\vec{x_j^{(t + 1)}} - \sum_{j > i}m_{ij}\vec{x_j^{(t)}}}}{m_{ii}}
+\end{equation}
+Riscrivere questa formula utilizzando al posto di M la matrice appena ottenuta dall'equazione di PageRank e semplificare la computazione in maniera simile a quanto abbiamo fatto per il metodo della potenza è possibile, e i dettagli (piuttosto complicati) possono essere letti nella documentazione della classe \texttt{PageRankGaussSeidel} distribuita dal LAW.
+
+L'aspetto particolarmente interessante dell'algoritmo di Gauss-Seidel è che utilizza sempre il valore più recente calcolato per una certa componente, il che ci permette di utilizzare \textit{un solo vettore}. Il fatto che l'algoritmo utilizzi in maniera aggressiva valori più precisi rende la sua convergenza più rapida, all'atto pratico.
+
+Bisogna però notare che le sommatorie non sono indicizzate dalla prima, ma bensì dalla seconda componente della matrice: trasferendo questa osservazione nel caso di PageRank, abbiamo bisogno dei \textit{predecessori}, e non dei successori di un nodo per aggiornare il suo valore. Questo fa sì che dobbiamo scandire il grafo trasposto, ma al tempo stesso conoscere il grado positivo di ogni nodo per poter calcolare correttamente il suo contributo ai suoi successori; la conoscenza dei gradi positivi richiede quindi un'ulteriore vettore di interi.
