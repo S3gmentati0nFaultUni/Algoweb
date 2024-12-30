@@ -15,7 +15,7 @@ Diverse politiche di prioritizzazione della frontiera possono poi dare luogo ad 
 \section{Il crivello}
 Il crivello è la struttura dati di base di un crawler, questo accetta in ingresso URL potenzialmente da visitare e permette di prelevare URL pronti alla visita. Ogni URL viene estratto una e una sola volta in tutto il processo di crawling, indipendentemente da quante volte è stato inserito all'interno della struttura. In questo senso il crivello unisce le proprietà di un dizionario a quelle di una coda con priorità e rappresenta al tempo stesso la frontiera, l'insieme dei visitati e la coda di visita. Combinare questi aspetti in una sola struttura è un lavoro complesso ma permette risparmi notevoli dal punto di vista pratico\footnote{Si noti che è possibile riordinare ulteriormente gli URL \textit{dopo} l'uscita dal crivello}.
 
-Una prima osservazione è che spesso, per mantenere l'informazione di quali URL sono stati già visitati (\set{V \cup F}) è preferibile sostituire gli URL con delle \textit{firme}, cioè con il risultato del calcolo di $h(u)$, dove h è una funzione di hash definita sulle stringhe e restituisce una stringa di bit di dimensione arbitraria, per esempio 64 bit. Questo ha due grandi benefici:
+Una prima osservazione è che spesso, per mantenere l'informazione di quali URL sono stati già visti (\set{V \cup F}) è preferibile sostituire gli URL con delle \textit{firme}, cioè con il risultato del calcolo di $h(u)$, dove h è una funzione di hash definita sulle stringhe e restituisce una stringa di bit di dimensione arbitraria, per esempio 64 bit. Questo ha due grandi benefici:
 \begin{itemize}
 	\item Molti URL possono essere di grandi dimensioni, mantenerli salvati in memoria con un numero di bit scelto a priori (per esempio 64 bit), indipendentemente dalla loro reale dimensione, si rivela un risparmio di spazio affatto trascurabile.
 	\item Uniformiamo le lunghezze degli URL a un valore standard.
@@ -24,7 +24,7 @@ Il drawback di una soluzione del genere è che accettiamo il fatto che vi siano 
 
 Github.com implementa una soluzione del genere, viene impiegato SHA-1 (funzione di hash a 160bit) per calcolare un hash dell'URL di ciascuna delle repository nei loro database, la probabilità di collisione è così bassa che è sostanzialmente impossibile. Adesso sembra che vogliano muoversi verso SHA-256.
 
-Supponiamo ora di avere in memoria $n$ firme, la probabilità che una nuova firma collida con una di quelle esistenti è $n/u$, dove $u$ è la dimensione dell'universo delle possibili firme. Nel caso di un sistema a 64 bit $u = 2^{64}$, e quindi possiamo memorizzare 100 miliardi di URL con una probabilità di falsi positivi nell'ordine di $10^{11} / 2^{64} < 2^{37} / 2^{64} = 1 / 2^{27} < 1 / 10^8$, quindi avremo meno di un errore ogni 100 milioni di URL.
+Supponiamo ora di avere in memoria $n$ firme, la probabilità che una nuova firma collida con una di quelle esistenti è $n/u$, dove $u$ è la dimensione dell'universo delle possibili firme. Ad esempio nel caso di un sistema a 64 bit ($u = 2^{64}$) possiamo memorizzare 100 miliardi di URL con una probabilità di falsi positivi nell'ordine di $10^{11} / 2^{64} < 2^{37} / 2^{64} = 1 / 2^{27} < 1 / 10^8$, quindi avremo meno di un errore ogni 100 milioni di URL.
 
 Anche un semplice dizionario di firme in memoria che rappresenta \set{V \cup F}, accoppiato a una coda o pila su disco che tiene traccia di \set{F}, è sufficiente per un'attività di crawling di piccole dimensioni. Per dimensioni più grandi è necessario ingegnarsi e impiegare delle strutture dati, in parte, o completamente su disco, che consentano di mantenere l'occupazione totale di memoria centrale costante.
 
@@ -145,7 +145,7 @@ Si noti che al crescere della frontiera l'LSM-tree continua a occupare la stessa
 \section{Un crivello offline}
 Un modo meno \textit{responsive} ma molto più semplice di implementare il crivello che effettua una visita in ampiezza e richiede memoria centrale costante senza utilizzare strutture dati, consiste nel tenere traccia, in ogni istante, di tre file:
 \begin{itemize}
-	\item Un file Z di URL già visitati (\set{V \cup F}), in ordine lessicografico.
+	\item Un file Z di URL già visti (\set{V \cup F}), in ordine lessicografico.
 	\item Un file F di URL ancora da visitare, quindi la frontiera, in ordine di scoperta.
 	\item Un file A, di lunghezza limitata a priori, che accumula temporaneamente gli URL incontrati durante la visita.
 \end{itemize}
@@ -175,7 +175,7 @@ Ogni volta che un URL $u$ viene inserito nel crivello, aggiungiamo $h(u)$ a $\ve
 	\item Ordino $\vec{S}$ indirettamente, cioè creo il vettore $\vec{V}$ contenente gli indici $i$ associati ai valori $\vec{S}$[i], ordino stabilmente $\vec{V}$ utilizzando come chiave le firme in $\vec{S}$. Al termine del processo, le firme $\vec{S}$[$\vec{V}$[i]] sono in ordine crescente al crescere di i\footnote{Si supponga per esempio che $\vec{S}$=\{C, F, B, A, A, E, D\}, allora il vettore associato a $\vec{S}$ sarà banalmente $\vec{V}$=\{0, 1, 2, 3, 4, 5, 6\}. Eseguendo l'ordinamento di $\vec{V}$ con le firme in $\vec{S}$ come chiave darà il seguente risultato (provare per credere) $\vec{V}$=\{3, 4, 2, 0, 6, 5, 1\}, che risulta effettivamente essere un ordinamento \textit{stabile} delle posizioni associate alle firme in $\vec{S}$.}.
 	\item Deduplico $\vec{S}$, quindi elimino le occorrenze successive alla prima per ogni firma.
 	\item Z' = Z $\cup$ $\vec{S}$ marchiamo utili le firme in $\vec{S}$ che non compaiono in Z.
-	\item Scandiamo ogni entry di $\vec{S}$ e A in parallelo (sono entrambi ordinati) e diamo in output gli URL in A corrispondenti alle entry marcate come utili al passo precedente.
+	\item Scandiamo ogni entry di $\vec{S}$ e A in parallelo (sono entrambi ordinati) e inseriamo in F gli URL in A corrispondenti alle entry marcate come utili al passo precedente.
 	\item $\vec{S}$ e A vengono svuotati e Z viene sostituito da Z'.
 \end{enumerate}
 Innanzitutto, si noti che Z, alla fine di uno scarico, contiene di nuovo le firme di tutti gli URL mai incontrati. Inoltre in output abbiamo dato tutti e soli gli URL la cui firma non era parte di Z, dunque si trattava di URL che non erano ancora stati visitati. Infine, gli URL in output sono stati ovviamente emessi nell'ordine di accodamento in A.
