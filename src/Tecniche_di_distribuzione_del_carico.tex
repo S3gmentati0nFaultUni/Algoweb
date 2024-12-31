@@ -1,5 +1,5 @@
 \chapter{Tecniche di distribuzione del carico}
-Per coordinare un insieme \set{A} di agenti indipendenti che effettuano attività di crawling è necessario assegnare in qualche modo ciascun URL a uno specifico agente: denoteremo con $\delta_A(-): U \rightarrow A$ la funzione che, dati l'insieme dei agenti \set{A} e l'universo degli URL \set{U}, assegna a ciascun URL l'agente che ne è responsabile. Assumiamo qui che gli agenti in \set{A} siano identici, in particolare che abbiano a disposizione le stesse risorse.
+Per coordinare un insieme \set{A} di agenti indipendenti che effettuano attività di crawling è necessario assegnare in qualche modo ciascun URL a uno specifico agente: denoteremo con $\delta_A(-): U \rightarrow A$ la funzione che, dato l'insieme degli agenti \set{A} e l'universo degli URL \set{U}, assegna a ciascun URL l'agente che ne è responsabile. Assumiamo qui che gli agenti in \set{A} siano identici, in particolare che abbiano a disposizione le stesse risorse.
 
 Una richiesta banale ma necessaria è che la funzione sia \textit{bilanciata}, ovvero che:
 \begin{equation}
@@ -29,7 +29,7 @@ In sostanza, la permutazione fornisce un ordine di preferenza per assegnare $u$ 
 
 Si noti che è possibile generare una tale permutazione in tempo e spazio lineare in $|P|$. La tecnica, nota come \textit{Knuth shuffle} o \textit{Fisher-Yates shuffle} (lo pseudocodice viene mostrato nell'Algoritmo 2), consiste nell'inizializzare un vettore di $|P|$ elementi con i primi $|P|$ numeri naturali (o con gli elementi di \set{P}, nel caso generale).
 
-A questo punto si eseguono $|P|$ iterazioni: all'iterazione di indice $i$ (a partire da zero) si scambia l'elemento i-esimo con uno delle seguenti $|P| - i$ scelto a caso uniformemente (si noti che $i$ stesso è una scelta possibile). Alla fine dell'algoritmo, il vettore contiene una permutazione aleatoria scelta in maniera uniforme.
+A questo punto si eseguono $|P|$ iterazioni: all'iterazione di indice $i$ (a partire da zero) si scambia l'elemento i-esimo con uno dei seguenti $|P| - i$ scelto a caso uniformemente (si noti che $i$ stesso è una scelta possibile). Alla fine dell'algoritmo, il vettore contiene una permutazione aleatoria scelta in maniera uniforme.
 \begin{algorithm}
 	\caption{Fisher-Yates shuffle}
 	\begin{algorithmic}
