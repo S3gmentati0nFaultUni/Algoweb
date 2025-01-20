@@ -9,9 +9,9 @@ Il conteggio è un metodo molto primitivo: innanzitutto si presta molto facilmen
 
 Per ovviare a questi inconvenienti sono stati sviluppati degli \textit{schemi di pesatura} che aggiustano il punteggio assegnato a ogni termine in ogni documento in modo da ovviare agli inconvenienti del conteggio.
 
-Il primo e più classico metodo è TF/IDF (\textit{term frequency / inverse term frequency}) \cite{tfidf}. Esso normalizza il conteggio dividendolo per il massimo conteggio all'interno del documento o per la lunghezza del documento stesso, e inoltre lo attenua moltiplicandolo per l'inverso della frequenza del termine, o, più frequentemente, per il logaritmo del numero di documenti diviso per la frequenza (cioè per il logaritmo dell'inverso della frequenza in senso probabilistico). Se $l$ è la lunghezza de documento e $f$ è la frequenza di $t$ nella collezione documentale, in formule
+Il primo e più classico metodo è TF/IDF (\textit{term frequency / inverse document frequency}) \cite{tfidf}. Esso normalizza il conteggio dividendolo per il massimo conteggio all'interno del documento o per la lunghezza del documento stesso, e inoltre lo attenua moltiplicandolo per l'inverso della frequenza del termine, o, più frequentemente, per il logaritmo del numero di documenti diviso per la frequenza (cioè per il logaritmo dell'inverso della frequenza in senso probabilistico). Se $l$ è la lunghezza de documento e $f$ è la frequenza di $t$ nella collezione documentale, in formule
 \begin{equation}
-	r(d) = \frac{c_{t, d}}{l}\log\bigb{\frac{N}{f}}
+	r(d) = \sum_{t \in Q} \frac{c_{t, d}}{l}\log\bigb{\frac{N}{f}}
 \end{equation}
 Come accennato, al posto di $l$ è possibile utilizzare il massimo conteggio di un termine che compare in $d$. Sono possibili molte altre varianti (come applicare un logaritmo a $c_{t, d}$).
 

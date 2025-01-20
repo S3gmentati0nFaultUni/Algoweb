@@ -38,7 +38,7 @@ Per poter visualizzare quanto segue è utile costruire qualche esempio semplice 
 \begin{enumerate}
 	\item L'intervallo associato a una parola di lunghezza $n$ ha dimensione $2^{-n}$
 	\item se $v \preceq w$ l'intervallo associato a $v$ contiene quello associato a $w$
-	\item Due parole sono inconfrontabili se solo i corrispondenti intervalli sono disgiunti; infatti, se $v$ e $w$ sono inconfrontabili e $z$ è il loro massimo prefisso comune, assumendo senza perdita di generalità che $z_0 \preceq v$ e $z_1 \preceq w$ l'intervallo di $v$ sarà contenuto in quello di $z_0$ e l'intervallo di $w$ in quello di $z_1$: dato che gli intervalli di $z_0$ e $z_1$ sono disgiunti per definizione, lo sono anche quelli di $v$ e $w$
+	\item Due parole sono inconfrontabili se e solo se i corrispondenti intervalli sono disgiunti; infatti, se $v$ e $w$ sono inconfrontabili e $z$ è il loro massimo prefisso comune, assumendo senza perdita di generalità che $z_0 \preceq v$ e $z_1 \preceq w$ l'intervallo di $v$ sarà contenuto in quello di $z_0$ e l'intervallo di $w$ in quello di $z_1$: dato che gli intervalli di $z_0$ e $z_1$ sono disgiunti per definizione, lo sono anche quelli di $v$ e $w$
 	\item Dato un qualunque intervallo diadico $[k2^{-h} \dots (k + 1)2^{-h})$ esiste un'unica parola di lunghezza $h$ a cui è associato l'intervallo, vale a dire, la parola formata dalla rappresentazione binaria di $k$ allineata ad $h$ bit; questo è certamente vero per $h = 0$, e data una parola $w$ con $|w| = h + 1$ se l'intervallo associato a $w$ privato dell'ultimo carattere è $[k2^{-h} \dots (k + 1)2^{-h})$ l'intervallo associato a $w$ è $[(2k)2^{-h-1} \dots (2k + 1)2^{-h-1})$ se l'ultimo carattere di $w$ è 0, $[(2k + 1)2^{-h-1} \dots 2(k + 1)2^{-h-1})$ altrimenti.
 \end{enumerate}
 Fatte le dovute premesse possiamo passare alla dimostrazione del Teorema 1.
@@ -129,7 +129,7 @@ In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato 
 \section{Caratteristiche matematiche dei codici}
 Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice è \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$) il valore atteso della lunghezza di una parola rispetto a $p$ è minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ciò significa che se $l(n)$ è la lunghezza della parola di codice per $n$ e $H(p)$ è l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
 \begin{equation}
-	\sum_{x \in \nat}{l(n)p(n)} \leq cH(p) + d
+	\sum_{n \in \nat}{l(n)p(n)} \leq cH(p) + d
 \end{equation}
 Un codice è detto \textit{asintoticamente ottimo} quando a destra il limite superiore è della forma $f(H(p))$ con $\lim_{n \to \infty} f(n) = 1$.
 

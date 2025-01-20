@@ -25,7 +25,7 @@ e assumendo che i nodi con un insieme di nodi raggiungibili banale (nodi con out
 \subsection{Centralità armonica}
 Come abbiamo notato il problema della closeness sta nel fatto che vi sono coppie di nodi non raggiungibili. Prendiamo quindi ispirazione da Marchiori e Latora \cite{armonica}: presentatogli il problema di offrire una nozione sensata di "lunghezza media del percorso più breve" per un grafo direzionato generico, hanno proposto di rimpiazzare la media delle distanze con la \textit{media armonica di tutte le distanze}\footnote{Definiamo media armonica per un gruppo di valori $a_0, \dots, a_{n - 1}$ il seguente valore
 	\begin{equation}
-		\bigb{\frac{\sum_i^n{a_i^{-1}}}{n}}^{-1}
+		\bigb{\frac{n}{\sum_i^n{a_i^{-1}}}}
 	\end{equation}
 }.
 
@@ -70,7 +70,7 @@ Il teorema di Perron Frobenius ci dà qualche garanzia a riguardo.
 \end{equation}
 possiamo scrivere $x_k = M^k\vec{x}$ come segue
 \begin{equation}
-	x_k = M^k\vec{x} = M^k\sum_i{\alpha_i\vec{e}_i} = \sum_i{\alpha_i \lambda_i^k \vec{e}_i}
+	\vec{x_k} = M^k\vec{x} = M^k\sum_i{\alpha_i\vec{e}_i} = \sum_i{\alpha_i \lambda_i^k \vec{e}_i}
 \end{equation}
 posso portare la potenza $k$-esima della matrice dentro la sommatoria perché è indipendente dalla variabile di somma, inoltre:
 \begin{equation}
@@ -98,7 +98,7 @@ Ovviamente, ciò non è sempre possibile. A ogni modo, Seeley, considera una mat
 
 L'indice di Seeley può essere espresso tramite la seguente equazione
 \begin{equation}
-	s(x) = \sum_y{\frac{s(y)}{d_+(y)}}
+	s(x) = \sum_{y \to x}{\frac{s(y)}{d_+(y)}}
 \end{equation}
 È interessante notare che le motivazioni dei due lavori citati (Landau e Seeley) sono profondamente diverse: il primo era interessato al limite di un processo iterato per migliorare un punteggio, e definisce il limite ricorsivamente; Seeley vuole definire direttamente un punteggio ricorsivo.
 
@@ -121,7 +121,7 @@ PageRank è una delle centralità spettarli oggi in uso più discusse, sembrereb
 
 Di fatto quando lavoriamo con PageRank è come se avessimo a disposizione una moneta truccata ($p_T >
 	p_C$) e continuassimo ripetutamente a fare dei lanci, se esce testa, si continua la visita corrente,
-altrimenti sir ricomincia da un'altra parte (eseguendo la cosiddetta operazione di teletrasporto). La cosa interessante è che se il processo di visita si blocca in una componente connessa basta attendere alcuni try e prima o poi il processo aleatorio è in grado di tirarsene fuori da solo. Questo concetto dovrebbe far drizzare le antenne a coloro che hanno seguito corsi riguardanti processi aleatori ripetuti (e.g. Catene di Markov) o su algoritmi euristici (e.g. algoritmo di Simulated Annealing che cerca di sfuggire da un minimo locale)
+altrimenti si ricomincia da un'altra parte (eseguendo la cosiddetta operazione di teletrasporto). La cosa interessante è che se il processo di visita si blocca in una componente connessa basta attendere alcuni try e prima o poi il processo aleatorio è in grado di tirarsene fuori da solo. Questo concetto dovrebbe far drizzare le antenne a coloro che hanno seguito corsi riguardanti processi aleatori ripetuti (e.g. Catene di Markov) o su algoritmi euristici (e.g. algoritmo di Simulated Annealing che cerca di sfuggire da un minimo locale)
 Per definizione PageRank è l'unico vettore $\vec{p}$ (autovettore dominante) soddisfacente
 \begin{equation}
 	\label{eq:pagerank}
@@ -150,7 +150,7 @@ che è analoga all'equazione (11). Del Corso, Gullì e Romani \cite{fastprank} h
 
 Entrambe le definizioni sono state utilizzate in letteratura: la ricorrenza lineare mostrata in \ref{eq:pagerank} è particolarmente utile qualora vi sia bisogno di dipendenza lineare da $\vec{v}$ come in \cite{boldivigni}. La definizione basata su catene di Markov non è meno comune, nonostante il problema di dover patchare le righe nulle.
 \section{Metodo di Gauss-Seidel}
-Una visione alternativa al problema di PageRank (e, più in generale, del calcolo dell'autovettore dominante) è data dalla riscrittura dell'equazione di PageRank sotto forma di sistema lineare. Per quanto già notato, l'equazione che deinisce l'autovettore dominante è, nel caso di una matrice stocastica:
+Una visione alternativa al problema di PageRank (e, più in generale, del calcolo dell'autovettore dominante) è data dalla riscrittura dell'equazione di PageRank sotto forma di sistema lineare. Per quanto già notato, l'equazione che definisce l'autovettore dominante è, nel caso di una matrice stocastica:
 \begin{equation}
 	\trans{\vec{x}} = \alpha\trans{\vec{x}}G + \alpha\trans{\vec{x}}\vec{d}\trans{\vec{v}} + (1 - \alpha)\trans{\vec{v}}
 \end{equation}
