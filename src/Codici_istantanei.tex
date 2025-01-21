@@ -7,7 +7,7 @@ Definiamo l'\textit{ordinamento per prefissi} delle sequenze in \set{2^*} come s
 \end{equation}
 Cioè $x \preceq y$ se e solo se $x$ è un prefisso di $y$. Ricordiamo che in un \textit{ordine parziale} due elementi sono inconfrontabili se nessuno dei due è minore dell'altro.
 
-Un codice è detto \textit{privo di prefissi} se ogni coppia di parole distinte del codice è inconfrontabile. Un codice è detto \textit{istantaneo} se a fronte di una parola $w$ formata da una concatenazione di parole del codice, non esiste una diversa concatenazione che dà $w$. In particolare, leggendo uno a uno i bit di $w$ è possibile ottenere in maniera istantanea le parole del codice che lo compongono. Si noti che ogni codice privo di prefissi è istantaneo\footnote{il professore spesso utilizza i due termini come sinonimi}.
+Un codice è detto \textit{istantaneo} o \textit{privo di prefissi} se ogni coppia di parole distinte del codice è inconfrontabile. L'effetto pratico di questa proprietà è che a fronte di una parola $w$ formata da una concatenazione di parole del codice, non esiste una diversa concatenazione che dà $w$. In particolare, leggendo uno a uno i bit di $w$ è possibile ottenere in maniera istantanea le parole del codice che lo compongono.
 
 Ad esempio, il codice \set{\{0, 1\}} è istantaneo, mentre \set{\{0, 1, 01\}} non lo è. Se prendiamo ad esempio la stringa 001 e la confrontiamo con il primo codice sappiamo che è formata da 0, 0, 1, ma nel secondo caso possiamo scegliere tra 0, 0, 1 e 0, 01.
 
