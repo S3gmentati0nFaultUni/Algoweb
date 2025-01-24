@@ -38,8 +38,8 @@ Per poter visualizzare quanto segue è utile costruire qualche esempio semplice 
 \begin{enumerate}
 	\item L'intervallo associato a una parola di lunghezza $n$ ha dimensione $2^{-n}$
 	\item se $v \preceq w$ l'intervallo associato a $v$ contiene quello associato a $w$
-	\item Due parole sono inconfrontabili se solo i corrispondenti intervalli sono disgiunti; infatti, se $v$ e $w$ sono inconfrontabili e $z$ è il loro massimo prefisso comune, assumendo senza perdita di generalità che $z_0 \preceq v$ e $z_1 \preceq w$ l'intervallo di $v$ sarà contenuto in quello di $z_0$ e l'intervallo di $w$ in quello di $z_1$: dato che gli intervalli di $z_0$ e $z_1$ sono disgiunti per definizione, lo sono anche quelli di $v$ e $w$
-	\item Dato un qualunque intervallo diadico $[k2^{-h} \dots (k + 1)2^{-h})$ esiste un'unica parola di lunghezza $h$ a cui è associato l'intervallo, vale a dire, la parola formata dalla rappresentazione binaria di $k$ allineata ad $h$ bit; questo è certamente vero per $h = 0$, e data una parola $w$ con $|w| = h + 1$ se l'intervallo associato a $w$ privato dell'ultimo carattere è $[k2^{-h} \dots (k + 1)2^{-h})$ l'intervallo associato a $w$ è $[(2k)2^{-h-1} \dots (2k + 1)2^{-h-1})$; se l'ultimo carattere di $w$ è 0, $[(2k + 1)2^{-h-1} \dots 2(k + 1)2^{-h-1})$
+	\item Due parole sono inconfrontabili se e solo se i corrispondenti intervalli sono disgiunti; infatti, se $v$ e $w$ sono inconfrontabili e $z$ è il loro massimo prefisso comune, assumendo senza perdita di generalità che $z_0 \preceq v$ e $z_1 \preceq w$ l'intervallo di $v$ sarà contenuto in quello di $z_0$ e l'intervallo di $w$ in quello di $z_1$: dato che gli intervalli di $z_0$ e $z_1$ sono disgiunti per definizione, lo sono anche quelli di $v$ e $w$
+	\item Dato un qualunque intervallo diadico $[k2^{-h} \dots (k + 1)2^{-h})$ esiste un'unica parola di lunghezza $h$ a cui è associato l'intervallo, vale a dire, la parola formata dalla rappresentazione binaria di $k$ allineata ad $h$ bit; questo è certamente vero per $h = 0$, e data una parola $w$ con $|w| = h + 1$ se l'intervallo associato a $w$ privato dell'ultimo carattere è $[k2^{-h} \dots (k + 1)2^{-h})$ l'intervallo associato a $w$ è $[(2k)2^{-h-1} \dots (2k + 1)2^{-h-1})$ se l'ultimo carattere di $w$ è 0, $[(2k + 1)2^{-h-1} \dots 2(k + 1)2^{-h-1})$ altrimenti.
 \end{enumerate}
 Fatte le dovute premesse possiamo passare alla dimostrazione del Teorema 1.
 \begin{proof}
@@ -61,14 +61,14 @@ Alcuni dei metodi più utilizzati per la compressione degli indici utilizzano co
 
 In realtà se si lavora con collezioni documentali di grandi dimensioni la semplicità teorica e implementativa dei codici per gli interi li rende molto interessanti.
 
-Innanzitutto si noti che un codice istantaneo per gli interi è numerabile. L'associazione tra interi e parole del codice va specificata di volta in volta, anche se, in tutti i codici che vedremo, l'associazione è semplicemente data dall'ordinamento prima per lunghezza e poi lessicografico delle parole. Inoltre assumeremo che le parole rappresentino numeri naturali, e quindi la parola minima (cioè lessicograficamente minima tra quelle di lunghezza minima) rappresenti lo zero\footnote{Questa scelta non è uniforme in letteratura, e in effetti si possono trovare nello stesso libro due codici per gli interi che, a seconda della bisogna, vengono numerati a partire da zero o da uno}.
-La rappresentazione più elementare di un intero $n$ è quella \textit{binaria}, che però non è istantanea (le prime parole sono 0, 1, 10, 11, 100). È possibile rendere il codice istantaneo facendo un allineamento a $k$ bit. La lunghezza di una parola di codice binario (non allineato) è $\lambda(n) + 1$\footnote{Si ricorda che: $\lambda(n) = \flr{\log(n)}$}.
+Innanzitutto si noti che un codice istantaneo per gli interi è numerabile. L'associazione tra interi e parole del codice va specificata di volta in volta, anche se, in tutti i codici che vedremo, l'associazione è semplicemente data dall'ordinamento prima per lunghezza e poi lessicografico delle parole. Inoltre assumeremo che le parole rappresentino numeri naturali, e quindi la parola minima (cioè lessicograficamente minima tra quelle di lunghezza minima) rappresenti lo zero\footnote{Questa scelta non è uniforme in letteratura, e in effetti si possono trovare nello stesso libro due codici per gli interi che, a seconda del bisogno, vengono numerati a partire da zero o da uno}.
+La rappresentazione più elementare di un intero $n$ è quella \textit{binaria}, che però non è istantanea (le prime parole sono 0, 1, 10, 11, 100). È possibile rendere il codice istantaneo facendo un allineamento a $k$ bit. La lunghezza di una parola di codice binario (non allineato) è $\lambda(n) + 1$ \footnote{Si ricorda che: $\lambda(n) = \flr{\log(n)}$}.
 
 Chiameremo \textit{rappresentazione binaria ridotta} di $n$ la rappresentazione binaria di $n + 1$ alla quale viene rimosso il bit più significativo; anch'essa non è istantanea. La lunghezza della parola di codice per $n$ è $\lambda(n + 1)$. Le prime parole sono $\varepsilon$, 0, 1, 00, 01, 10.
 
 Un ruolo importante nella costruzione dei codici istantanei è svolto dai \textit{codici binari minimali} - codici istantanei e completi per i primi $k$ numeri naturali che utilizzano un numero variabile di bit. Esistono diverse possibilità per le scelte delle parole del codice\footnote{In realtà, un codice binario minimale è semplicemente un codice ottimo per la distribuzione uniforme, il che spiega perché sono possibili scelte diverse per le parole del codice}, ma in quanto segue diremo che il codice binario minimale di $n$ (nei primi $n$ naturali) è definito come segue: sia $s = \ceil{\log(k)}$; se $n < 2^s -k$, $n$ è codificato dall'$n$-esima parola binaria (in ordine lessicografico) di lunghezza $s - 1$; altrimenti, $n$ è codificato utilizzando la $(n - k + 2^s)$-esima parola binaria di lunghezza $s$.
 
-La lunghezza di una parola di binario minimale è $s + [n < 2^s - k]$
+La lunghezza di una parola di binario minimale è $s - [n < 2^s - k]$
 
 \begin{table}[ht]
 	\centering
@@ -82,9 +82,9 @@ La lunghezza di una parola di binario minimale è $s + [n < 2^s - k]$
 		1 &               & 1 & 10 & 01 & 01  & 01  & 010 \\
 		2 &               &   & 11 & 10 & 10  & 100 & 011 \\
 		3 &               &   &    & 11 & 110 & 101 & 100 \\
-		2 &               &   &    &    & 111 & 110 & 101 \\
-		2 &               &   &    &    &     & 111 & 110 \\
-		2 &               &   &    &    &     &     & 111 \\
+		4 &               &   &    &    & 111 & 110 & 101 \\
+		5 &               &   &    &    &     & 111 & 110 \\
+		6 &               &   &    &    &     &     & 111 \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -100,7 +100,7 @@ Il \textit{Codice di Golomb di modulo $k$} \cite{golomb} codifica un numero inte
 
 Infine conviene ricordare i \textit{codici a blocchi di lunghezza variabile}, come il codice variabile a nibble o a byte. L'idea è che ogni parola è formata da un numero variabile di blocchi di $k$ bit (4 nel caso di nibble e 8 nel caso di byte). Il primo bit non è codificante ed è noto come \textit{bit di continuazione}, se posto a 1 il blocco che stiamo considerando non è quello finale, se posto a 0 abbiamo raggiunto il blocco terminale.
 
-In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato a un multiplo di $k + 1$ bit, diviso in blocchi di $k + 1$ bit ($k$ bit codificanti e un bit di continuazione che non codifica i valori), e rappresentato tramite una sequenza di suddetti blocchi, ciascuno preceduto dal bit di continuazione. La lunghezza della parola di codice è pari a $\ceil{(\log(n) + 1) / k}(k + 1)$. I codici a lunghezza variabile sono ovviamente istantanei ma non completi, questo perché sequenze di 0 che sono più lunghe di un blocco non sono confrontabili con nessuna delle parole del codice. Uno standard alternativo per questo tipo di codici è quello implementato da UTF-8, che anzichè perdere il primo bit di ogni blocco per i bit di continuazione, sfrutta il primo blocco dell'intera parola per codificare quanti saranno i blocchi costituenti la parola.
+In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato a un multiplo di $k - 1$ bit, diviso in blocchi di $k - 1$ bit ($k$ bit codificanti e un bit di continuazione che non codifica i valori), e rappresentato tramite una sequenza di suddetti blocchi, ciascuno preceduto dal bit di continuazione. La lunghezza della parola di codice è pari a $k \ceil{ \frac {log(n)} {k-1}}$. I codici a lunghezza variabile sono ovviamente istantanei ma non completi, questo perché sequenze di 0 che sono più lunghe di un blocco non sono confrontabili con nessuna delle parole del codice. Uno standard alternativo per questo tipo di codici è quello implementato da UTF-8, che anzichè perdere il primo bit di ogni blocco per i bit di continuazione, sfrutta il primo blocco dell'intera parola per codificare quanti saranno i blocchi costituenti la parola.
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{|c||c|c|c|c|}
@@ -129,7 +129,7 @@ In fase di codifica un intero $n$ viene scritto in notazione binaria, allineato 
 \section{Caratteristiche matematiche dei codici}
 Esistono delle caratteristiche intrinseche dei codici istantanei per gli interi che permettono di classificarli e distinguerne il comportamento. In particolare, un codice è \textit{universale} se per qualunque distribuzione $p$ sugli interi monotona non crescente ($p(i) \leq p(i + 1)$) il valore atteso della lunghezza di una parola rispetto a $p$ è minore o uguale dell'entropia di $p$ a meno di costanti additive e moltiplicative indipendenti da $p$. Ciò significa che se $l(n)$ è la lunghezza della parola di codice per $n$ e $H(p)$ è l'entropia di una distribuzione $p$ (nel senso di Shannon), esistono $c, d$ costanti tali che:
 \begin{equation}
-	\sum_{x \in \nat}{l(n)p(n)} \leq cH(p) + d
+	\sum_{n \in \nat}{l(n)p(n)} \leq cH(p) + d
 \end{equation}
 Un codice è detto \textit{asintoticamente ottimo} quando a destra il limite superiore è della forma $f(H(p))$ con $\lim_{n \to \infty} f(n) = 1$.
 
@@ -227,7 +227,7 @@ Prima di partire con l'analisi spaziale di Elias Fano definiamo una serie di str
 Sia $X=\{x_i\}$ una successione di valori monotona non decrescente, sia $u$ l'upper bound di questa successione di valori, siano:
 \begin{itemize}
 	\item $L$ il vettore in cui verranno salvate le parti inferiori dei valori della successione
-	\item $H$ il vettore in cui verranno salvate le parti superiori dei valori della successione
+	\item $U$ il vettore in cui verranno salvate le parti superiori dei valori della successione
 \end{itemize}
 siano inoltre $n$ la dimensione della successione $X$, $l$ il numero dei bit meno significativi ($l = \flr{\log(u/n)}$). A questo punto reintroduciamo il teorema e poi passiamo a dare la sua dimostrazione.
 \begin{theorem}
@@ -288,7 +288,7 @@ siano inoltre $n$ la dimensione della successione $X$, $l$ il numero dei bit men
 \subsection{Sistemi di numerazione asimmetrica (approfondimento)}
 Nel 2013, Duda \cite{duda} ha introdotto un nuovo metodo di codifica di sequenze di simboli che ha rivoluzionato il campo della compressione dati. I \textit{sistemi di numerazione asimmetrica} hanno velocità pari o superiore a un codice di Huffman, ma performance di compressione confrontabili con quelle della codifica aritmetica, quindi davvero ottime (molto vicine al limite teorico di Shannon). Sono alla base di tutti i moderni sistemi di compressione come \texttt{zstd} di Facebook e lo standard JPEG XL.
 
-L'idea alla base dei sistemi di numerazione arimtetica è che per comprimere una sequenza di simboli vorremo (idealmente) utilizzare un intero molto grande. Se una sequenza è codificata da $x$, vorremmo che aggiungere un simbolo $y$ che ha probabilità di comparire $p_y$ portasse a una codifica $x' \approx x / p_s$, perché in questo modo $\log(x') = \log(x) + \log(1 / p_y)$. Aggiungendo quindi $y$ alla sequenza, spenderemo $\log(1 / p_y)$ bit. Complessivamente il costo del messaggio sarà l'entropia di Shannon.
+L'idea alla base dei sistemi di numerazione arimtetica è che per comprimere una sequenza di simboli vorremo (idealmente) utilizzare un intero molto grande. Se una sequenza è codificata da $x$, vorremmo che aggiungere un simbolo $y$ che ha probabilità di comparire $p_y$ portasse a una codifica $x' \approx x / p_y$, perché in questo modo $\log(x') = \log(x) + \log(1 / p_y)$. Aggiungendo quindi $y$ alla sequenza, spenderemo $\log(1 / p_y)$ bit. Complessivamente il costo del messaggio sarà l'entropia di Shannon.
 
 Possiamo vedere questo concetto nella codifica banale della sorgente più semplice, con 0 e 1 equiprobabili. Se $x$ è la codifica dei simboli visti fino ad ora, $x' = 2x$ oppure $x' = 2x + 1$ a seconda del simbolo che compare. Il risultato è un intero che in base 2 è descritto dalla sequenza di 0 e 1 da codificare.
 
@@ -307,18 +307,18 @@ Sia $\Sigma = [0 \dots k)$ l'insieme dei simboli, per ogni $s \in \Sigma$ sia $p
 
 Dunque per ogni $s$, abbiamo che $p_s = f_s / 2^d$. Definiamo $f_n = 2^d$, più grande è $d$, maggiore sarà la precisione con cui rappresentiamo le probabilità iniziali (quindi migliore sarà la compressione).
 
-Prendiamo ora i primi $2^d$ interi e dividiamoli in $n$ segmenti contigui di lunghezza $f_s$. A simboli più frequenti corrisponderanno segmenti di lunghezza maggiore, definiamo la cumulata degli $f_s$ come segue
+Prendiamo ora i primi $2^d$ interi e raggruppiamoli in $n$ segmenti contigui di lunghezza $f_s$. A simboli più frequenti corrisponderanno segmenti di lunghezza maggiore, definiamo la cumulata degli $f_s$ come segue
 \begin{equation}
-	\sum_{t < s}f_t \hspace{5mm} \textnormal{per $s$} \in [0 \dots n]
+	C_s = \sum_{t < s}f_t \hspace{5mm} \textnormal{per $s$} \in [0 \dots n]
 \end{equation}
-Notiamo che ogni elemento $x$ di $2^d$ sta in uno dei segmenti, e quindi a ogni simbolo è associato esattamente un simbolo $s$. Più precisamente, esiste un solo $s$ tale per cui $c_s \leq x \leq c_{s + 1}$. Poniamo $sym(x) = s$ e $sym(f_s) = s$, questo ci permette di fare in modo che, prendendo un elemento $x$ di $2^d$ uniformemente a caso, $sym(x) \in \Sigma$ ha esattamente distribuzione $p$.
+Notiamo che ogni intero $x$ di $2^d$ sta in uno dei segmenti, e quindi ha associato esattamente un simbolo $s$. Più precisamente, esiste un solo $s$ tale per cui $c_s \leq x \leq c_{s + 1}$. Poniamo $sym(x) = s$ e $sym(f_s) = s$, questo ci permette di fare in modo che, prendendo un elemento $x$ di $2^d$ uniformemente a caso, $sym(x) \in \Sigma$ ha esattamente distribuzione $p$.
 
 Procediamo ora a dare la definizione delle operazioni di cui si parlava prima:
 \begin{align*}
 	\texttt{push(x, s)} & = (\flr{x / f_s} << d) + c_s + x \mod f_s                                                                \\
 	\texttt{pop(x)}     & = \langle (x >> d) \cdot f_s + x \mod 2^d - c_s, s \rangle \quad \textnormal{dove $s = sym(x \mod 2^d)$}
 \end{align*}
-È facile notare che le due operazioni sono una l'inversa dell'altra. Inoltre, $\texttt{push(x, s)} \approx (x / f_s) \cdot 2^d = x \cdot (f_s / 2^d) = x / p_s$, come volevamo.
+È facile notare che le due operazioni sono una l'inversa dell'altra. Inoltre, $\texttt{push(x, s)} \approx (x / f_s) \cdot 2^d = x \cdot (2^d / f_s) = x / p_s$, come volevamo.
 
 Mettiamo ora alla prova ciò di cui abbiamo parlato con un semplice esempio. Abbiamo tre simboli:
 \begin{itemize}
@@ -351,7 +351,7 @@ Partiamo ora da $x = 0$, ora
 	\texttt{push(19392, 0)} & = (\flr{19392 / 922} << 10) + 0 + 30 = 21534 \qquad (15 \textnormal{bit} / 11)  \\
 	\texttt{push(21534, 0)} & = (\flr{21534 / 922} << 10) + 0 + 328 = 23880 \qquad (15 \textnormal{bit} / 12)
 \end{align*}
-Nelle implementazioni pratiche viene eseguito un processo di \textit{rinormalizzazione}: quando l'intero calcolato diviene troppo grande da maneggiare, la metà superiore dei suoi bit viene scritta in un buffer di output e si continua a gestire la metà inferiore. Laa stessa operazione, invertita, consente di rileggere. La rinormalizzazione comporta un'ulteriore perdita di compressione, ma permette di operare su interi di dimensione fissata.
+Nelle implementazioni pratiche viene eseguito un processo di \textit{rinormalizzazione}: quando l'intero calcolato diviene troppo grande da maneggiare, la metà superiore dei suoi bit viene scritta in un buffer di output e si continua a gestire la metà inferiore. La stessa operazione, invertita, consente di rileggere. La rinormalizzazione comporta un'ulteriore perdita di compressione, ma permette di operare su interi di dimensione fissata.
 \section{Distribuzioni intese}
 Ogni codice istantaneo completo per gli interi definisce implicitamente una \textit{distribuzione intesa} sugli interi, che assegna a $w$ la probabilità $2^{-|w|}$. Il codice, in effetti, risulta \textit{ottimo} per la distribuzione associata. La scelta di un codice istantaneo può quindi essere ricondotta a considerazioni sulla distribuzione statistica degli interi che si intendo rappresentare.
 
@@ -380,7 +380,7 @@ Dai documenti crawlati si costruisce un indice inverso, cioè una relazione che 
 
 Una lista di affissione è la lista dei puntatori a documenti associati a un unico termine, spesso, all'informazione essenziale dei puntatori documentali, sono associate una serie d'informazioni accessorie quali la frequenza con cui il token compare nei documenti associati e le posizioni occupate.
 
-La struttura di un elemento di una lista di affissione potrebbe essere il seguente
+La struttura di un elemento di una lista di affissione potrebbe essere la seguente
 \begin{equation}
 	\langle p, c, \langle p_1, \dots, p_n \rangle \rangle
 \end{equation}
